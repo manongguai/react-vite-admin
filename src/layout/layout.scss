@@ -1,0 +1,28 @@
+.demo-logo-vertical {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.container-box {
+  display: flex;
+  height: 100vh;
+}
+
+.sider-box {
+  height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.menu-box {
+  flex: 1;
+  overflow: auto;
+}

@@ -1,0 +1,19 @@
+.loginBox {
+  width: 300px;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px #999;
+  position: fixed;
+  right: 150px;
+  top: 50%;
+  transform: translate(0, -50%);
+  background-color: #fff;
+}
+.primary {
+  color: dodgerblue;
+}
+
+.loginContainer {
+  background-image: url('../../assets/images/background.jpg');
+  background-size: 100% 100%;
+}
