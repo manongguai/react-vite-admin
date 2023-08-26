@@ -1,6 +1,6 @@
-import Breadcrumb from './components/Breadcrumb'
 import { Header } from 'antd/es/layout/layout'
 import { theme } from 'antd'
+import BreadcrumbNav from './components/BreadcrumbNav'
 
 const HeaderComponent = () => {
   const {
@@ -8,9 +8,9 @@ const HeaderComponent = () => {
   } = theme.useToken()
 
   return (
-    <Header style={{ paddingLeft: '16px', background: colorBgContainer }}>
+    <Header className="header-box" style={{ background: colorBgContainer }}>
       {/* 面包屑 */}
-      <Breadcrumb></Breadcrumb>
+      <BreadcrumbNav></BreadcrumbNav>
     </Header>
   )
 }

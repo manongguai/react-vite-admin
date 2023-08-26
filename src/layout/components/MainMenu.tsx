@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Menu, MenuProps } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { deepLoopFloat, getOpenKeys } from '@/utils/system'
+import { deepLoopFloat, findAllBreadcrumb, getOpenKeys } from '@/utils/system'
 import { getMenuList } from '@/api/user'
 import { handleRouter } from '@/utils/system'
 import {
@@ -9,6 +9,7 @@ import {
   setMenuList as setMenuListAction
 } from '@/store/modules/user/userSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
+import { setBreadcrumbs } from '@/store/modules/breadcrumb/breadcrumbSlice'
 type MenuItem = Required<MenuProps>['items'][number]
 
 const MainMenu = (props: any) => {
@@ -42,6 +43,7 @@ const MainMenu = (props: any) => {
     const { data } = await getMenuList()
     if (!data) return
     setMenuList(deepLoopFloat(data))
+    dispatch(setBreadcrumbs(findAllBreadcrumb(data)))
     // 把路由菜单处理成一维数组，存储到 redux 中，做菜单权限判断
     const dynamicRouter = handleRouter(data)
     dispatch(setAuthRouter(dynamicRouter))

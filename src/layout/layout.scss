@@ -21,7 +21,11 @@
   flex-direction: column;
   overflow: hidden;
 }
-
+.header-box {
+  padding-left: 28px;
+  display: flex;
+  align-items: center;
+}
 .menu-box {
   flex: 1;
   overflow: auto;

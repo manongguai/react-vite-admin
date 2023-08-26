@@ -9,12 +9,19 @@ import { Provider } from 'react-redux'
 import store, { persistor } from '@/store'
 import '@/mock'
 import { PersistGate } from 'redux-persist/integration/react'
+import { ConfigProvider } from 'antd'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <BrowserRouter>
-          <App />
+          <ConfigProvider
+            theme={{
+              algorithm: store.getState().global.themeConfig.themeAlgorithm
+            }}
+          >
+            <App />
+          </ConfigProvider>
         </BrowserRouter>
       </PersistGate>
     </Provider>

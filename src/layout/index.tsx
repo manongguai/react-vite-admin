@@ -3,13 +3,16 @@ import { Layout, theme } from 'antd'
 import './layout.scss'
 import { Outlet } from 'react-router-dom'
 import Sider from './Sider'
-import Header from './Header'
+import Header from './header/Header'
 import Footer from './Footer'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { setCollapsed } from '@/store/modules/global/globalSlice'
 const { Content } = Layout
 const LayoutContainer: React.FC = () => {
-  const collapsed = useAppSelector((state) => state.global.collapsed)
+  const { collapsed, themeConfig } = useAppSelector((state) => ({
+    collapsed: state.global.collapsed,
+    themeConfig: state.global.themeConfig
+  }))
   const dispatch = useAppDispatch()
   const {
     token: { colorBgContainer }
@@ -27,7 +30,7 @@ const LayoutContainer: React.FC = () => {
         <Header></Header>
         <Content
           style={{
-            margin: '16px 16px 0',
+            margin: '12px 12px',
             background: colorBgContainer,
             padding: '12px',
             overflow: 'auto'
@@ -37,7 +40,7 @@ const LayoutContainer: React.FC = () => {
           <Outlet></Outlet>
         </Content>
         {/* 底部 */}
-        <Footer></Footer>
+        {themeConfig.footer && <Footer></Footer>}
       </Layout>
     </Layout>
   )
