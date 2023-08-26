@@ -1,5 +1,5 @@
 import { useLocation, Navigate } from 'react-router-dom'
-import { searchRoute } from '@/utils/util'
+import { searchRoute } from '@/utils/system'
 import routes from '@/router'
 import store from '@/store'
 /**

@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
 import user from './modules/user/userSlice'
+import global from './modules/global/globalSlice'
 import storage from 'redux-persist/lib/storage'
 const persistConfig = {
   key: 'root',
@@ -8,7 +9,8 @@ const persistConfig = {
   blacklist: []
 }
 export const rootReducer = combineReducers({
-  user
+  user,
+  global
 })
 const myPersistReducer = persistReducer(persistConfig, rootReducer)
 const store = configureStore({

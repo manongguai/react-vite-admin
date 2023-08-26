@@ -3,16 +3,17 @@ import { Menu, MenuProps } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { deepLoopFloat, getOpenKeys } from '@/utils/system'
 import { getMenuList } from '@/api/user'
-import { handleRouter } from '@/utils/util'
+import { handleRouter } from '@/utils/system'
 import {
   setAuthRouter,
   setMenuList as setMenuListAction
 } from '@/store/modules/user/userSlice'
-import { useAppDispatch } from '@/hooks/redux.hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 type MenuItem = Required<MenuProps>['items'][number]
 
 const MainMenu = (props: any) => {
   const navigateTo = useNavigate()
+  const collapsed = useAppSelector((state) => state.global.collapsed)
   const dispatch = useAppDispatch()
   const { pathname } = useLocation()
   const [menuList, setMenuList] = useState<MenuItem[]>([])
@@ -24,8 +25,8 @@ const MainMenu = (props: any) => {
   // 刷新页面菜单保持高亮
   useEffect(() => {
     setSelectedKeys([pathname])
-    setOpenKeys(getOpenKeys(pathname))
-  }, [pathname])
+    collapsed ? null : setOpenKeys(getOpenKeys(pathname))
+  }, [pathname, collapsed])
 
   // 点击展开菜单
   const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
