@@ -40,6 +40,7 @@ import LayoutContainer from '@/layout'
 import Login from '@/views/Login/index'
 import { RouteObject } from './interface'
 import NotFound from '@/views/NotFound'
+import NotAuth from '@/views/NotAuth'
 const routes: RouteObject[] = [
   {
     path: '/',
@@ -56,6 +57,22 @@ const routes: RouteObject[] = [
           title: 'home'
         },
         element: lazyLoad(lazy(() => import('@/views/Home')))
+      },
+      {
+        path: '/user/list',
+        meta: {
+          requiredAuth: true,
+          title: 'userList'
+        },
+        element: lazyLoad(lazy(() => import('@/views/User/index')))
+      },
+      {
+        path: '/user/detail',
+        meta: {
+          requiredAuth: true,
+          title: 'userDetail'
+        },
+        element: lazyLoad(lazy(() => import('@/views/User/detail')))
       }
     ]
   },
@@ -66,6 +83,10 @@ const routes: RouteObject[] = [
   {
     path: '/404',
     element: <NotFound />
+  },
+  {
+    path: '/403',
+    element: <NotAuth />
   },
   {
     path: '*',

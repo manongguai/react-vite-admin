@@ -41,7 +41,25 @@ export const menuList = Mock.mock('/api/menuList', {
     {
       path: '/home',
       title: 'home',
-      icon: 'PieChartOutlined'
+      icon: 'PieChartOutlined',
+      isMenu: true
+    },
+    {
+      path: '/user',
+      title: 'user',
+      icon: 'PieChartOutlined',
+      isMenu: true,
+      children: [
+        {
+          path: '/user/detail',
+          title: 'userDetail'
+        },
+        {
+          path: '/user/list',
+          title: 'userList',
+          isMenu: true
+        }
+      ]
     }
   ],
   msg: 'success',

@@ -15,6 +15,7 @@ declare global {
       isLink?: string
       close?: boolean
       children?: MenuOptions[]
+      isMenu?: boolean
     }
   }
   export interface SetAction<T> {
