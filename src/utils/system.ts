@@ -3,6 +3,8 @@ import * as Icons from '@ant-design/icons'
 import { RouteObject } from '@/router/interface'
 import React from 'react'
 import { Menu, MenuProps } from 'antd'
+import store from '@/store'
+import { setLogout } from '@/store/modules/user/userSlice'
 type MenuItem = Required<MenuProps>['items'][number]
 const customIcons: { [key: string]: any } = Icons
 export const addIcon = (name: string) => {
@@ -171,4 +173,9 @@ export const getBreadcrumbList = (
   } catch (e) {
     return tempPath.map((item) => item.title)
   }
+}
+
+export const logout = () => {
+  store.dispatch(setLogout())
+  window.location.href = '/login'
 }

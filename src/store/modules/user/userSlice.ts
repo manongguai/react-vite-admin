@@ -1,8 +1,6 @@
 import { getUserInfo } from '@/api/user'
 import { UserState } from '@/store/interface'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { AnyAction } from 'redux'
-
 const initialState: UserState = {
   userInfo: {},
   accessToken: '',
@@ -10,7 +8,7 @@ const initialState: UserState = {
   menuList: [],
   authRouter: []
 }
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -23,6 +21,12 @@ export const userSlice = createSlice({
     ) => {
       state.accessToken = action.payload.accessToken
       state.refreshToken = action.payload.refreshToken
+    },
+    setLogout: (state) => {
+      state.accessToken = ''
+      state.refreshToken = ''
+      state.userInfo = {}
+      state.menuList = state.authRouter = []
     },
     setMenuList: (state, action: SetAction<Menu.MenuOptions[]>) => {
       state.menuList = action.payload
@@ -47,5 +51,6 @@ export const setUserInfo = createAsyncThunk('user/getUserInfo', async () => {
   return res.data
 })
 
-export const { setTokens, setMenuList, setAuthRouter } = userSlice.actions
+export const { setTokens, setMenuList, setAuthRouter, setLogout } =
+  userSlice.actions
 export default userSlice.reducer

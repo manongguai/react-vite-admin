@@ -16,7 +16,7 @@ import { message } from 'antd'
 import { ResultData } from './interface'
 import Refresher from './refresher'
 import store from '@/store'
-import { setTokens } from '@/store/modules/user/userSlice'
+import { logout } from '../system'
 
 const defaultConfig = {
   // 默认地址请求地址，可在 .env 开头文件中修改
@@ -87,13 +87,7 @@ export class CommonService extends HttpService {
         if (data.code === ResultEnum.OVERDUE) {
           const token: string = store.getState().user.accessToken
           if (!token) {
-            store.dispatch(
-              setTokens({
-                accessToken: '',
-                refreshToken: ''
-              })
-            )
-            window.location.href = '/login'
+            logout()
             message.error('请登录')
             return Promise.resolve()
           }
@@ -140,27 +134,15 @@ export class RefresherService extends HttpService {
       (response: AxiosResponse) => {
         const { data } = response
         if (data.code && data.code !== ResultEnum.SUCCESS) {
-          store.dispatch(
-            setTokens({
-              accessToken: '',
-              refreshToken: ''
-            })
-          )
+          logout()
           message.error('登录失效，请重新登陆')
-          window.location.href = '/login'
           return Promise.resolve()
         }
         return Promise.resolve(data)
       },
       (error: AxiosError) => {
-        store.dispatch(
-          setTokens({
-            accessToken: '',
-            refreshToken: ''
-          })
-        )
+        logout()
         message.error(error.message)
-        window.location.href = '/login'
         return Promise.reject(error)
       }
     )
