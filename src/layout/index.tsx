@@ -7,6 +7,7 @@ import Header from './header/Header'
 import Footer from './Footer'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { setCollapsed } from '@/store/modules/global/globalSlice'
+import LayoutTabs from './tabs'
 const { Content } = Layout
 const LayoutContainer: React.FC = () => {
   const { collapsed, themeConfig } = useAppSelector((state) => ({
@@ -28,6 +29,7 @@ const LayoutContainer: React.FC = () => {
       <Layout className="container-box">
         {/* 头部 */}
         <Header></Header>
+        <LayoutTabs></LayoutTabs>
         <Content
           style={{
             margin: '12px 12px',

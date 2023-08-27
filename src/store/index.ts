@@ -4,6 +4,7 @@ import user from './modules/user/userSlice'
 import global from './modules/global/globalSlice'
 import storage from 'redux-persist/lib/storage'
 import breadcrumb from './modules/breadcrumb/breadcrumbSlice'
+import tab from './modules/tab/tabSlice'
 const persistConfig = {
   key: 'root',
   storage,
@@ -12,7 +13,8 @@ const persistConfig = {
 export const rootReducer = combineReducers({
   user,
   global,
-  breadcrumb
+  breadcrumb,
+  tab
 })
 const myPersistReducer = persistReducer(persistConfig, rootReducer)
 const store = configureStore({

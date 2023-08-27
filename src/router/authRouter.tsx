@@ -1,6 +1,6 @@
 import { useLocation, Navigate } from 'react-router-dom'
 import { searchRoute } from '@/utils/system'
-import routes from '@/router'
+import { routes } from '@/router'
 import store from '@/store'
 /**
  * @description 路由守卫组件

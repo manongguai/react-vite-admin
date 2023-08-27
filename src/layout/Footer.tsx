@@ -7,6 +7,7 @@ const FooterComponent = () => {
         textAlign: 'center',
         padding: 0,
         lineHeight: '28px',
+        background: '#fff',
         borderTop: '1px solid #e4e7ed'
       }}
     >

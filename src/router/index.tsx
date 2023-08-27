@@ -41,7 +41,7 @@ import Login from '@/views/Login/index'
 import { RouteObject } from './interface'
 import NotFound from '@/views/NotFound'
 import NotAuth from '@/views/NotAuth'
-const routes: RouteObject[] = [
+export const routes: RouteObject[] = [
   {
     path: '/',
     element: <LayoutContainer />,
@@ -93,8 +93,8 @@ const routes: RouteObject[] = [
     element: <Navigate to="/404" />
   }
 ]
-export default routes
-export const BaseRouter = () => {
+const BaseRouter = () => {
   const BaseRouter = useRoutes(routes)
   return BaseRouter
 }
+export default BaseRouter

@@ -1,4 +1,4 @@
-import { BaseRouter } from '@/router'
+import BaseRouter from '@/router'
 import AuthRouter from './router/authRouter'
 
 function App() {

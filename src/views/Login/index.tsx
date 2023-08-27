@@ -39,7 +39,7 @@ const LoginView = () => {
       <canvas id="canvas" style={{ display: 'block' }}></canvas>
       <div className="loginBox">
         <h2>
-          <span className="primary">快团团</span>登录
+          <span className="primary">Admin</span> 后台管理系统
         </h2>
         <Form
           name="basic"
@@ -53,14 +53,14 @@ const LoginView = () => {
             name="username"
             rules={[{ required: true, message: '请输入用户名!' }]}
           >
-            <Input placeholder="请输入用户名" />
+            <Input placeholder="用户名：admin/tourist" />
           </Form.Item>
 
           <Form.Item<FieldType>
             name="password"
             rules={[{ required: true, message: '请输入密码!' }]}
           >
-            <Input.Password placeholder="请输入密码" />
+            <Input.Password placeholder="密码：123456" />
           </Form.Item>
 
           <Form.Item<FieldType> name="remember" valuePropName="checked">
