@@ -8,7 +8,7 @@ interface PropsType {
 const SiderComponent = ({ collapsed, setCollapsed }: PropsType) => {
   return (
     <Sider
-      collapsible
+      // collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
