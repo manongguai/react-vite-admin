@@ -7,7 +7,7 @@ export default function initBackground(
   let context = canvas.getContext('2d') as CanvasRenderingContext2D
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-
+  let requestAnimation: number
   const Snow = function (
     x: number,
     y: number,
@@ -80,6 +80,7 @@ export default function initBackground(
     }
     snowing()
   }
+
   function snowing() {
     //- 收集生成的雪花对象，进行重置操作，改变生成位置，
     context.clearRect(0, 0, canvas.width, canvas.height)
@@ -89,7 +90,11 @@ export default function initBackground(
       snowArr[i].rotate = (snowArr[i].rotate + snowArr[i].speedR) % 60
       snowArr[i].render()
     }
-    window.requestAnimationFrame(snowing)
+    requestAnimation = window.requestAnimationFrame(snowing)
+  }
+  function stop() {
+    cancelAnimationFrame(requestAnimation)
   }
   init()
+  return stop
 }

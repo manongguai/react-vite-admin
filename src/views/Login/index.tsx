@@ -29,10 +29,11 @@ const LoginView = () => {
     console.log('Failed:', errorInfo)
   }
   useEffect(() => {
-    initBackground()
+    const stop = initBackground()
     window.onresize = function () {
       initBackground()
     }
+    return () => stop()
   }, [])
   return (
     <div className="loginContainer">
