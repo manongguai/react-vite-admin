@@ -1,4 +1,4 @@
-.sider-logo {
+.sider-title {
   height: 32px;
   margin: 16px;
   background: rgba(255, 255, 255, 0.2);
@@ -8,6 +8,10 @@
   color: #fff;
   overflow: hidden;
   white-space: nowrap;
+  font-size: 16px;
+  .sider-text {
+    margin-left: 6px;
+  }
 }
 .container-box {
   display: flex;

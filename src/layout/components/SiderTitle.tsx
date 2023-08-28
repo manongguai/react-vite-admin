@@ -1,8 +1,15 @@
+import IconFont from '@/components/Iconfont'
+
 interface PropsType {
   collapsed: boolean
 }
 const SliderTitle = ({ collapsed }: PropsType) => {
-  return <div className="sider-logo">{collapsed ? 'xx' : 'xx管理系统'}</div>
+  return (
+    <div className="sider-title">
+      <IconFont className="sider-logo" type="icon-logo"></IconFont>
+      {!collapsed && <span className="sider-text">React-Admin</span>}
+    </div>
+  )
 }
 
 export default SliderTitle
