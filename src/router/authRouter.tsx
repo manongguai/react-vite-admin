@@ -2,10 +2,14 @@ import { useLocation, Navigate } from 'react-router-dom'
 import { searchRoute } from '@/utils/system'
 import { routes } from '@/router'
 import store from '@/store'
+import { AxiosCanceler } from '@/utils/http/helper/axiosCancel'
+const axiosCanceler = new AxiosCanceler()
 /**
  * @description 路由守卫组件
  * */
 const AuthRouter = (props: { children: JSX.Element }) => {
+  // * 在跳转路由之前，清除所有的请求
+  axiosCanceler.removeAllPending()
   const { pathname } = useLocation()
   const route = searchRoute(pathname, routes)
   // * 判断当前路由是否需要访问权限(不需要权限直接放行)
