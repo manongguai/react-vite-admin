@@ -1,12 +1,11 @@
 {
-  "name": "lege-mangement",
+  "name": "react-vite-admin",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "gts lint",
     "preview": "vite preview",
     "prepare": "husky install",
     "lint-staged": "npx lint-staged"
