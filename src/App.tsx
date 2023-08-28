@@ -13,6 +13,8 @@ function App() {
     return currentTheme == 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
   }, [currentTheme])
   useTheme()
+  console.log(123)
+
   return (
     <div className="app">
       <ConfigProvider

@@ -22,4 +22,12 @@ declare global {
     type: string
     payload: T
   }
+  export interface GlobEnv {
+    VITE_BASE_URL: string
+    VITE_PRE: string
+    VITE_PORT: number
+    VITE_GLOB_APP_TITLE: string
+    VITE_DROP_CONSOLE: boolean
+    VITE_BUILD_GZIP: boolean
+  }
 }

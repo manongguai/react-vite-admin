@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode dev",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "prepare": "husky install",
@@ -42,11 +42,12 @@
     "@types/react-redux": "^7.1.25",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "gts": "^5.0.1",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
     "mockjs": "^1.1.0",
@@ -54,6 +55,8 @@
     "sass": "^1.65.1",
     "stylelint": "^15.10.3",
     "stylelint-config-standard": "^34.0.0",
-    "typescript": "~5.1.6"
+    "typescript": "~5.1.6",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-html": "^3.2.0"
   }
 }
