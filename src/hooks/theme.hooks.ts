@@ -1,10 +1,21 @@
 import { GlobalTheme } from '@/store/interface'
 import { useAppSelector } from './redux.hooks'
 import { useEffect } from 'react'
-
 export function useTheme() {
-  const theme = useAppSelector((state) => state.global.themeConfig.theme)
+  const { weakOrGray, theme } = useAppSelector(
+    (state) => state.global.themeConfig
+  )
   useEffect(() => {
-    console.log(111)
-  }, [theme])
+    console.log(
+      'useTheme----------------------------------------------------------------'
+    )
+    const body = document.documentElement as HTMLElement
+    if (!weakOrGray) body.setAttribute('style', '')
+    if (weakOrGray === 'weak') body.setAttribute('style', 'filter: invert(80%)')
+    if (weakOrGray === 'gray')
+      body.setAttribute('style', 'filter: grayscale(1)')
+    document
+      .querySelector('html')!
+      .setAttribute('data-theme', theme == 'dark' ? 'dark' : '')
+  }, [theme, weakOrGray])
 }

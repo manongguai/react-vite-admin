@@ -14,16 +14,21 @@ export interface UserState {
 export type GlobalTheme = 'light' | 'dark'
 export type GlobalLanguage = 'zh-CN' | 'en-US'
 
+// 色弱模式，灰色模式，默认
+export type WeakOrGray = 'weak' | 'gray' | null
 export interface GlobalState {
   collapsed: boolean
   language: GlobalLanguage
   themeConfig: {
+    languageIcon: boolean
     theme: GlobalTheme
     primary: string
     breadcrumb: boolean
     tabs: boolean
     footer: boolean
     themeAlgorithm: MappingAlgorithm
+    weakOrGray: WeakOrGray
+    collapseIcon: boolean
   }
 }
 

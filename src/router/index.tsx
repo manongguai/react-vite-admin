@@ -54,7 +54,7 @@ export const routes: RouteObject[] = [
         path: '/home',
         meta: {
           requiredAuth: true,
-          title: 'home'
+          title: '首页'
         },
         element: lazyLoad(lazy(() => import('@/views/Home')))
       },
@@ -62,7 +62,7 @@ export const routes: RouteObject[] = [
         path: '/user/list',
         meta: {
           requiredAuth: true,
-          title: 'userList'
+          title: '用户列表'
         },
         element: lazyLoad(lazy(() => import('@/views/User/index')))
       },
@@ -70,7 +70,7 @@ export const routes: RouteObject[] = [
         path: '/user/detail',
         meta: {
           requiredAuth: true,
-          title: 'userDetail'
+          title: '用户详情'
         },
         element: lazyLoad(lazy(() => import('@/views/User/detail')))
       }

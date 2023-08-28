@@ -38,7 +38,6 @@ const MainMenu = (props: any) => {
       setOpenKeys(keys)
     }
   }
-
   const getMenuData = async () => {
     const { data } = await getMenuList()
     if (!data) return

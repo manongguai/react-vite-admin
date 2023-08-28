@@ -1,7 +1,6 @@
-.tabs {
+.layout-tabs {
   position: relative;
-  border-bottom: 1px solid #e4e7ed;
-  background: #fff;
+  background: var(--bg-color);
   .ant-tabs {
     padding: 0 90px 0 13px;
     .ant-tabs-nav {

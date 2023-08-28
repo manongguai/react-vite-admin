@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, theme } from 'antd'
+import { Layout } from 'antd'
 import './layout.scss'
 import { Outlet } from 'react-router-dom'
 import Sider from './Sider'
@@ -8,6 +8,7 @@ import Footer from './Footer'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { setCollapsed } from '@/store/modules/global/globalSlice'
 import LayoutTabs from './tabs'
+import ConfigurationBtn from '@/components/ConfigurationBtn'
 const { Content } = Layout
 const LayoutContainer: React.FC = () => {
   const { collapsed, themeConfig } = useAppSelector((state) => ({
@@ -15,11 +16,9 @@ const LayoutContainer: React.FC = () => {
     themeConfig: state.global.themeConfig
   }))
   const dispatch = useAppDispatch()
-  const {
-    token: { colorBgContainer }
-  } = theme.useToken()
+
   return (
-    <Layout>
+    <Layout className="layout-container">
       {/* 左边侧边栏 */}
       <Sider
         collapsed={collapsed}
@@ -30,20 +29,16 @@ const LayoutContainer: React.FC = () => {
         {/* 头部 */}
         <Header></Header>
         <LayoutTabs></LayoutTabs>
-        <Content
-          style={{
-            margin: '12px 12px',
-            background: colorBgContainer,
-            padding: '12px',
-            overflow: 'auto'
-          }}
-        >
-          {/* 可视区 */}
-          <Outlet></Outlet>
+        <Content className="layout-content">
+          <div className="layout-content-main">
+            {/* 可视区 */}
+            <Outlet></Outlet>
+          </div>
         </Content>
         {/* 底部 */}
         {themeConfig.footer && <Footer></Footer>}
       </Layout>
+      <ConfigurationBtn></ConfigurationBtn>
     </Layout>
   )
 }

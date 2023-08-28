@@ -8,13 +8,14 @@ interface PropsType {
 const SiderComponent = ({ collapsed, setCollapsed }: PropsType) => {
   return (
     <Sider
+      className="layout-sider"
       // collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
       <div className="sider-box">
         <SiderTitle collapsed={collapsed}></SiderTitle>
-        <MainMenu className=""></MainMenu>
+        <MainMenu className="layout-sider-menu"></MainMenu>
       </div>
     </Sider>
   )

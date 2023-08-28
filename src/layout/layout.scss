@@ -1,4 +1,4 @@
-.demo-logo-vertical {
+.sider-logo {
   height: 32px;
   margin: 16px;
   background: rgba(255, 255, 255, 0.2);
@@ -9,12 +9,10 @@
   overflow: hidden;
   white-space: nowrap;
 }
-
 .container-box {
   display: flex;
   height: 100vh;
 }
-
 .sider-box {
   height: calc(100vh - 48px);
   display: flex;
@@ -34,4 +32,47 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.layout-container {
+  .ant-layout {
+    background-color: var(--bg-color);
+  }
+  .layout-sider,
+  .layout-sider-menu {
+    background-color: var(--bg-color);
+  }
+  .ant-layout-sider {
+    border-right: 1px solid var(--border-color) !important;
+    .ant-menu {
+      &::-webkit-scrollbar {
+        background-color: var(--bg-color) !important;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-bg-color) !important;
+      }
+    }
+  }
+  .layout-header {
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .layout-content {
+    background-color: var(--main-bg-color);
+    padding: 12px;
+    overflow: auto;
+    &-main {
+      padding: 12px;
+      background-color: var(--bg-color);
+      min-height: 100%;
+      border: 1px solid var(--border-color) !important;
+    }
+  }
+  .layout-footer {
+    text-align: center;
+    padding: 0;
+    line-height: 28px;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+  }
 }

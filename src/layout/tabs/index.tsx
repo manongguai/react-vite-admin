@@ -58,7 +58,7 @@ const LayoutTabs = () => {
   return (
     <>
       {themeConfig.tabs && (
-        <div className="tabs">
+        <div className="layout-tabs">
           <Tabs
             animated
             activeKey={activeValue}

@@ -1,17 +1,13 @@
 import { Header } from 'antd/es/layout/layout'
-import { Col, Row, Space, theme } from 'antd'
+import { Col, Row, Space } from 'antd'
 import BreadcrumbNav from './components/BreadcrumbNav'
 import AvatarIcon from './components/AvatarIcon'
 import Fullscreen from './components/Fullscreen'
 import CollapseIcon from './components/CollapseIcon'
 
 const HeaderComponent = () => {
-  const {
-    token: { colorBgContainer }
-  } = theme.useToken()
-
   return (
-    <Header className="header-box" style={{ background: colorBgContainer }}>
+    <Header className="layout-header">
       {/* 面包屑 */}
       <Row justify={'space-between'} align="middle">
         <Col>

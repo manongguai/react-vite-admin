@@ -1,0 +1,10 @@
+body {
+  background-color: var(--bg-color);
+  user-select: none;
+  color: var(--text-color);
+}
+
+img {
+  // 禁止拖动图片
+  -webkit-user-drag: none;
+}

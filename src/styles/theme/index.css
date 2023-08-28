@@ -1,0 +1,19 @@
+:root {
+  --bg-color: #ffffff;
+  --main-bg-color: #f0f2f5;
+  --border-color: #e4e7ed;
+  --border-header-color: #f6f6f6;
+  --text-color: rgba(0, 0, 0, 0.85);
+  --shadow-color: 0 0 12px #0000000d;
+  --scrollbar-bg-color: #dddee0;
+}
+
+:root[data-theme='dark'] {
+  --bg-color: #1f1f1f;
+  --main-bg-color: #141414;
+  --border-color: #414243;
+  --border-header-color: #f6f6f6;
+  --text-color: #d9d9d9;
+  --shadow-color: 5px 5px 15px rgb(255 255 255 / 20%);
+  --scrollbar-bg-color: #686868;
+}
