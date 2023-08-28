@@ -1,16 +1,30 @@
 .loginBox {
-  width: 300px;
-  padding: 16px;
+  width: 400px;
+  padding: 40px 45px 25px;
   border-radius: 8px;
-  box-shadow: 0 3px 6px #999;
   position: fixed;
-  right: 150px;
+  left: 50%;
   top: 50%;
-  transform: translate(0, -50%);
-  background-color: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #e4e7ed;
+  box-shadow: 2px 2px 12px #0000000d;
+  .loginTitele {
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 48px;
+    font-weight: 600;
+    .loginLogo {
+      font-size: 44px;
+      color: dodgerblue;
+      margin-right: 20px;
+    }
+  }
 }
 .primary {
-  color: dodgerblue;
+  color: #475768;
 }
 
 .loginContainer {

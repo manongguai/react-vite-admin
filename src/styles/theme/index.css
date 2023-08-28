@@ -1,11 +1,11 @@
 :root {
-  --bg-color: #ffffff;
+  --bg-color: #fff;
   --sider-color: #001529;
   --main-bg-color: #f0f2f5;
   --border-color: #e4e7ed;
   --border-header-color: #f6f6f6;
-  --text-color: rgba(0, 0, 0, 0.85);
-  --shadow-color: 0 0 12px #0000000d;
+  --text-color: rgb(0 0 0 / 85%);
+  --shadow-color: 2px 2px 12px #0000000d;
   --scrollbar-bg-color: #dddee0;
 }
 
