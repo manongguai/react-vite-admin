@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Checkbox, ConfigProvider, Form, Input, theme } from 'antd'
 import './login.scss'
 import initBackground from './init'
@@ -8,19 +8,31 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Iconfont from '@/components/Iconfont'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import { USERNAME_KEY } from '@/config/config'
 
 type FieldType = {
   username?: string
   password?: string
-  remember?: string
+  remember?: boolean
 }
 
 const LoginView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [form] = Form.useForm()
+  form.setFieldValue('username', localStorage.getItem(USERNAME_KEY || ''))
+  form.setFieldValue(
+    'remember',
+    localStorage.getItem(USERNAME_KEY) ? true : false
+  )
   const onFinish = (values: any) => {
     login(values).then((res) => {
       const { accessToken, refreshToken } = res.data!
+      if (values.remember) {
+        localStorage.setItem(USERNAME_KEY, values.username)
+      } else {
+        localStorage.removeItem(USERNAME_KEY)
+      }
       dispatch(setTokens({ accessToken, refreshToken }))
       navigate('/home', {
         replace: true
@@ -53,6 +65,7 @@ const LoginView = () => {
           <Form
             name="basic"
             size="large"
+            form={form}
             style={{ maxWidth: 600 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
@@ -64,6 +77,8 @@ const LoginView = () => {
               rules={[{ required: true, message: '请输入用户名!' }]}
             >
               <Input
+                allowClear
+                styles={{ input: { paddingLeft: '12px' } }}
                 prefix={<UserOutlined />}
                 placeholder="用户名：admin/tourist"
               />
@@ -74,6 +89,8 @@ const LoginView = () => {
               rules={[{ required: true, message: '请输入密码!' }]}
             >
               <Input.Password
+                allowClear
+                styles={{ input: { paddingLeft: '12px' } }}
                 prefix={<LockOutlined />}
                 placeholder="密码：123456"
               />
