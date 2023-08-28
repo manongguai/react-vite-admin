@@ -36,7 +36,7 @@ export const refreshToken = Mock.mock('/api/refreshToken', {
   code: 200
 })
 
-export const menuList = Mock.mock('/api/menuList', {
+export const menus = Mock.mock('/api/menus', {
   data: [
     {
       path: '/home',
@@ -58,6 +58,32 @@ export const menuList = Mock.mock('/api/menuList', {
           path: '/user/list',
           title: '用户列表',
           isMenu: true
+        }
+      ]
+    },
+    {
+      path: '/iframe',
+      title: '内嵌页面',
+      isMenu: true,
+      children: [
+        {
+          path: '/iframe/bing',
+          title: '必应',
+          isMenu: true
+        }
+      ]
+    },
+    {
+      path: '/link',
+      title: '外部链接',
+      icon: 'PieChartOutlined',
+      isMenu: true,
+      children: [
+        {
+          path: 'http://www.baidu.com',
+          title: '百度一下',
+          isMenu: true,
+          isLink: true
         }
       ]
     }

@@ -41,39 +41,43 @@ import Login from '@/views/Login/index'
 import { RouteObject } from './interface'
 import NotFound from '@/views/NotFound'
 import NotAuth from '@/views/NotAuth'
+// * 导入所有router
+const metaRouters = import.meta.glob('./modules/*.tsx', {
+  eager: true
+}) as Record<
+  string,
+  {
+    [key: string]: any
+  }
+>
+// * 处理路由
+export const routerArray: RouteObject[] = []
+Object.keys(metaRouters).forEach((item) => {
+  Object.keys(metaRouters[item]).forEach((key: any) => {
+    routerArray.push(...metaRouters[item][key])
+  })
+})
 export const routes: RouteObject[] = [
   {
     path: '/',
+    meta: {
+      title: '首页'
+    },
     element: <LayoutContainer />,
     children: [
       {
-        path: '/',
+        index: true,
         element: <Navigate to="/home" />
       },
       {
         path: '/home',
         meta: {
-          requiredAuth: true,
-          title: '首页'
+          title: '首页',
+          requiredAuth: true
         },
         element: lazyLoad(lazy(() => import('@/views/Home')))
       },
-      {
-        path: '/user/list',
-        meta: {
-          requiredAuth: true,
-          title: '用户列表'
-        },
-        element: lazyLoad(lazy(() => import('@/views/User/index')))
-      },
-      {
-        path: '/user/detail',
-        meta: {
-          requiredAuth: true,
-          title: '用户详情'
-        },
-        element: lazyLoad(lazy(() => import('@/views/User/detail')))
-      }
+      ...routerArray
     ]
   },
   {

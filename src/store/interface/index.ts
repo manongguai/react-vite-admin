@@ -7,7 +7,7 @@ export interface UserState {
   }
   accessToken: string
   refreshToken: string
-  menuList: Menu.MenuOptions[]
+  authMenus: Menu.MenuOptions[]
   authRouter: string[]
 }
 

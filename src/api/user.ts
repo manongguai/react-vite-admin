@@ -20,6 +20,6 @@ export const login = (userInfo: ReqLoginForm) => {
   return http.post<ResLogin>('/login', userInfo)
 }
 
-export const getMenuList = () => {
-  return http.get<Menu.MenuOptions[]>('/menuList')
+export const getMenus = () => {
+  return http.get<Menu.MenuOptions[]>('/menus')
 }

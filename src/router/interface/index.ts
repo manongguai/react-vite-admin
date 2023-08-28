@@ -3,6 +3,7 @@ export interface MetaProps {
   requiredAuth?: boolean
   title?: string
   key?: string
+  iframeSrc?: string
 }
 
 export interface RouteObject {

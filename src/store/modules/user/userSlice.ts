@@ -5,8 +5,8 @@ const initialState: UserState = {
   userInfo: {},
   accessToken: '',
   refreshToken: '',
-  menuList: [],
-  authRouter: []
+  authMenus: [], // 所有授权的菜单
+  authRouter: [] // 授权的一维路由表
 }
 const userSlice = createSlice({
   name: 'user',
@@ -26,10 +26,10 @@ const userSlice = createSlice({
       state.accessToken = ''
       state.refreshToken = ''
       state.userInfo = {}
-      state.menuList = state.authRouter = []
+      state.authMenus = state.authRouter = []
     },
-    setMenuList: (state, action: SetAction<Menu.MenuOptions[]>) => {
-      state.menuList = action.payload
+    setAuthMenus: (state, action: SetAction<Menu.MenuOptions[]>) => {
+      state.authMenus = action.payload
     },
     setAuthRouter: (state, action: SetAction<string[]>) => {
       state.authRouter = action.payload
@@ -51,6 +51,6 @@ export const setUserInfo = createAsyncThunk('user/getUserInfo', async () => {
   return res.data
 })
 
-export const { setTokens, setMenuList, setAuthRouter, setLogout } =
+export const { setTokens, setAuthMenus, setAuthRouter, setLogout } =
   userSlice.actions
 export default userSlice.reducer
