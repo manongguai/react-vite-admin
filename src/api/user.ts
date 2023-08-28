@@ -13,7 +13,11 @@ export interface ResLogin {
   refreshToken: string
 }
 export const getUserInfo = () => {
-  return http.get<UserInfo>('/userInfo')
+  return http.get<UserInfo>('/userInfo', {
+    headers: {
+      notAllowCancel: true
+    }
+  })
 }
 
 export const login = (userInfo: ReqLoginForm) => {
