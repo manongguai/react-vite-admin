@@ -3,7 +3,6 @@ import ConfigurationForm from './ConfigurationForm'
 import IconFont from '../Iconfont'
 import { useState } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-
 const ConfigurationBtn = () => {
   const [open, setOpen] = useState(false)
   const handleOpenChange = (newOpen: boolean) => {
@@ -21,7 +20,8 @@ const ConfigurationBtn = () => {
         badge={{
           dot: true
         }}
-        icon={open ? <CloseOutlined /> : <IconFont type="icon-MagicWand" />}
+        style={{ border: '1px solid var(--border-color)' }}
+        icon={open ? <CloseOutlined /> : <IconFont type="icon-cc-magic" />}
       ></FloatButton>
     </Popover>
   )

@@ -1,5 +1,5 @@
 import { Tabs, message } from 'antd'
-import { HomeFilled } from '@ant-design/icons'
+import { CloseOutlined, HomeFilled } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { HOME_URL } from '@/config/config'
@@ -48,19 +48,31 @@ const LayoutTabs = () => {
         navigate(nextTab.path)
       })
     }
-    message.success('你删除了Tabs标签 😆😆😆')
     dispatch(
       setTabList(
         tabList.filter((item: Menu.MenuOptions) => item.path !== tabPath)
       )
     )
   }
+  const items = tabList.map((item: Menu.MenuOptions) => {
+    return {
+      key: item.path,
+      label: (
+        <span>
+          {item.path == HOME_URL ? <HomeFilled /> : ''}
+          {item.title}
+        </span>
+      ),
+      closeIcon: item.path == HOME_URL ? false : <CloseOutlined />
+    }
+  })
   return (
     <>
       {themeConfig.tabs && (
         <div className="layout-tabs">
           <Tabs
             animated
+            items={items}
             activeKey={activeValue}
             onChange={clickTabs}
             hideAdd
@@ -68,22 +80,7 @@ const LayoutTabs = () => {
             onEdit={(path) => {
               delTabs(path as string)
             }}
-          >
-            {tabList.map((item: Menu.MenuOptions) => {
-              return (
-                <TabPane
-                  key={item.path}
-                  tab={
-                    <span>
-                      {item.path == HOME_URL ? <HomeFilled /> : ''}
-                      {item.title}
-                    </span>
-                  }
-                  closable={item.path !== HOME_URL}
-                ></TabPane>
-              )
-            })}
-          </Tabs>
+          ></Tabs>
           <MoreBtn tabList={tabList} delTabs={delTabs}></MoreBtn>
         </div>
       )}

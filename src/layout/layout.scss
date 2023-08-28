@@ -40,7 +40,7 @@
   }
   .layout-sider,
   .layout-sider-menu {
-    background-color: var(--bg-color);
+    background-color: var(--sider-color);
   }
   .ant-layout-sider {
     border-right: 1px solid var(--border-color) !important;
@@ -56,6 +56,7 @@
   .layout-header {
     background-color: var(--bg-color);
     border-bottom: 1px solid var(--border-color);
+    padding: 0 20px 0 28px;
   }
   .layout-content {
     background-color: var(--main-bg-color);
@@ -74,5 +75,10 @@
     line-height: 28px;
     background-color: var(--bg-color);
     border-top: 1px solid var(--border-color);
+  }
+  .ant-menu-item {
+    width: 100% !important;
+    border-radius: 0 !important;
+    margin: 0;
   }
 }

@@ -31,35 +31,6 @@ const AvatarIcon = () => {
     })
   }
   // Dropdown Menu
-  const menu2 = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <span className="dropdown-item">首页</span>,
-          onClick: () => navigate(HOME_URL)
-        },
-        {
-          key: '2',
-          label: <span className="dropdown-item">个人信息</span>,
-          onClick: () => infoRef.current!.showModal({ name: 11 })
-        },
-        {
-          key: '3',
-          label: <span className="dropdown-item">修改密码</span>,
-          onClick: () => passRef.current!.showModal({ name: 11 })
-        },
-        {
-          type: 'divider'
-        },
-        {
-          key: '4',
-          label: <span className="dropdown-item">退出登录</span>,
-          onClick: handleLogout
-        }
-      ]}
-    ></Menu>
-  )
   const menu: MenuProps['items'] = [
     {
       key: '1',

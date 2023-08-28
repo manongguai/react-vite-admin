@@ -1,5 +1,6 @@
 :root {
   --bg-color: #ffffff;
+  --sider-color: #001529;
   --main-bg-color: #f0f2f5;
   --border-color: #e4e7ed;
   --border-header-color: #f6f6f6;
@@ -10,6 +11,7 @@
 
 :root[data-theme='dark'] {
   --bg-color: #1f1f1f;
+  --sider-color: #1f1f1f;
   --main-bg-color: #141414;
   --border-color: #414243;
   --border-header-color: #f6f6f6;
