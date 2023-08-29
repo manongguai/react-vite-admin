@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Avatar, Modal, Menu, Dropdown, message, Space, MenuProps } from 'antd'
+import { Avatar, Dropdown, Space, MenuProps, App } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { HOME_URL } from '@/config/config'
@@ -10,6 +10,7 @@ import { logout } from '@/utils/system'
 
 const AvatarIcon = () => {
   const navigate = useNavigate()
+  const { modal, message } = App.useApp()
   interface ModalProps {
     showModal: (params: { name: number }) => void
   }
@@ -18,7 +19,7 @@ const AvatarIcon = () => {
 
   // 退出登录
   const handleLogout = () => {
-    Modal.confirm({
+    modal.confirm({
       title: '温馨提示 🧡',
       icon: <ExclamationCircleOutlined />,
       content: '是否确认退出登录？',

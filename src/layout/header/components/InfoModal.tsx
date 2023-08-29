@@ -7,7 +7,7 @@ interface Props {
 
 const InfoModal = (props: Props) => {
   const [modalVisible, setModalVisible] = useState(false)
-
+  const [messageApi, contextHolder] = message.useMessage()
   useImperativeHandle(props.innerRef, () => ({
     showModal
   }))
@@ -19,24 +19,27 @@ const InfoModal = (props: Props) => {
 
   const handleOk = () => {
     setModalVisible(false)
-    message.success('修改用户信息成功 🎉🎉🎉')
+    messageApi.success('修改用户信息成功 🎉🎉🎉')
   }
 
   const handleCancel = () => {
     setModalVisible(false)
   }
   return (
-    <Modal
-      title="个人信息"
-      open={modalVisible}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      destroyOnClose={true}
-    >
-      <p>User Info...</p>
-      <p>User Info...</p>
-      <p>User Info...</p>
-    </Modal>
+    <>
+      {contextHolder}
+      <Modal
+        title="个人信息"
+        open={modalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        destroyOnClose={true}
+      >
+        <p>User Info...</p>
+        <p>User Info...</p>
+        <p>User Info...</p>
+      </Modal>
+    </>
   )
 }
 export default InfoModal

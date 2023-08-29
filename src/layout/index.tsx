@@ -9,8 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { setCollapsed } from '@/store/modules/global/globalSlice'
 import LayoutTabs from './tabs'
 import ConfigurationBtn from '@/components/ConfigurationBtn'
-import { Spin } from 'antd'
-
+import { message } from 'antd'
 const { Content } = Layout
 const LayoutContainer: React.FC = () => {
   const { collapsed, themeConfig } = useAppSelector((state) => ({
@@ -18,7 +17,6 @@ const LayoutContainer: React.FC = () => {
     themeConfig: state.global.themeConfig
   }))
   const dispatch = useAppDispatch()
-
   return (
     <Layout className="layout-container">
       {/* 左边侧边栏 */}

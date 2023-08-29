@@ -7,7 +7,7 @@ interface Props {
 
 const PasswordModal = (props: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
-
+  const [messageApi, contextHolder] = message.useMessage()
   useImperativeHandle(props.innerRef, () => ({
     showModal
   }))
@@ -19,24 +19,27 @@ const PasswordModal = (props: Props) => {
 
   const handleOk = () => {
     setIsModalVisible(false)
-    message.success('修改密码成功 🎉🎉🎉')
+    messageApi.success('修改密码成功 🎉🎉🎉')
   }
 
   const handleCancel = () => {
     setIsModalVisible(false)
   }
   return (
-    <Modal
-      title="修改密码"
-      open={isModalVisible}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      destroyOnClose={true}
-    >
-      <p>Some Password...</p>
-      <p>Some Password...</p>
-      <p>Some Password...</p>
-    </Modal>
+    <>
+      {contextHolder}
+      <Modal
+        title="修改密码"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        destroyOnClose={true}
+      >
+        <p>Some Password...</p>
+        <p>Some Password...</p>
+        <p>Some Password...</p>
+      </Modal>
+    </>
   )
 }
 export default PasswordModal

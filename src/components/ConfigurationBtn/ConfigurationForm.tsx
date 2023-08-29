@@ -1,5 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
-import { Col, Row, Card, Switch, Space } from 'antd'
+import {
+  Col,
+  Row,
+  Card,
+  Switch,
+  Space,
+  ColorPicker,
+  ColorPickerProps
+} from 'antd'
 import {
   setWeakOrGray,
   setTheme,
@@ -10,6 +18,7 @@ import {
   setLanguageVisible,
   setCollapsedVisible
 } from '@/store/modules/global/globalSlice'
+import { useState } from 'react'
 const ConfigurationForm = () => {
   const {
     weakOrGray,
@@ -18,13 +27,28 @@ const ConfigurationForm = () => {
     footer,
     breadcrumb,
     languageIcon,
-    collapseIcon
+    collapseIcon,
+    primary
   } = useAppSelector((state) => state.global.themeConfig)
   const dispatch = useAppDispatch()
   return (
     <Space direction="vertical">
       <Card size="small" title="主题配置" style={{ width: 300 }}>
         <Space direction="vertical" style={{ width: '100%' }}>
+          <Row justify="space-between">
+            <Col>
+              <span>Primary Color</span>
+            </Col>
+            <Col>
+              <ColorPicker
+                showText
+                value={primary}
+                onChangeComplete={(color) => {
+                  dispatch(setPrimary(color.toHexString()))
+                }}
+              />
+            </Col>
+          </Row>
           <Row justify="space-between">
             <Col>
               <span>暗黑模式</span>

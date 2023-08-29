@@ -4,29 +4,34 @@ import { useTheme } from '@/hooks/theme.hooks'
 import { ConfigProvider, theme } from 'antd'
 import { useAppSelector } from './hooks/redux.hooks'
 import { useMemo } from 'react'
+import AppProvider from './components/AppProvider'
 
 function App() {
-  const { theme: currentTheme } = useAppSelector(
+  const { theme: currentTheme, primary } = useAppSelector(
     (state) => state.global.themeConfig
   )
   const themeAlgorithm = useMemo(() => {
     return currentTheme == 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
   }, [currentTheme])
   useTheme()
-  console.log(123)
-
   return (
-    <div className="app">
-      <ConfigProvider
-        theme={{
-          algorithm: themeAlgorithm
-        }}
-      >
-        <AuthRouter>
-          <BaseRouter />
-        </AuthRouter>
-      </ConfigProvider>
-    </div>
+    <ConfigProvider
+      theme={{
+        algorithm: themeAlgorithm,
+        token: {
+          colorPrimary: primary
+        }
+      }}
+    >
+      {/* 提供带有上下文的全局消息api */}
+      <AppProvider>
+        <div className="app">
+          <AuthRouter>
+            <BaseRouter />
+          </AuthRouter>
+        </div>
+      </AppProvider>
+    </ConfigProvider>
   )
 }
 export default App

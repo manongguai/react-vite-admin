@@ -1,11 +1,13 @@
 import '@/store'
-
 declare global {
+  import { MessageInstance, HookAPI, NotificationInstance } from 'antd'
   export interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any
+    $message: MessageInstance
+    $modal: HookAPI
+    $notification: NotificationInstance
   }
   export type { RootState } from '@/store'
-
   // * Menu
   export namespace Menu {
     interface MenuOptions {

@@ -15,7 +15,7 @@
         .ant-tabs-tab-remove {
           position: absolute;
           right: 0;
-          color: #1890ff !important;
+          color: var(--primary-color) !important;
           opacity: 1 !important;
         }
       }
@@ -35,7 +35,7 @@
           opacity: 0;
           transition: 0.1s ease-in-out;
           &:hover {
-            color: #1890ff;
+            color: var(--primary-color);
           }
         }
       }

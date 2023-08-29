@@ -20,11 +20,6 @@ const LoginView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
-  form.setFieldValue('username', localStorage.getItem(USERNAME_KEY || ''))
-  form.setFieldValue(
-    'remember',
-    localStorage.getItem(USERNAME_KEY) ? true : false
-  )
   const onFinish = (values: any) => {
     login(values).then((res) => {
       const { accessToken, refreshToken } = res.data!
@@ -39,10 +34,13 @@ const LoginView = () => {
       })
     })
   }
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+  const onFinishFailed = (errorInfo: any) => {}
   useEffect(() => {
+    form.setFieldValue('username', localStorage.getItem(USERNAME_KEY || ''))
+    form.setFieldValue(
+      'remember',
+      localStorage.getItem(USERNAME_KEY) ? true : false
+    )
     const stop = initBackground()
     window.onresize = function () {
       initBackground()

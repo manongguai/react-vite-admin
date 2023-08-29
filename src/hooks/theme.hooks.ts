@@ -2,7 +2,7 @@ import { GlobalTheme } from '@/store/interface'
 import { useAppSelector } from './redux.hooks'
 import { useEffect } from 'react'
 export function useTheme() {
-  const { weakOrGray, theme } = useAppSelector(
+  const { weakOrGray, theme, primary } = useAppSelector(
     (state) => state.global.themeConfig
   )
   useEffect(() => {
@@ -17,5 +17,6 @@ export function useTheme() {
     document
       .querySelector('html')!
       .setAttribute('data-theme', theme == 'dark' ? 'dark' : '')
-  }, [theme, weakOrGray])
+    body.setAttribute('style', '--primary-color: ' + primary)
+  }, [theme, weakOrGray, primary])
 }
