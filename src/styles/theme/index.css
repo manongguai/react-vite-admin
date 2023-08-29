@@ -1,6 +1,7 @@
 :root {
   --bg-color: #fff;
   --sider-color: #001529;
+  --hover-bg: rgb(46 51 56 / 9%);
   --main-bg-color: #f0f2f5;
   --border-color: #e4e7ed;
   --border-header-color: #f6f6f6;
@@ -12,6 +13,7 @@
 :root[data-theme='dark'] {
   --bg-color: #1f1f1f;
   --sider-color: #1f1f1f;
+  --hover-bg: rgb(255 255 255 / 12%);
   --main-bg-color: #141414;
   --border-color: #414243;
   --border-header-color: #f6f6f6;

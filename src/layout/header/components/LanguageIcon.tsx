@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import IconFont from '@/components/Iconfont'
 import { languageEnums } from '@/enums/languageEnum'
 
-const Language = (props: any) => {
+const LanguageIcon = (props: any) => {
   const language = useAppSelector((state) => state.global.language)
   const dispatch = useAppDispatch()
   const items = [
@@ -22,7 +22,7 @@ const Language = (props: any) => {
     }
   ]
   return (
-    <div className="language-icon">
+    <div className="header-icon">
       <Dropdown
         menu={{
           items: items
@@ -31,9 +31,13 @@ const Language = (props: any) => {
         trigger={['click']}
         arrow={true}
       >
-        <IconFont style={{ fontSize: '20px' }} type="icon-Frame"></IconFont>
+        <IconFont
+          {...props}
+          style={{ fontSize: '18px' }}
+          type="icon-zhongyingwen"
+        ></IconFont>
       </Dropdown>
     </div>
   )
 }
-export default Language
+export default LanguageIcon

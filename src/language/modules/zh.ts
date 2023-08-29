@@ -44,6 +44,7 @@ export default {
     collapsedIcon: '折叠菜单',
     languageIcon: '语言切换图标',
     fullScreenIcon: '切换全屏图标',
+    themeIcon: '主题切换图标',
     breadcrumbNav: '面包屑导航',
     tabs: '标签栏',
     footer: '页脚',

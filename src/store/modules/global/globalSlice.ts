@@ -12,6 +12,7 @@ const initialState: GlobalState = {
   language: '',
   // 是否展示
   themeConfig: {
+    themeIcon: true,
     fullScreenIcon: true,
     componentSize: 'middle',
     languageIcon: true,
@@ -69,6 +70,9 @@ const globalSlice = createSlice({
     },
     setFullScreenVisible: (state, action: SetAction<boolean>) => {
       state.themeConfig.fullScreenIcon = action.payload
+    },
+    setThemeVisible: (state, action: SetAction<boolean>) => {
+      state.themeConfig.themeIcon = action.payload
     }
   }
 })
@@ -84,6 +88,7 @@ export const {
   setLanguageVisible,
   setCollapsedVisible,
   setComponentSize,
-  setFullScreenVisible
+  setFullScreenVisible,
+  setThemeVisible
 } = globalSlice.actions
 export default globalSlice.reducer

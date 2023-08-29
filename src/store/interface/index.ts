@@ -33,6 +33,7 @@ export interface GlobalState {
     themeAlgorithm: MappingAlgorithm
     weakOrGray: WeakOrGray
     collapseIcon: boolean
+    themeIcon: boolean
   }
 }
 

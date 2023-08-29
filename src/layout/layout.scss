@@ -9,7 +9,7 @@
   overflow: hidden;
   white-space: nowrap;
   font-size: 16px;
-
+  cursor: pointer;
   .sider-text {
     margin-left: 6px;
   }
@@ -38,11 +38,17 @@
 }
 
 .collapsed-icon,
-.full-screen,
-.language-icon {
+.header-icon {
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+.header-icon {
+  padding: 5px 10px;
+  border-radius: 4px;
+  &:hover {
+    background-color: var(--hover-bg);
+  }
 }
 
 .layout-container {

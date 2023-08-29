@@ -10,6 +10,7 @@ import Iconfont from '@/components/Iconfont'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { USERNAME_KEY } from '@/config/config'
 import { useTranslation } from 'react-i18next'
+import LanguageIcon from '@/layout/header/components/LanguageIcon'
 type FieldType = {
   username?: string
   password?: string
@@ -52,8 +53,9 @@ const LoginView = () => {
     <div className="loginContainer">
       <canvas id="canvas" style={{ display: 'block' }}></canvas>
       <div className="loginBox">
+        <LanguageIcon />
         <div className="loginTitele">
-          <Iconfont className="loginLogo" type="icon-logo"></Iconfont>{' '}
+          <Iconfont className="loginLogo" type="icon-logo"></Iconfont>
           <span className="primary">React-Admin</span>
         </div>
         <ConfigProvider

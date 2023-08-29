@@ -48,6 +48,7 @@ export default {
     weakMode: 'Weak Mode',
     fullScreenIcon: 'FullScreen Icon',
     fullScreen: 'Full Screen',
-    exitFullScreen: 'Exit Full Screen'
+    exitFullScreen: 'Exit Full Screen',
+    themeIcon: 'Theme Icon'
   }
 }

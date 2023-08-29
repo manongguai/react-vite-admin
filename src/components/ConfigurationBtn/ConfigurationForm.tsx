@@ -19,7 +19,8 @@ import {
   setLanguageVisible,
   setCollapsedVisible,
   setComponentSize,
-  setFullScreenVisible
+  setFullScreenVisible,
+  setThemeVisible
 } from '@/store/modules/global/globalSlice'
 import { useTranslation } from 'react-i18next'
 const ConfigurationForm = () => {
@@ -33,7 +34,8 @@ const ConfigurationForm = () => {
     languageIcon,
     collapseIcon,
     primary,
-    componentSize
+    componentSize,
+    themeIcon
   } = useAppSelector((state) => state.global.themeConfig)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -144,6 +146,19 @@ const ConfigurationForm = () => {
                   checked={languageIcon}
                   onChange={(e) => {
                     dispatch(setLanguageVisible(e))
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row justify="space-between">
+              <Col>
+                <span>{t('config.themeIcon')}</span>
+              </Col>
+              <Col>
+                <Switch
+                  checked={themeIcon}
+                  onChange={(e) => {
+                    dispatch(setThemeVisible(e))
                   }}
                 />
               </Col>

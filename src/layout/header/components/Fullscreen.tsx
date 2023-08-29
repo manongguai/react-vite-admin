@@ -24,7 +24,7 @@ const Fullscreen = () => {
     <>
       {contextHolder}
       {themeConfig.fullScreenIcon && (
-        <div className="full-screen">
+        <div className="header-icon">
           <IconFont
             onClick={handleFullScreen}
             style={{ fontSize: '20px' }}
