@@ -2,8 +2,10 @@ import screenfull from 'screenfull'
 import { useEffect, useState } from 'react'
 import IconFont from '@/components/Iconfont'
 import { message } from 'antd'
+import { useAppSelector } from '@/hooks/redux.hooks'
 
 const Fullscreen = () => {
+  const themeConfig = useAppSelector((state) => state.global.themeConfig)
   const [fullScreen, setFullScreen] = useState<boolean>(screenfull.isFullscreen)
   const [messageApi, contextHolder] = message.useMessage()
   useEffect(() => {
@@ -21,13 +23,15 @@ const Fullscreen = () => {
   return (
     <>
       {contextHolder}
-      <div className="full-screen">
-        <IconFont
-          onClick={handleFullScreen}
-          style={{ fontSize: '20px' }}
-          type={fullScreen ? 'icon-quxiaoquanping' : 'icon-quanping'}
-        ></IconFont>
-      </div>
+      {themeConfig.fullScreenIcon && (
+        <div className="full-screen">
+          <IconFont
+            onClick={handleFullScreen}
+            style={{ fontSize: '20px' }}
+            type={fullScreen ? 'icon-quxiaoquanping' : 'icon-quanping'}
+          ></IconFont>
+        </div>
+      )}
     </>
   )
 }

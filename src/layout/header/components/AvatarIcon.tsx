@@ -7,8 +7,9 @@ import PasswordModal from './PasswordModal'
 import InfoModal from './InfoModal'
 import avatar from '@/assets/images/avatar.jpeg'
 import { logout } from '@/utils/system'
-
+import { useTranslation } from 'react-i18next'
 const AvatarIcon = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { modal, message } = App.useApp()
   interface ModalProps {
@@ -20,14 +21,14 @@ const AvatarIcon = () => {
   // 退出登录
   const handleLogout = () => {
     modal.confirm({
-      title: '温馨提示 🧡',
+      title: `${t('notification.title')} 🧡`,
       icon: <ExclamationCircleOutlined />,
-      content: '是否确认退出登录？',
-      okText: '确认',
-      cancelText: '取消',
+      content: t('user.logoutTitle'),
+      okText: t('notification.confirm'),
+      cancelText: t('notification.cancel'),
       onOk: () => {
         logout()
-        message.success('退出登录成功！')
+        message.success(t('user.logoutSuccess'))
       }
     })
   }
@@ -35,17 +36,17 @@ const AvatarIcon = () => {
   const menu: MenuProps['items'] = [
     {
       key: '1',
-      label: <span className="dropdown-item">首页</span>,
+      label: <span className="dropdown-item">{t('home.title')}</span>,
       onClick: () => navigate(HOME_URL)
     },
     {
       key: '2',
-      label: <span className="dropdown-item">个人信息</span>,
+      label: <span className="dropdown-item">{t('user.personalData')}</span>,
       onClick: () => infoRef.current!.showModal({ name: 11 })
     },
     {
       key: '3',
-      label: <span className="dropdown-item">修改密码</span>,
+      label: <span className="dropdown-item">{t('user.changePassword')}</span>,
       onClick: () => passRef.current!.showModal({ name: 11 })
     },
     {
@@ -53,7 +54,7 @@ const AvatarIcon = () => {
     },
     {
       key: '4',
-      label: <span className="dropdown-item">退出登录</span>,
+      label: <span className="dropdown-item">{t('user.logout')}</span>,
       onClick: handleLogout
     }
   ]

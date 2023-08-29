@@ -1,6 +1,23 @@
 export default {
   login: {
-    confirm: 'Login'
+    confirm: 'Login',
+    remember: 'Remember Username',
+    username: 'Username',
+    password: 'Password'
+  },
+  notification: {
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    title: 'Tips',
+    pleaseLogin: 'Please Login First',
+    loginFailed: 'Login Failed, Please Login Again'
+  },
+  user: {
+    personalData: 'Personal Data',
+    changePassword: 'Change Password',
+    logout: 'Logout',
+    logoutTitle: 'Are you sure to logout?',
+    logoutSuccess: 'Successfully logged out!'
   },
   home: {
     title: 'Home',
@@ -29,10 +46,8 @@ export default {
     lightMode: 'Light Mode',
     grayMode: 'Gray Mode',
     weakMode: 'Weak Mode',
+    fullScreenIcon: 'FullScreen Icon',
     fullScreen: 'Full Screen',
-    exitFullScreen: 'Exit Full Screen',
-    personalData: 'Personal Data',
-    changePassword: 'Change Password',
-    logout: 'Logout'
+    exitFullScreen: 'Exit Full Screen'
   }
 }

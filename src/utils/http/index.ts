@@ -17,7 +17,7 @@ import { ResultData } from './interface'
 import Refresher from './refresher'
 import store from '@/store'
 import { logout } from '../system'
-
+import i18n from '@/language'
 const defaultConfig = {
   // 默认地址请求地址，可在 .env 开头文件中修改
   baseURL: '/api',
@@ -88,7 +88,7 @@ export class CommonService extends HttpService {
           const token: string = store.getState().user.accessToken
           if (!token) {
             logout()
-            message.error('请登录')
+            message.error(i18n.t('notification.pleaseLogin'))
             return Promise.resolve()
           }
           const refresher = Refresher.getInstance()
@@ -135,7 +135,7 @@ export class RefresherService extends HttpService {
         const { data } = response
         if (data.code && data.code !== ResultEnum.SUCCESS) {
           logout()
-          message.error('登录失效，请重新登陆')
+          message.error(i18n.t('notification.loginFailed'))
           return Promise.resolve()
         }
         return Promise.resolve(data)

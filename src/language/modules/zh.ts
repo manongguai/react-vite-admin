@@ -1,6 +1,23 @@
 export default {
   login: {
-    confirm: '登录'
+    confirm: '登录',
+    remember: '记住用户名',
+    username: '用户名',
+    password: '密码'
+  },
+  notification: {
+    confirm: '确认',
+    cancel: '取消',
+    title: '温馨提示',
+    pleaseLogin: '请先登录',
+    loginFailed: '登录失效，请重新登录'
+  },
+  user: {
+    personalData: '个人信息',
+    changePassword: '修改密码',
+    logout: '退出登录',
+    logoutTitle: '是否确认退出登录？',
+    logoutSuccess: '退出登录成功！'
   },
   home: {
     title: '首页',
@@ -22,13 +39,11 @@ export default {
     lightMode: '浅色模式',
     fullScreen: '全屏',
     exitFullScreen: '退出全屏',
-    personalData: '个人资料',
-    changePassword: '修改密码',
-    logout: '退出登录',
     themeConfig: '主题配置',
     layoutConfig: '布局配置',
-    collapsedIcon: '',
-    languageIcon: '折叠菜单',
+    collapsedIcon: '折叠菜单',
+    languageIcon: '语言切换图标',
+    fullScreenIcon: '切换全屏图标',
     breadcrumbNav: '面包屑导航',
     tabs: '标签栏',
     footer: '页脚',

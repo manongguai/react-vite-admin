@@ -18,12 +18,14 @@ import {
   setPrimary,
   setLanguageVisible,
   setCollapsedVisible,
-  setComponentSize
+  setComponentSize,
+  setFullScreenVisible
 } from '@/store/modules/global/globalSlice'
 import { useTranslation } from 'react-i18next'
 const ConfigurationForm = () => {
   const {
     weakOrGray,
+    fullScreenIcon,
     theme,
     tabs,
     footer,
@@ -142,6 +144,19 @@ const ConfigurationForm = () => {
                   checked={languageIcon}
                   onChange={(e) => {
                     dispatch(setLanguageVisible(e))
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row justify="space-between">
+              <Col>
+                <span>{t('config.fullScreenIcon')}</span>
+              </Col>
+              <Col>
+                <Switch
+                  checked={fullScreenIcon}
+                  onChange={(e) => {
+                    dispatch(setFullScreenVisible(e))
                   }}
                 />
               </Col>

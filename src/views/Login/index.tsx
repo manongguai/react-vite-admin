@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Button, Checkbox, ConfigProvider, Form, Input, theme } from 'antd'
 import './login.scss'
 import initBackground from './init'
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import Iconfont from '@/components/Iconfont'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { USERNAME_KEY } from '@/config/config'
-
+import { useTranslation } from 'react-i18next'
 type FieldType = {
   username?: string
   password?: string
@@ -17,6 +17,7 @@ type FieldType = {
 }
 
 const LoginView = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
@@ -94,11 +95,11 @@ const LoginView = () => {
               />
             </Form.Item>
             <Form.Item<FieldType> name="remember" valuePropName="checked">
-              <Checkbox>记住用户名</Checkbox>
+              <Checkbox>{t('login.remember')}</Checkbox>
             </Form.Item>
             <Form.Item>
               <Button block type="primary" htmlType="submit">
-                登录
+                {t('login.confirm')}
               </Button>
             </Form.Item>
           </Form>

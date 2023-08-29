@@ -22,6 +22,7 @@ export interface GlobalState {
   collapsed: boolean
   language: GlobalLanguage
   themeConfig: {
+    fullScreenIcon: boolean
     componentSize: SizeType
     languageIcon: boolean
     theme: GlobalTheme
