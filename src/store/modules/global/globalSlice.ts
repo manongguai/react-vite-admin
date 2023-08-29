@@ -7,11 +7,13 @@ import {
 } from '@/store/interface'
 import { createSlice } from '@reduxjs/toolkit'
 import { theme } from 'antd'
+import { SizeType } from 'antd/es/config-provider/SizeContext'
 const initialState: GlobalState = {
   collapsed: false,
   language: 'zh-CN',
   // 是否展示
   themeConfig: {
+    componentSize: 'middle',
     languageIcon: true,
     collapseIcon: true,
     theme: 'light',
@@ -46,6 +48,9 @@ const globalSlice = createSlice({
     setLanguage: (state, action: SetAction<GlobalLanguage>) => {
       state.language = action.payload
     },
+    setComponentSize: (state, action: SetAction<SizeType>) => {
+      state.themeConfig.componentSize = action.payload
+    },
     // 布局
     setFooterVisible: (state, action: SetAction<boolean>) => {
       state.themeConfig.footer = action.payload
@@ -74,6 +79,7 @@ export const {
   setLanguage,
   setFooterVisible,
   setLanguageVisible,
-  setCollapsedVisible
+  setCollapsedVisible,
+  setComponentSize
 } = globalSlice.actions
 export default globalSlice.reducer

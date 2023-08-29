@@ -7,15 +7,18 @@ import { useMemo } from 'react'
 import AppProvider from './components/AppProvider'
 
 function App() {
-  const { theme: currentTheme, primary } = useAppSelector(
-    (state) => state.global.themeConfig
-  )
+  const {
+    theme: currentTheme,
+    primary,
+    componentSize
+  } = useAppSelector((state) => state.global.themeConfig)
   const themeAlgorithm = useMemo(() => {
     return currentTheme == 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
   }, [currentTheme])
   useTheme()
   return (
     <ConfigProvider
+      componentSize={componentSize}
       theme={{
         algorithm: themeAlgorithm,
         token: {

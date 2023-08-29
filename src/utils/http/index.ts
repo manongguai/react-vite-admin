@@ -63,9 +63,9 @@ export class CommonService extends HttpService {
       (config: InternalAxiosRequestConfig) => {
         NProgress.start()
         // * 将当前请求添加到 pending 中
-        config.headers!.notAllowCancel || axiosCanceler.addPending(config)
+        config.notAllowCancel || axiosCanceler.addPending(config)
         // * 如果当前请求不需要显示 loading,在api服务中通过指定的第三个参数: { headers: { noLoading: true } }来控制不显示loading，参见loginApi
-        config.headers!.noLoading || showFullScreenLoading()
+        config.noLoading || showFullScreenLoading()
         const token: string = store.getState().user.accessToken
         config.headers['token'] = token // token,需要改成store
         return config
@@ -82,7 +82,7 @@ export class CommonService extends HttpService {
         NProgress.done()
         // * 在请求结束后，移除本次请求(关闭loading)
         axiosCanceler.removePending(config)
-        tryHideFullScreenLoading()
+        config.noLoading || tryHideFullScreenLoading()
         // * 登录失效（code == 599）
         if (data.code === ResultEnum.OVERDUE) {
           const token: string = store.getState().user.accessToken
@@ -104,8 +104,8 @@ export class CommonService extends HttpService {
       (error: AxiosError) => {
         console.log('axiosError:=======>:' + JSON.stringify(error))
         NProgress.done()
-        tryHideFullScreenLoading()
         if (error.config) {
+          error.config.noLoading || tryHideFullScreenLoading()
           axiosCanceler.removePending(error.config)
         }
         if (error.code != 'ERR_CANCELED') {

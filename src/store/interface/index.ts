@@ -1,4 +1,5 @@
 import { MappingAlgorithm } from 'antd'
+import { SizeType } from 'antd/es/config-provider/SizeContext'
 
 export interface UserState {
   userInfo: {
@@ -20,6 +21,7 @@ export interface GlobalState {
   collapsed: boolean
   language: GlobalLanguage
   themeConfig: {
+    componentSize: SizeType
     languageIcon: boolean
     theme: GlobalTheme
     primary: string

@@ -14,9 +14,7 @@ export interface ResLogin {
 }
 export const getUserInfo = () => {
   return http.get<UserInfo>('/userInfo', {
-    headers: {
-      notAllowCancel: true
-    }
+    notAllowCancel: true
   })
 }
 
