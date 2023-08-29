@@ -1,4 +1,3 @@
-import { useTheme } from '@/hooks/theme.hooks'
 import {
   GlobalLanguage,
   GlobalState,
@@ -10,7 +9,7 @@ import { theme } from 'antd'
 import { SizeType } from 'antd/es/config-provider/SizeContext'
 const initialState: GlobalState = {
   collapsed: false,
-  language: 'zh-CN',
+  language: '',
   // 是否展示
   themeConfig: {
     componentSize: 'middle',

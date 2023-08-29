@@ -4,6 +4,7 @@ import BreadcrumbNav from './components/BreadcrumbNav'
 import AvatarIcon from './components/AvatarIcon'
 import Fullscreen from './components/Fullscreen'
 import CollapseIcon from './components/CollapseIcon'
+import Language from './components/Language'
 
 const HeaderComponent = () => {
   return (
@@ -18,11 +19,11 @@ const HeaderComponent = () => {
         </Col>
         <Col>
           <Space align="center" size={20}>
+            <Language />
             <Fullscreen />
-
             {/* App组件是为了让message获取上下文 */}
             <App>
-              <AvatarIcon></AvatarIcon>
+              <AvatarIcon />
             </App>
           </Space>
         </Col>

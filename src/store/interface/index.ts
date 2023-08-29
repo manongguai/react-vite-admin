@@ -1,3 +1,4 @@
+import { languageEnums } from '@/enums/languageEnum'
 import { MappingAlgorithm } from 'antd'
 import { SizeType } from 'antd/es/config-provider/SizeContext'
 
@@ -13,7 +14,7 @@ export interface UserState {
 }
 
 export type GlobalTheme = 'light' | 'dark'
-export type GlobalLanguage = 'zh-CN' | 'en-US'
+export type GlobalLanguage = languageEnums.ZH | languageEnums.EN | ''
 
 // 色弱模式，灰色模式，默认
 export type WeakOrGray = 'weak' | 'gray' | null

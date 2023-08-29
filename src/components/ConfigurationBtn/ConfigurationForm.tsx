@@ -20,6 +20,7 @@ import {
   setCollapsedVisible,
   setComponentSize
 } from '@/store/modules/global/globalSlice'
+import { useTranslation } from 'react-i18next'
 const ConfigurationForm = () => {
   const {
     weakOrGray,
@@ -33,15 +34,20 @@ const ConfigurationForm = () => {
     componentSize
   } = useAppSelector((state) => state.global.themeConfig)
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const plainOptions = ['small', 'middle', 'large']
   return (
     <ConfigProvider componentSize="middle">
       <Space direction="vertical">
-        <Card size="small" title="主题配置" style={{ width: 300 }}>
+        <Card
+          size="small"
+          title={t('config.themeConfig')}
+          style={{ width: 300 }}
+        >
           <Space direction="vertical" style={{ width: '100%' }}>
             <Row justify="space-between" align="middle">
               <Col>
-                <span>Primary Color</span>
+                <span>{t('config.primaryColor')}</span>
               </Col>
               <Col>
                 <ColorPicker
@@ -55,7 +61,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between" align="middle">
               <Col>
-                <span>组件尺寸</span>
+                <span>{t('config.componentSize')}</span>
               </Col>
               <Col>
                 {' '}
@@ -69,7 +75,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between">
               <Col>
-                <span>暗黑模式</span>
+                <span>{t('config.darkMode')}</span>
               </Col>
               <Col>
                 <Switch
@@ -82,7 +88,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between">
               <Col>
-                <span>灰色模式</span>
+                <span>{t('config.grayMode')}</span>
               </Col>
               <Col>
                 <Switch
@@ -95,7 +101,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between">
               <Col>
-                <span>色弱模式</span>
+                <span>{t('config.weakMode')}</span>
               </Col>
               <Col>
                 <Switch
@@ -108,11 +114,15 @@ const ConfigurationForm = () => {
             </Row>
           </Space>
         </Card>
-        <Card size="small" title="布局配置" style={{ width: 300 }}>
+        <Card
+          size="small"
+          title={t('config.layoutConfig')}
+          style={{ width: 300 }}
+        >
           <Space direction="vertical" style={{ width: '100%' }}>
             <Row justify="space-between">
               <Col>
-                <span>折叠面板按钮</span>
+                <span>{t('config.collapsedIcon')}</span>
               </Col>
               <Col>
                 <Switch
@@ -125,7 +135,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between">
               <Col>
-                <span>语言切换按钮</span>
+                <span>{t('config.languageIcon')}</span>
               </Col>
               <Col>
                 <Switch
@@ -138,7 +148,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between">
               <Col>
-                <span>面包屑导航</span>
+                <span>{t('config.breadcrumbNav')}</span>
               </Col>
               <Col>
                 <Switch
@@ -151,7 +161,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between">
               <Col>
-                <span>标签栏</span>
+                <span>{t('config.tabs')}</span>
               </Col>
               <Col>
                 <Switch
@@ -164,7 +174,7 @@ const ConfigurationForm = () => {
             </Row>
             <Row justify="space-between">
               <Col>
-                <span>页脚</span>
+                <span>{t('config.footer')}</span>
               </Col>
               <Col>
                 <Switch

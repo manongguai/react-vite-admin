@@ -7,6 +7,7 @@ import '@/styles/index.scss'
 import App from './App'
 import { Provider } from 'react-redux'
 import store, { persistor } from '@/store'
+import '@/language'
 import '@/mock'
 import { PersistGate } from 'redux-persist/integration/react'
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -7,6 +7,10 @@ declare global {
     $modal: HookAPI
     $notification: NotificationInstance
   }
+  export interface Navigator {
+    msSaveOrOpenBlob: (blob: Blob, fileName: string) => void
+    browserLanguage: string
+  }
   export type { RootState } from '@/store'
   // * Menu
   export namespace Menu {

@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { HOME_URL } from '@/config/config'
 import { useAppDispatch } from '@/hooks/redux.hooks'
 import { setTabList } from '@/store/modules/tab/tabSlice'
+import { useTranslation } from 'react-i18next'
 const MoreBtn = (props: any) => {
+  const { t } = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -18,17 +20,17 @@ const MoreBtn = (props: any) => {
   const menu: MenuProps['items'] = [
     {
       key: '1',
-      label: <span>关闭当前</span>,
+      label: <span>{t('tabs.closeCurrent')}</span>,
       onClick: () => props.delTabs(pathname)
     },
     {
       key: '2',
-      label: <span>关闭其他</span>,
+      label: <span>{t('tabs.closeOther')}</span>,
       onClick: () => closeMultipleTab(pathname)
     },
     {
       key: '3',
-      label: <span>关闭所有</span>,
+      label: <span>{t('tabs.closeAll')}</span>,
       onClick: () => closeMultipleTab()
     }
   ]
@@ -42,7 +44,8 @@ const MoreBtn = (props: any) => {
       trigger={['click']}
     >
       <Button className="more-button" type="primary" size="small">
-        更多 <DownOutlined />
+        {t('tabs.more')}
+        <DownOutlined />
       </Button>
     </Dropdown>
   )

@@ -9,30 +9,37 @@
   overflow: hidden;
   white-space: nowrap;
   font-size: 16px;
+
   .sider-text {
     margin-left: 6px;
   }
 }
+
 .container-box {
   display: flex;
   height: 100vh;
 }
+
 .sider-box {
   height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
+
 .header-box {
   padding: 0 20px 0 28px;
   border-bottom: 1px solid #f6f6f6;
 }
+
 .menu-box {
   flex: 1;
   overflow: auto;
 }
+
 .collapsed-icon,
-.full-screen {
+.full-screen,
+.language-icon {
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -42,30 +49,37 @@
   .ant-layout {
     background-color: var(--bg-color);
   }
+
   .layout-sider,
   .layout-sider-menu {
     background-color: var(--sider-color);
   }
+
   .ant-layout-sider {
     border-right: 1px solid var(--border-color) !important;
+
     .ant-menu {
       &::-webkit-scrollbar {
         background-color: var(--bg-color) !important;
       }
+
       &::-webkit-scrollbar-thumb {
         background-color: var(--scrollbar-bg-color) !important;
       }
     }
   }
+
   .layout-header {
     background-color: var(--bg-color);
     border-bottom: 1px solid var(--border-color);
     padding: 0 20px 0 28px;
   }
+
   .layout-content {
     background-color: var(--main-bg-color);
     padding: 12px;
     overflow: hidden;
+
     &-main {
       padding: 12px;
       background-color: var(--bg-color);
@@ -74,6 +88,7 @@
       border: 1px solid var(--border-color) !important;
     }
   }
+
   .layout-footer {
     text-align: center;
     padding: 0;
@@ -81,6 +96,7 @@
     background-color: var(--bg-color);
     border-top: 1px solid var(--border-color);
   }
+
   .ant-menu-item {
     width: 100% !important;
     border-radius: 0 !important;

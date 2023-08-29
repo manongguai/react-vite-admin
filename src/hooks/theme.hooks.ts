@@ -1,8 +1,9 @@
 import { GlobalTheme } from '@/store/interface'
 import { useAppSelector } from './redux.hooks'
-import { CSSProperties, useEffect } from 'react'
-export function useTheme() {
-  const { weakOrGray, theme, primary } = useAppSelector(
+import { CSSProperties, useEffect, useMemo } from 'react'
+import { theme as antTheme } from 'antd'
+export default function useTheme() {
+  const { weakOrGray, theme, primary, componentSize } = useAppSelector(
     (state) => state.global.themeConfig
   )
   useEffect(() => {
@@ -25,4 +26,15 @@ export function useTheme() {
       .querySelector('html')!
       .setAttribute('data-theme', theme == 'dark' ? 'dark' : '')
   }, [theme, weakOrGray, primary])
+
+  // ant主题
+  const themeAlgorithm = useMemo(() => {
+    return theme == 'dark' ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm
+  }, [theme])
+
+  return {
+    themeAlgorithm,
+    componentSize,
+    primary
+  }
 }

@@ -1,23 +1,17 @@
 import BaseRouter from '@/router'
 import AuthRouter from '@/router/authRouter'
-import { useTheme } from '@/hooks/theme.hooks'
-import { ConfigProvider, theme } from 'antd'
+import useTheme from '@/hooks/theme.hooks'
+import { ConfigProvider } from 'antd'
 import { useAppSelector } from './hooks/redux.hooks'
-import { useMemo } from 'react'
 import AppProvider from './components/AppProvider'
+import useLanguage from './hooks/language.hooks'
 
 function App() {
-  const {
-    theme: currentTheme,
-    primary,
-    componentSize
-  } = useAppSelector((state) => state.global.themeConfig)
-  const themeAlgorithm = useMemo(() => {
-    return currentTheme == 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
-  }, [currentTheme])
-  useTheme()
+  const { themeAlgorithm, componentSize, primary } = useTheme()
+  const { locale } = useLanguage()
   return (
     <ConfigProvider
+      locale={locale}
       componentSize={componentSize}
       theme={{
         algorithm: themeAlgorithm,
