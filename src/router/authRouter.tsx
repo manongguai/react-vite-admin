@@ -1,5 +1,5 @@
 import { useLocation, Navigate } from 'react-router-dom'
-import { searchRoute } from '@/utils/system'
+import { pathHasAuth, searchRoute } from '@/utils/system'
 import { routes } from '@/router'
 import store from '@/store'
 import { AxiosCanceler } from '@/utils/http/helper/axiosCancel'
@@ -23,7 +23,7 @@ const AuthRouter = (props: { children: JSX.Element }) => {
   const staticRouter = ['/', '/home', '/404', '/403']
   const routerList = dynamicRouter.concat(staticRouter)
   // * 如果访问的地址没有在路由表中重定向到403页面
-  if (routerList.indexOf(pathname) == -1) return <Navigate to="/403" />
+  if (!pathHasAuth(routerList, pathname)) return <Navigate to="/403" />
   // * 当前账号有权限返回 Router，正常访问页面
   return props.children
 }

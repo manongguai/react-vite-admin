@@ -105,11 +105,8 @@ export const searchRoute = (
   routes: RouteObject[] = []
 ): RouteObject => {
   let result: RouteObject = {}
-  console.log()
-
   for (const item of routes) {
-    // isBelongRoutePath(item.path || '', path)
-    if (getRouteTruthPath(item.path || '') == path) return item
+    if (isBelongRoutePath(item.path || '', path)) return item
     if (item.children) {
       const res = searchRoute(path, item.children)
       if (Object.keys(res).length) result = res
@@ -117,16 +114,27 @@ export const searchRoute = (
   }
   return result
 }
-
-export function isBelongRoutePath(routePath: string, path: string): boolean {
-  return false
+export function pathHasAuth(routerList: string[], pathname: string) {
+  let index = routerList.findIndex((item) => {
+    return isBelongRoutePath(item, pathname)
+  })
+  return index != -1
 }
-export function getRouteTruthPath(path: string): string {
-  const arr = path.split('/')
-  if (arr[arr.length - 1].startsWith(':')) {
-    arr.pop()
+
+export function isBelongRoutePath(
+  routePath: string,
+  currentPath: string
+): boolean {
+  let routeArr = routePath.split('/')
+  let currentArr = currentPath.split('/')
+  if (routeArr.length != currentArr.length) {
+    return false
   }
-  return arr.join('/')
+  let index = routeArr.findIndex((item, index) => {
+    return !item.startsWith(':') && item != currentArr[index]
+  })
+  if (index != -1) return false
+  return true
 }
 
 /**

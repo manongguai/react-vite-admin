@@ -9,7 +9,6 @@ import { routes } from '@/router'
 import { searchRoute } from '@/utils/system'
 import MoreBtn from './MoreBtn'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
-import useTruthPath from '@/hooks/truthPath.hooks'
 
 const LayoutTabs = () => {
   const { tabList, themeConfig } = useAppSelector((state) => ({
@@ -19,7 +18,6 @@ const LayoutTabs = () => {
   const dispatch = useAppDispatch()
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { truthPath } = useTruthPath()
   const [activeValue, setActiveValue] = useState<string>(pathname)
   useEffect(() => {
     addTabs()
@@ -30,7 +28,7 @@ const LayoutTabs = () => {
     navigate(path)
   }
   const addTabs = () => {
-    const route = searchRoute(truthPath, routes)
+    const route = searchRoute(pathname, routes)
     let newtabList = JSON.parse(JSON.stringify(tabList))
     if (tabList.every((item: any) => item.path !== pathname)) {
       newtabList.push({

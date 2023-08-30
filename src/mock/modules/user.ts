@@ -49,7 +49,7 @@ export const userMock: Record<string, templateOrFn> = {
         isMenu: true,
         children: [
           {
-            path: '/user/detail',
+            path: '/user/detail/:id',
             title: '用户详情'
           },
           {
