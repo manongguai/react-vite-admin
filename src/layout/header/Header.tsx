@@ -5,7 +5,7 @@ import AvatarIcon from './components/AvatarIcon'
 import Fullscreen from './components/Fullscreen'
 import CollapseIcon from './components/CollapseIcon'
 import Language from './components/LanguageIcon'
-import ThemeIcon from './components/themeIcon'
+import ThemeIcon from './components/ThemeIcon'
 
 const HeaderComponent = () => {
   return (
