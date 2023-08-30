@@ -1,25 +1,24 @@
 import { useState, useImperativeHandle, Ref } from 'react'
 import { Modal, message } from 'antd'
-
+import { UserInfo } from '@/store/interface'
+import { useTranslation } from 'react-i18next'
 interface Props {
   innerRef: Ref<{ showModal: (params: any) => void } | undefined>
+  userInfo: UserInfo
 }
 
 const InfoModal = (props: Props) => {
   const [modalVisible, setModalVisible] = useState(false)
-  const [messageApi, contextHolder] = message.useMessage()
   useImperativeHandle(props.innerRef, () => ({
     showModal
   }))
-
+  const { t } = useTranslation()
   const showModal = (params: { name: number }) => {
-    console.log(params)
     setModalVisible(true)
   }
 
   const handleOk = () => {
     setModalVisible(false)
-    messageApi.success('修改用户信息成功 🎉🎉🎉')
   }
 
   const handleCancel = () => {
@@ -27,17 +26,15 @@ const InfoModal = (props: Props) => {
   }
   return (
     <>
-      {contextHolder}
       <Modal
-        title="个人信息"
+        title={t('user.personalData')}
         open={modalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}
       >
-        <p>User Info...</p>
-        <p>User Info...</p>
-        <p>User Info...</p>
+        <p>UserName: {props.userInfo.username}</p>
+        <p>Phone: {props.userInfo.phone}</p>
       </Modal>
     </>
   )

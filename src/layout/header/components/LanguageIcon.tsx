@@ -34,7 +34,7 @@ const LanguageIcon = (props: any) => {
         <IconFont
           {...props}
           style={{ fontSize: '18px' }}
-          type="icon-zhongyingwen"
+          type="icon-zhongyingwen1"
         ></IconFont>
       </Dropdown>
     </div>

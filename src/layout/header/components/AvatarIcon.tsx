@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Avatar, Dropdown, Space, MenuProps, App } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
@@ -8,16 +8,22 @@ import InfoModal from './InfoModal'
 import avatar from '@/assets/images/avatar.jpeg'
 import { logout } from '@/utils/system'
 import { useTranslation } from 'react-i18next'
+import { setUserInfo } from '@/store/modules/user/userSlice'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 const AvatarIcon = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const userInfo = useAppSelector((state) => state.user.userInfo)
   const { modal, message } = App.useApp()
   interface ModalProps {
     showModal: (params: { name: number }) => void
   }
   const passRef = useRef<ModalProps>(null)
   const infoRef = useRef<ModalProps>(null)
-
+  useEffect(() => {
+    dispatch(setUserInfo())
+  }, [])
   // 退出登录
   const handleLogout = () => {
     modal.confirm({
@@ -69,11 +75,11 @@ const AvatarIcon = () => {
         trigger={['click']}
       >
         <Space>
-          <div>Kirk</div>
+          <div>{userInfo.username}</div>
           <Avatar size="large" src={avatar} />
         </Space>
       </Dropdown>
-      <InfoModal innerRef={infoRef}></InfoModal>
+      <InfoModal userInfo={userInfo} innerRef={infoRef}></InfoModal>
       <PasswordModal innerRef={passRef}></PasswordModal>
     </>
   )

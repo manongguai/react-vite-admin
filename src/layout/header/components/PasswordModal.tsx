@@ -1,6 +1,6 @@
 import { useState, useImperativeHandle, Ref } from 'react'
 import { Modal, message } from 'antd'
-
+import { useTranslation } from 'react-i18next'
 interface Props {
   innerRef: Ref<{ showModal: (params: any) => void }>
 }
@@ -11,15 +11,13 @@ const PasswordModal = (props: Props) => {
   useImperativeHandle(props.innerRef, () => ({
     showModal
   }))
-
+  const { t } = useTranslation()
   const showModal = (params: { name: number }) => {
-    console.log(params)
     setIsModalVisible(true)
   }
 
   const handleOk = () => {
     setIsModalVisible(false)
-    messageApi.success('修改密码成功 🎉🎉🎉')
   }
 
   const handleCancel = () => {
@@ -29,7 +27,7 @@ const PasswordModal = (props: Props) => {
     <>
       {contextHolder}
       <Modal
-        title="修改密码"
+        title={t('user.changePassword')}
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}

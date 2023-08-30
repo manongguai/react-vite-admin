@@ -1,8 +1,8 @@
 import http from '@/utils/http'
 
-interface UserInfo {
-  name: string
-  phone: string
+export interface UserInfo {
+  username?: string
+  phone?: string
 }
 export interface ReqLoginForm {
   username: string
@@ -13,15 +13,27 @@ export interface ResLogin {
   refreshToken: string
 }
 export const getUserInfo = () => {
-  return http.get<UserInfo>('/userInfo', {
+  return http.get<UserInfo>(
+    '/userInfo',
+    {},
+    {
+      notAllowCancel: true
+    }
+  )
+}
+
+export const login = (userInfo: ReqLoginForm) => {
+  return http.post<ResLogin>('/login', userInfo, {
     notAllowCancel: true
   })
 }
 
-export const login = (userInfo: ReqLoginForm) => {
-  return http.post<ResLogin>('/login', userInfo)
-}
-
 export const getMenus = () => {
-  return http.get<Menu.MenuOptions[]>('/menus')
+  return http.get<Menu.MenuOptions[]>(
+    '/menus',
+    {},
+    {
+      notAllowCancel: true
+    }
+  )
 }

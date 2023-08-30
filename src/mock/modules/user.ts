@@ -88,5 +88,13 @@ export const userMock: Record<string, templateOrFn> = {
     ],
     msg: 'success',
     code: 200
+  },
+  '/api/userInfo': {
+    data: {
+      username: 'Kirk',
+      phone: '18888888888'
+    },
+    msg: 'success',
+    code: 200
   }
 }

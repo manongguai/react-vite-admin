@@ -6,6 +6,7 @@ import Fullscreen from './components/Fullscreen'
 import CollapseIcon from './components/CollapseIcon'
 import Language from './components/LanguageIcon'
 import ThemeIcon from './components/ThemeIcon'
+import GithubIcon from './components/GithubIcon'
 
 const HeaderComponent = () => {
   return (
@@ -19,7 +20,8 @@ const HeaderComponent = () => {
           </Space>
         </Col>
         <Col>
-          <Space align="center">
+          <Space align="center" size={2}>
+            <GithubIcon />
             <Language />
             <ThemeIcon></ThemeIcon>
             <Fullscreen />

@@ -2,11 +2,12 @@ import { languageEnums } from '@/enums/languageEnum'
 import { MappingAlgorithm } from 'antd'
 import { SizeType } from 'antd/es/config-provider/SizeContext'
 
+export interface UserInfo {
+  username?: string
+  phone?: string
+}
 export interface UserState {
-  userInfo: {
-    username?: string
-    phone?: string
-  }
+  userInfo: UserInfo
   accessToken: string
   refreshToken: string
   authMenus: Menu.MenuOptions[]
