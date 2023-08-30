@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Checkbox, ConfigProvider, Form, Input, theme } from 'antd'
 import './login.scss'
 import initBackground from './init'
@@ -22,6 +22,12 @@ const LoginView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
+
+  const [initialForm] = useState({
+    password: '',
+    username: localStorage.getItem(USERNAME_KEY) || '',
+    remember: localStorage.getItem(USERNAME_KEY) ? true : false
+  })
   const onFinish = (values: any) => {
     login(values).then((res) => {
       const { accessToken, refreshToken } = res.data!
@@ -38,11 +44,6 @@ const LoginView = () => {
   }
   const onFinishFailed = (errorInfo: any) => {}
   useEffect(() => {
-    form.setFieldValue('username', localStorage.getItem(USERNAME_KEY || ''))
-    form.setFieldValue(
-      'remember',
-      localStorage.getItem(USERNAME_KEY) ? true : false
-    )
     const stop = initBackground()
     window.onresize = function () {
       initBackground()
@@ -68,7 +69,7 @@ const LoginView = () => {
             size="large"
             form={form}
             style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
+            initialValues={initialForm}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"

@@ -36,9 +36,6 @@ const userSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(setUserInfo.pending, (state) => {
-      console.log(state)
-    })
     builder.addCase(setUserInfo.fulfilled, (state, action) => {
       state.userInfo = action.payload!
     })
