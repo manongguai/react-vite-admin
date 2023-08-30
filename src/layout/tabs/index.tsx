@@ -1,7 +1,7 @@
 import { Tabs, message } from 'antd'
 import { CloseOutlined, HomeFilled } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useMatch, useNavigate, useParams } from 'react-router-dom'
 import { HOME_URL } from '@/config/config'
 import { setTabList } from '@/store/modules/tab/tabSlice'
 import './index.scss'
@@ -9,6 +9,7 @@ import { routes } from '@/router'
 import { searchRoute } from '@/utils/system'
 import MoreBtn from './MoreBtn'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
+import useTruthPath from '@/hooks/truthPath.hooks'
 
 const LayoutTabs = () => {
   const { tabList, themeConfig } = useAppSelector((state) => ({
@@ -16,11 +17,10 @@ const LayoutTabs = () => {
     themeConfig: state.global.themeConfig
   }))
   const dispatch = useAppDispatch()
-  const { TabPane } = Tabs
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const { truthPath } = useTruthPath()
   const [activeValue, setActiveValue] = useState<string>(pathname)
-
   useEffect(() => {
     addTabs()
   }, [pathname])
@@ -30,10 +30,13 @@ const LayoutTabs = () => {
     navigate(path)
   }
   const addTabs = () => {
-    const route = searchRoute(pathname, routes)
+    const route = searchRoute(truthPath, routes)
     let newtabList = JSON.parse(JSON.stringify(tabList))
-    if (tabList.every((item: any) => item.path !== route.path)) {
-      newtabList.push({ title: route.meta!.title, path: route.path })
+    if (tabList.every((item: any) => item.path !== pathname)) {
+      newtabList.push({
+        title: route.meta!.title,
+        path: pathname
+      })
     }
     dispatch(setTabList(newtabList))
     setActiveValue(pathname)
@@ -41,12 +44,10 @@ const LayoutTabs = () => {
   const delTabs = (tabPath?: string) => {
     if (tabPath === HOME_URL) return
     if (pathname === tabPath) {
-      tabList.forEach((item: Menu.MenuOptions, index: number) => {
-        if (item.path !== pathname) return
-        const nextTab = tabList[index + 1] || tabList[index - 1]
-        if (!nextTab) return
-        navigate(nextTab.path)
-      })
+      const index = tabList.findIndex((item) => item.path == pathname)
+      const nextTab = tabList[index + 1] || tabList[index - 1]
+      if (!nextTab) return
+      navigate(nextTab.path)
     }
     dispatch(
       setTabList(

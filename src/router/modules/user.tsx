@@ -12,7 +12,7 @@ const userRoutes: Array<RouteObject> = [
     element: lazyLoad(lazy(() => import('@/views/User/index')))
   },
   {
-    path: '/user/detail',
+    path: '/user/detail/:id',
     meta: {
       requiredAuth: true,
       title: '用户详情'

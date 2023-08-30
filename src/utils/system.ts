@@ -105,14 +105,28 @@ export const searchRoute = (
   routes: RouteObject[] = []
 ): RouteObject => {
   let result: RouteObject = {}
+  console.log()
+
   for (const item of routes) {
-    if (item.path === path) return item
+    // isBelongRoutePath(item.path || '', path)
+    if (getRouteTruthPath(item.path || '') == path) return item
     if (item.children) {
       const res = searchRoute(path, item.children)
       if (Object.keys(res).length) result = res
     }
   }
   return result
+}
+
+export function isBelongRoutePath(routePath: string, path: string): boolean {
+  return false
+}
+export function getRouteTruthPath(path: string): string {
+  const arr = path.split('/')
+  if (arr[arr.length - 1].startsWith(':')) {
+    arr.pop()
+  }
+  return arr.join('/')
 }
 
 /**

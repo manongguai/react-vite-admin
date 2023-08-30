@@ -13,6 +13,7 @@ import {
 } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import './index.scss'
+import { useNavigate } from 'react-router-dom'
 interface DataType {
   key: string
   name: string
@@ -46,6 +47,7 @@ const sourceData: DataType[] = [
 const UserIndex: React.FC = () => {
   const formRef = React.useRef<FormInstance>(null)
   const [data, setData] = useState<DataType[]>(sourceData)
+  const navigate = useNavigate()
   const columns: ColumnsType<DataType> = [
     {
       title: 'Name',
@@ -90,6 +92,7 @@ const UserIndex: React.FC = () => {
       render: (_, record, index) => (
         <Space size="middle">
           <a onClick={() => del(index)}>Delete</a>
+          <a onClick={() => detailPage(record.key)}>Detail</a>
         </Space>
       )
     }
@@ -97,6 +100,9 @@ const UserIndex: React.FC = () => {
   function del(index: number) {
     sourceData.splice(index, 1)
     setData(sourceData)
+  }
+  function detailPage(key: string) {
+    navigate('/user/detail/' + key)
   }
   const onFinish = (values: any) => {
     const list = sourceData.filter((item) =>
