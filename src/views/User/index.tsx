@@ -99,7 +99,7 @@ const UserIndex: React.FC = () => {
   ]
   function del(index: number) {
     sourceData.splice(index, 1)
-    setData(sourceData)
+    setData(sourceData.slice(0))
   }
   function detailPage(key: string) {
     navigate('/user/detail/' + key)
