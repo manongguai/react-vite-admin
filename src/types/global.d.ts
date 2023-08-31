@@ -18,10 +18,8 @@ declare global {
       path: string
       title: string
       icon?: string
-      isLink?: string
       close?: boolean
       children?: MenuOptions[]
-      isMenu?: boolean
     }
   }
   export interface SetAction<T> {

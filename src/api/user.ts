@@ -37,3 +37,13 @@ export const getMenus = () => {
     }
   )
 }
+
+export const getAuthRoutes = () => {
+  return http.get<string[]>(
+    '/authRoutes',
+    {},
+    {
+      notAllowCancel: true
+    }
+  )
+}

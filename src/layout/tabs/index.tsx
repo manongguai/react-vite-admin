@@ -15,29 +15,13 @@ const LayoutTabs = () => {
     tabList: state.tab.tabList,
     themeConfig: state.global.themeConfig
   }))
+  const tabActive = useAppSelector((state) => state.tab.tabActive)
   const dispatch = useAppDispatch()
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [activeValue, setActiveValue] = useState<string>(pathname)
-  useEffect(() => {
-    addTabs()
-  }, [pathname])
 
-  // click tabs
   const clickTabs = (path: string) => {
     navigate(path)
-  }
-  const addTabs = () => {
-    const route = searchRoute(pathname, routes)
-    let newtabList = JSON.parse(JSON.stringify(tabList))
-    if (tabList.every((item: any) => item.path !== pathname)) {
-      newtabList.push({
-        title: route.meta!.title,
-        path: pathname
-      })
-    }
-    dispatch(setTabList(newtabList))
-    setActiveValue(pathname)
   }
   const delTabs = (tabPath?: string) => {
     if (tabPath === HOME_URL) return
@@ -72,7 +56,7 @@ const LayoutTabs = () => {
           <Tabs
             animated
             items={items}
-            activeKey={activeValue}
+            activeKey={tabActive}
             onChange={clickTabs}
             hideAdd
             type="editable-card"

@@ -1,6 +1,9 @@
 import React from 'react'
 import Image from '@/assets/images/home.jpg'
+import { useLoaderData, useRouteLoaderData } from 'react-router-dom'
 const Home = () => {
+  const loaderData = useRouteLoaderData('root')
+  console.log(loaderData)
   return (
     <div style={{ height: '100%' }}>
       <img
@@ -11,5 +14,4 @@ const Home = () => {
     </div>
   )
 }
-
 export default Home

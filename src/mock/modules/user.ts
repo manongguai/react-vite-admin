@@ -39,35 +39,26 @@ export const userMock: Record<string, templateOrFn> = {
       {
         path: '/home',
         title: '首页',
-        icon: 'PieChartOutlined',
-        isMenu: true
+        icon: 'PieChartOutlined'
       },
       {
         path: '/user',
         title: '用户管理',
         icon: 'PieChartOutlined',
-        isMenu: true,
         children: [
           {
-            path: '/user/detail/:id',
-            title: '用户详情'
-          },
-          {
             path: '/user/list',
-            title: '用户列表',
-            isMenu: true
+            title: '用户列表'
           }
         ]
       },
       {
         path: '/iframe',
         title: '内嵌页面',
-        isMenu: true,
         children: [
           {
             path: '/iframe/bing',
-            title: '必应',
-            isMenu: true
+            title: '必应'
           }
         ]
       },
@@ -75,12 +66,10 @@ export const userMock: Record<string, templateOrFn> = {
         path: '/link',
         title: '外部链接',
         icon: 'PieChartOutlined',
-        isMenu: true,
         children: [
           {
             path: 'http://www.baidu.com',
             title: '百度一下',
-            isMenu: true,
             isLink: true
           }
         ]
@@ -94,6 +83,11 @@ export const userMock: Record<string, templateOrFn> = {
       username: 'Kirk',
       phone: '18888888888'
     },
+    msg: 'success',
+    code: 200
+  },
+  '/api/authRoutes': {
+    data: ['home', 'userList', 'userDetail', 'bing'],
     msg: 'success',
     code: 200
   }

@@ -4,14 +4,15 @@ export interface MetaProps {
   title?: string
   key?: string
   iframeSrc?: string
+  code: string
 }
 
 export interface RouteObject {
   caseSensitive?: boolean
   children?: RouteObject[]
   element?: React.ReactNode
-  index?: boolean
   path?: string
   meta?: MetaProps
-  isLink?: string
+  loader?: any
+  id?: string
 }

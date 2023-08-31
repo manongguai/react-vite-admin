@@ -42,54 +42,17 @@ export const deepLoopFloat = (
   menuList: Menu.MenuOptions[],
   newArr: MenuItem[] = []
 ) => {
-  const list = filterMenu(JSON.parse(JSON.stringify(menuList)))
-  list.forEach((item: Menu.MenuOptions) => {
-    if (item.isMenu) {
-      if (!item?.children?.length)
-        return newArr.push(getItem(item.title, item.path, addIcon(item.icon!)))
-      newArr.push(
-        getItem(
-          item.title,
-          item.path,
-          addIcon(item.icon!),
-          deepLoopFloat(item.children)
-        )
+  menuList.forEach((item: Menu.MenuOptions) => {
+    if (!item?.children?.length)
+      return newArr.push(getItem(item.title, item.path, addIcon(item.icon!)))
+    newArr.push(
+      getItem(
+        item.title,
+        item.path,
+        addIcon(item.icon!),
+        deepLoopFloat(item.children)
       )
-    }
-  })
-  return newArr
-}
-
-/**
- * @description: 过滤菜单
- * @return {*}
- */
-const filterMenu = (
-  menuList: Menu.MenuOptions[],
-  newArr: Menu.MenuOptions[] = []
-) => {
-  newArr = menuList.filter((menu) => menu.isMenu)
-  newArr.forEach((menu) => {
-    if (menu?.children?.length) {
-      menu.children = filterMenu(menu.children)
-    }
-  })
-  return newArr
-}
-
-/**
- * @description 使用递归处理路由菜单，生成一维数组，做菜单权限判断
- * @param {Array} menuList 所有菜单列表
- * @param {Array} newArr 菜单的一维数组
- * @return array
- */
-export function handleRouter(
-  routerList: Menu.MenuOptions[],
-  newArr: string[] = []
-) {
-  routerList.forEach((item: Menu.MenuOptions) => {
-    typeof item === 'object' && item.path && newArr.push(item.path)
-    item.children && item.children.length && handleRouter(item.children, newArr)
+    )
   })
   return newArr
 }

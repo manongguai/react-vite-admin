@@ -5,19 +5,25 @@ import { RouteObject } from '../interface'
 const userRoutes: Array<RouteObject> = [
   {
     path: '/user/list',
-    meta: {
-      requiredAuth: true,
-      title: '用户列表'
-    },
-    element: lazyLoad(lazy(() => import('@/views/User/index')))
+    element: lazyLoad(
+      lazy(() => import('@/views/User/index')),
+      {
+        requiredAuth: true,
+        title: '用户列表',
+        code: 'userList'
+      }
+    )
   },
   {
     path: '/user/detail/:id',
-    meta: {
-      requiredAuth: true,
-      title: '用户详情'
-    },
-    element: lazyLoad(lazy(() => import('@/views/User/detail')))
+    element: lazyLoad(
+      lazy(() => import('@/views/User/detail')),
+      {
+        requiredAuth: true,
+        title: '用户详情',
+        code: 'userDetail'
+      }
+    )
   }
 ]
 
