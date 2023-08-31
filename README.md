@@ -6,7 +6,7 @@ React-vite-admin，基于 React18、React-Router v6、React-Hooks、Redux && Red
 
 ### 一、在线预览地址
 
-- Link：https://hooks.spicyboy.cn
+- Link：http://admin.kirk.wang
 
 ### 二、Git 仓库地址 (欢迎 Star⭐)
 
@@ -49,43 +49,39 @@ pnpm install
 
 ```text
 pnpm run dev
-pnpm run serve
 ```
 
 - **Build：**
 
 ```text
-# 开发环境
-pnpm run build:dev
+# 打包部署环境
+pnpm run build
 
-# 测试环境
-pnpm run build:test
-
-# 生产环境
-pnpm run build:pro
 ```
 
 - **Lint：**
 
-````text
+```text
 # eslint 检测代码
 pnpm run lint:eslint
 
 # prettier 格式化代码
 pnpm run lint:prettier
 
+# stylelint 格式化代码
+pnpm run lint:stylelint
 
+```
 
 ### 五、项目截图
 
 #### 1、登录页：
 
-
-
+![登录页](http://admin.kirk.wang/images/login.png)
 
 #### 2、首页：
 
-
+![首页](http://admin.kirk.wang/images/home.png)
 
 ### 六、文件资源目录 📚
 
@@ -142,6 +138,15 @@ React-vite-admin
 
 ### 八、项目后台接口 🧩
 
-项目后台接口采用本地Mock 数据
+项目后台接口采用本地 Mock 数据
 
-````
+### 九、捐赠 🍵
+
+如果你正在使用这个项目或者喜欢这个项目的，可以通过以下方式支持我：
+
+- Star、Fork、Watch 一键三连 🚀
+- 通过微信、支付宝一次性捐款 ❤
+
+|                                        微信                                        |                                        支付宝                                        |
+| :--------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
+| <img src="http://admin.kirk.wang/images/weixin.png" alt="Alipay QRcode" width=170> | <img src="http://admin.kirk.wang/images/zhifubao.png" alt="Wechat QRcode" width=170> |

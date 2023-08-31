@@ -58,49 +58,6 @@ export const deepLoopFloat = (
 }
 
 /**
- * @description 递归查询对应的路由
- * @param {String} path 当前访问地址
- * @param {Array} routes 路由列表
- * @returns array
- */
-export const searchRoute = (
-  path: string,
-  routes: RouteObject[] = []
-): RouteObject => {
-  let result: RouteObject = {}
-  for (const item of routes) {
-    if (isBelongRoutePath(item.path || '', path)) return item
-    if (item.children) {
-      const res = searchRoute(path, item.children)
-      if (Object.keys(res).length) result = res
-    }
-  }
-  return result
-}
-export function pathHasAuth(routerList: string[], pathname: string) {
-  let index = routerList.findIndex((item) => {
-    return isBelongRoutePath(item, pathname)
-  })
-  return index != -1
-}
-
-export function isBelongRoutePath(
-  routePath: string,
-  currentPath: string
-): boolean {
-  let routeArr = routePath.split('/')
-  let currentArr = currentPath.split('/')
-  if (routeArr.length != currentArr.length) {
-    return false
-  }
-  let index = routeArr.findIndex((item, index) => {
-    return !item.startsWith(':') && item != currentArr[index]
-  })
-  if (index != -1) return false
-  return true
-}
-
-/**
  * @description 双重递归 找出所有 面包屑 生成对象存到 redux 中，就不用每次都去递归查找了
  * @param {String} menuList 当前菜单列表
  * @returns object
