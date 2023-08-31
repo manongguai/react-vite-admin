@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/hooks/redux.hooks'
 import { Breadcrumb } from 'antd'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 const BreadcrumbNav = () => {
@@ -10,8 +10,13 @@ const BreadcrumbNav = () => {
     breadcrumbs: state.breadcrumb.breadcrumbs,
     themeConfig: state.global.themeConfig
   }))
-  const [breadcrumbItems, setBreadcrumbItems] = useState([])
-  useEffect(() => {
+  const breadcrumbItems = useMemo(() => {
+    const home = [
+      {
+        title: t('home.title'),
+        href: '/home'
+      }
+    ]
     const breadcrumbList = (breadcrumbs[pathname] || []).map(
       (breadcrumb: string) => {
         return {
@@ -22,12 +27,9 @@ const BreadcrumbNav = () => {
     if (pathname == '/home') {
       breadcrumbList.shift()
     }
-    breadcrumbList.unshift({
-      title: t('home.title'),
-      href: '/home'
-    })
-    setBreadcrumbItems(breadcrumbList)
-  }, [pathname, breadcrumbs])
+    return home.concat(breadcrumbList)
+  }, [pathname, breadcrumbs, t])
+
   return (
     <>
       {themeConfig.breadcrumb && (
