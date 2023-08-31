@@ -39,8 +39,7 @@ import lazyLoad from '@/router/lazyLoad'
 import LayoutContainer from '@/layout'
 import Login from '@/views/Login/index'
 import { RouteObject } from './interface'
-import NotFound from '@/views/NotFound'
-import NotAuth from '@/views/NotAuth'
+import i18n from '@/language'
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
   eager: true
@@ -61,7 +60,7 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     meta: {
-      title: '首页'
+      title: i18n.t('home.title')
     },
     element: <LayoutContainer />,
     children: [
@@ -72,7 +71,7 @@ export const routes: RouteObject[] = [
       {
         path: '/home',
         meta: {
-          title: '首页',
+          title: i18n.t('home.title'),
           requiredAuth: true
         },
         element: lazyLoad(lazy(() => import('@/views/Home')))
@@ -83,14 +82,6 @@ export const routes: RouteObject[] = [
   {
     path: '/login',
     element: <Login />
-  },
-  {
-    path: '/404',
-    element: <NotFound />
-  },
-  {
-    path: '/403',
-    element: <NotAuth />
   },
   {
     path: '*',

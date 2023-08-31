@@ -2,8 +2,10 @@ import { useAppSelector } from '@/hooks/redux.hooks'
 import { Breadcrumb } from 'antd'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 const BreadcrumbNav = () => {
   const { pathname } = useLocation()
+  const { t } = useTranslation()
   const { breadcrumbs, themeConfig } = useAppSelector((state) => ({
     breadcrumbs: state.breadcrumb.breadcrumbs,
     themeConfig: state.global.themeConfig
@@ -21,7 +23,7 @@ const BreadcrumbNav = () => {
       breadcrumbList.shift()
     }
     breadcrumbList.unshift({
-      title: '首页',
+      title: t('home.title'),
       href: '/home'
     })
     setBreadcrumbItems(breadcrumbList)

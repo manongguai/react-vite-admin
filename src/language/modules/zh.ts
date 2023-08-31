@@ -12,6 +12,10 @@ export default {
     pleaseLogin: '请先登录',
     loginFailed: '登录失效，请重新登录'
   },
+  error: {
+    notAuth: '抱歉，你的权限不足',
+    notFound: '抱歉，你访问的页面不存在'
+  },
   user: {
     personalData: '个人信息',
     changePassword: '修改密码',
@@ -21,6 +25,7 @@ export default {
   },
   home: {
     title: '首页',
+    backHome: '回到首页',
     welcome: '欢迎使用'
   },
   tabs: {

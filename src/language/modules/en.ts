@@ -12,6 +12,10 @@ export default {
     pleaseLogin: 'Please Login First',
     loginFailed: 'Login Failed, Please Login Again'
   },
+  error: {
+    notAuth: "Sorry, you don't have permission",
+    notFound: 'Sorry, the page you visited does not exist'
+  },
   user: {
     personalData: 'Personal Data',
     changePassword: 'Change Password',
@@ -21,6 +25,7 @@ export default {
   },
   home: {
     title: 'Home',
+    backHome: 'Back to Home',
     welcome: 'Welcome'
   },
   tabs: {
