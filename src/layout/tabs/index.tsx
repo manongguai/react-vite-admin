@@ -5,8 +5,6 @@ import { useLocation, useMatch, useNavigate, useParams } from 'react-router-dom'
 import { HOME_URL } from '@/config/config'
 import { setTabList } from '@/store/modules/tab/tabSlice'
 import './index.scss'
-import { routes } from '@/router'
-import { searchRoute } from '@/utils/system'
 import MoreBtn from './MoreBtn'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 

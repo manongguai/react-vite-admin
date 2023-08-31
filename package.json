@@ -30,7 +30,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^13.2.0",
     "react-redux": "^7.2.8",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "6.15.0",
     "redux": "4.2.1",
     "redux-persist": "^6.0.0",
     "screenfull": "^6.0.2",

@@ -1,16 +1,16 @@
-import { routes } from '@/router'
-import { searchRoute } from '@/utils/system'
-import { useLocation } from 'react-router-dom'
+import { useLoaderData } from 'react-router-dom'
 import './index.scss'
 const Iframe = () => {
-  const { pathname } = useLocation()
-  const route = searchRoute(pathname, routes)
-  if (!route.meta?.iframeSrc) {
+  const loaderData = useLoaderData() as {
+    iframeSrc?: string
+  }
+
+  if (!loaderData.iframeSrc) {
     throw new Error('请配置该路由的iframeSrc')
   }
-  const iframeSrc = route.meta?.iframeSrc
-
-  return <iframe src={iframeSrc} className="card full-iframe"></iframe>
+  return (
+    <iframe src={loaderData.iframeSrc} className="card full-iframe"></iframe>
+  )
 }
 
 export default Iframe

@@ -15,4 +15,7 @@ export interface RouteObject {
   meta?: MetaProps
   loader?: any
   id?: string
+  state?: {
+    [propName: string]: any
+  }
 }

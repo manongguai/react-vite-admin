@@ -1,10 +1,7 @@
-import { useLocation, Navigate, useRouteLoaderData } from 'react-router-dom'
-import { pathHasAuth, searchRoute } from '@/utils/system'
-import { routes } from '@/router'
-import store from '@/store'
+import { Navigate, useRouteLoaderData } from 'react-router-dom'
 import { AxiosCanceler } from '@/utils/http/helper/axiosCancel'
 import { MetaProps } from './interface'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
+import { useAppSelector } from '@/hooks/redux.hooks'
 import { setAuthRouter } from '@/store/modules/user/userSlice'
 import { useTabs } from '@/hooks/tabs.hooks'
 const axiosCanceler = new AxiosCanceler()
