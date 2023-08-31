@@ -5,22 +5,25 @@
   position: fixed;
   left: 50%;
   top: 50%;
-  color: rgba(0, 0, 0, 0.85);
+  color: rgb(0 0 0 / 85%);
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgb(255 255 255 / 60%);
   border: 1px solid #e4e7ed;
   box-shadow: 2px 2px 12px #0000000d;
+
   .header-icon {
     position: absolute;
     right: 20px;
     top: 20px;
   }
+
   .loginTitele {
     font-size: 36px;
     display: flex;
     align-items: center;
     margin-bottom: 48px;
     font-weight: 600;
+
     .loginLogo {
       font-size: 44px;
       color: dodgerblue;
@@ -28,6 +31,7 @@
     }
   }
 }
+
 .primary {
   color: #475768;
 }

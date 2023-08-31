@@ -1,7 +1,7 @@
 .sider-title {
   height: 32px;
   margin: 16px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(255 255 255 / 20%);
   border-radius: 6px;
   line-height: 32px;
   text-align: center;
@@ -10,6 +10,7 @@
   white-space: nowrap;
   font-size: 16px;
   cursor: pointer;
+
   .sider-text {
     margin-left: 6px;
   }
@@ -43,9 +44,11 @@
   align-items: center;
   cursor: pointer;
 }
+
 .header-icon {
   padding: 5px 10px;
   border-radius: 4px;
+
   &:hover {
     background-color: var(--hover-bg);
   }

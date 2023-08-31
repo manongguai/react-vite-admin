@@ -1,11 +1,13 @@
 /* 请求 Loading 样式 */
 .request-loading {
   min-width: 80px;
+
   .ant-spin-text {
     margin-top: 5px;
     font-size: 18px;
     color: #509ff1;
   }
+
   .ant-spin-dot-item {
     background-color: #509ff1;
   }
@@ -14,10 +16,7 @@
 /* 请求 Loading 遮罩层样式 */
 #loading {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: 9998;
   display: flex;
   align-items: center;
