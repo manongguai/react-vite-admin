@@ -88,7 +88,7 @@ pnpm run lint:stylelint
 - light 模式
   ![首页](http://admin.kirk.wang/images/home.png)
 - dark 模式
-  ![首页](http://admin.kirk.wang/images/icons.png)
+  ![icons](http://admin.kirk.wang/images/icons.png)
 
 ### 六、文件资源目录 📚
 
