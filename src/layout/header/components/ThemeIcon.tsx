@@ -12,7 +12,7 @@ const ThemeIcon = () => {
   return (
     <>
       {themeIcon && (
-        <div className="header-icon">
+        <div className="header-icon driver-theme">
           <IconFont
             onClick={themeChange}
             style={{ fontSize: '20px' }}

@@ -33,7 +33,9 @@ const BreadcrumbNav = () => {
   return (
     <>
       {themeConfig.breadcrumb && (
-        <Breadcrumb items={breadcrumbItems}></Breadcrumb>
+        <div id="driver-breadcrumb">
+          <Breadcrumb items={breadcrumbItems}></Breadcrumb>
+        </div>
       )}
     </>
   )

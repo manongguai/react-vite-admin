@@ -5,11 +5,17 @@ import React from 'react'
 import { Menu, MenuProps } from 'antd'
 import store from '@/store'
 import { setLogout } from '@/store/modules/user/userSlice'
+import { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon'
 type MenuItem = Required<MenuProps>['items'][number]
 const customIcons: { [key: string]: any } = Icons
-export const addIcon = (name: string) => {
+export const getAntIcon = (
+  name: string,
+  props?: Partial<CustomIconComponentProps>
+) => {
   if (!name) return null
-  return React.createElement(customIcons[name])
+  return React.createElement(customIcons[name], {
+    className: 'demo-icon'
+  })
 }
 
 export const getOpenKeys = (path: string) => {
@@ -44,12 +50,12 @@ export const deepLoopFloat = (
 ) => {
   menuList.forEach((item: Menu.MenuOptions) => {
     if (!item?.children?.length)
-      return newArr.push(getItem(item.title, item.path, addIcon(item.icon!)))
+      return newArr.push(getItem(item.title, item.path, getAntIcon(item.icon!)))
     newArr.push(
       getItem(
         item.title,
         item.path,
-        addIcon(item.icon!),
+        getAntIcon(item.icon!),
         deepLoopFloat(item.children)
       )
     )

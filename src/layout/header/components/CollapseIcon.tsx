@@ -13,6 +13,7 @@ const CollapseIcon = () => {
       {themeConfig.collapseIcon && (
         <div
           className="collapsed-icon"
+          id="driver-collapse"
           onClick={() => {
             dispatch(setCollapsed(!collapsed))
           }}

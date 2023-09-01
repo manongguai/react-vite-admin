@@ -42,6 +42,20 @@ export const userMock: Record<string, templateOrFn> = {
         icon: 'PieChartOutlined'
       },
       {
+        path: '/common',
+        title: '常用组件',
+        children: [
+          {
+            path: '/common/icons',
+            title: '图标使用'
+          },
+          {
+            path: '/common/tour',
+            title: '漫游式引导'
+          }
+        ]
+      },
+      {
         path: '/user',
         title: '用户管理',
         icon: 'PieChartOutlined',
@@ -87,7 +101,14 @@ export const userMock: Record<string, templateOrFn> = {
     code: 200
   },
   '/api/authRoutes': {
-    data: ['home', 'userList', 'userDetail', 'bing'],
+    data: [
+      'home',
+      'userList',
+      'userDetail',
+      'bing',
+      'commonTour',
+      'commonIcons'
+    ],
     msg: 'success',
     code: 200
   }

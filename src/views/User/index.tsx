@@ -14,6 +14,7 @@ import {
 import type { ColumnsType } from 'antd/es/table'
 import './index.scss'
 import { useNavigate } from 'react-router-dom'
+import { SearchOutlined, UndoOutlined } from '@ant-design/icons'
 interface DataType {
   key: string
   name: string
@@ -50,24 +51,24 @@ const UserIndex: React.FC = () => {
   const navigate = useNavigate()
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Name',
+      title: '姓名',
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>
     },
     {
-      title: 'Age',
+      title: '年龄',
       dataIndex: 'age',
       sorter: (a, b) => a.age - b.age,
       key: 'age'
     },
     {
-      title: 'Address',
+      title: '地址',
       dataIndex: 'address',
       key: 'address'
     },
     {
-      title: 'Tags',
+      title: '标签',
       key: 'tags',
       dataIndex: 'tags',
       render: (_, { tags }) => (
@@ -91,8 +92,8 @@ const UserIndex: React.FC = () => {
       key: 'action',
       render: (_, record, index) => (
         <Space size="middle">
-          <a onClick={() => del(index)}>Delete</a>
-          <a onClick={() => detailPage(record.key)}>Detail</a>
+          <a onClick={() => del(index)}>删除</a>
+          <a onClick={() => detailPage(record.key)}>详情</a>
         </Space>
       )
     }
@@ -119,7 +120,7 @@ const UserIndex: React.FC = () => {
   }
   return (
     <div>
-      <Card bodyStyle={{ padding: '20px 15px' }} className="searchForm">
+      <div className="searchForm">
         <Form
           initialValues={{
             username: ''
@@ -131,24 +132,28 @@ const UserIndex: React.FC = () => {
         >
           <Row gutter={[10, 10]}>
             <Col>
-              <Form.Item<FieldType> label="Username" name="username">
-                <Input allowClear placeholder="Please enter a username" />
+              <Form.Item<FieldType> label="用户名" name="username">
+                <Input allowClear placeholder="请输入用户名" />
               </Form.Item>
             </Col>
             <Col>
-              <Button htmlType="submit" type="primary">
-                search
+              <Button
+                htmlType="submit"
+                icon={<SearchOutlined />}
+                type="primary"
+              >
+                搜索
               </Button>
             </Col>
             <Col>
-              <Button htmlType="button" onClick={reset}>
-                reset
+              <Button htmlType="button" icon={<UndoOutlined />} onClick={reset}>
+                重置
               </Button>
             </Col>
           </Row>
         </Form>
-      </Card>
-      <Table columns={columns} dataSource={data} />
+      </div>
+      <Table bordered columns={columns} dataSource={data} />
     </div>
   )
 }

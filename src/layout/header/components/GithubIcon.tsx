@@ -3,7 +3,7 @@ import { GitHubUrl } from '@/config/config'
 
 const GithubIcon = () => {
   return (
-    <div className="header-icon">
+    <div className="header-icon" id="driver-github">
       <IconFont
         onClick={() => window.open(GitHubUrl, '__blank')}
         style={{ fontSize: '20px' }}

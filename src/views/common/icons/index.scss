@@ -1,0 +1,15 @@
+.demo-icon-box {
+    padding: 10px;
+    text-align: center;
+
+    &:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+    .demo-icon {
+        font-size: 28px;
+    }
+}

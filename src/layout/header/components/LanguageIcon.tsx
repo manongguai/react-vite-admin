@@ -22,7 +22,7 @@ const LanguageIcon = (props: any) => {
     }
   ]
   return (
-    <div className="header-icon">
+    <div className="header-icon" id="driver-zhongyingwen">
       <Dropdown
         menu={{
           items: items
