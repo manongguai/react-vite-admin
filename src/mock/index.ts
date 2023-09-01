@@ -6,4 +6,6 @@ function mock() {
     Mock.mock(key, userMock[key])
   })
 }
-mock()
+if (process.env.NODE_ENV === 'development') {
+  mock()
+}
