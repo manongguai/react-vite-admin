@@ -10,7 +10,8 @@ export default {
     cancel: 'Cancel',
     title: 'Tips',
     pleaseLogin: 'Please Login First',
-    loginFailed: 'Login Failed, Please Login Again'
+    loginFailed: 'Login Failed, Please Login Again',
+    loginSuccess: 'Login Succeeded'
   },
   error: {
     notAuth: "Sorry, you don't have permission",

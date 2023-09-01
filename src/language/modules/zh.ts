@@ -10,7 +10,8 @@ export default {
     cancel: '取消',
     title: '温馨提示',
     pleaseLogin: '请先登录',
-    loginFailed: '登录失效，请重新登录'
+    loginFailed: '登录失效，请重新登录',
+    loginSuccess: '登录成功'
   },
   error: {
     notAuth: '抱歉，你的权限不足',

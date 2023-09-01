@@ -18,7 +18,7 @@ import Iconfont from '@/components/Iconfont'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { USERNAME_KEY } from '@/config/config'
 import { useTranslation } from 'react-i18next'
-import LanguageIcon from '@/layout/header/components/LanguageIcon'
+import { message } from 'antd'
 import ThemeIcon from '@/layout/header/components/ThemeIcon'
 import { useAppSelector } from '@/hooks/redux.hooks'
 type FieldType = {
@@ -28,12 +28,12 @@ type FieldType = {
 }
 
 const LoginView = () => {
+  const [messageApi, contextHolder] = message.useMessage()
   const theme = useAppSelector((state) => state.global.themeConfig.theme)
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
-
   const [initialForm] = useState({
     password: '',
     username: localStorage.getItem(USERNAME_KEY) || '',
@@ -48,6 +48,7 @@ const LoginView = () => {
         localStorage.removeItem(USERNAME_KEY)
       }
       dispatch(setTokens({ accessToken, refreshToken }))
+      messageApi.success(t('notification.loginSuccess'))
       navigate('/home', {
         replace: true
       })
@@ -62,64 +63,67 @@ const LoginView = () => {
     return () => stop()
   }, [theme])
   return (
-    <div className="loginContainer">
-      <canvas
-        onContextMenu={(e) => e.preventDefault()}
-        id="canvas"
-        style={{ display: 'block' }}
-      ></canvas>
-      <div className="loginBox">
-        <Space className="login-icons">
-          <ThemeIcon />
-        </Space>
-        <div className="loginTitele">
-          <Iconfont className="loginLogo" type="icon-logo"></Iconfont>
-          <span className="primary">React-Admin</span>
-        </div>
-        <Form
-          name="basic"
-          size="large"
-          form={form}
-          style={{ maxWidth: 600 }}
-          initialValues={initialForm}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item<FieldType>
-            name="username"
-            rules={[{ required: true, message: '请输入用户名!' }]}
+    <>
+      {contextHolder}
+      <div className="loginContainer">
+        <canvas
+          onContextMenu={(e) => e.preventDefault()}
+          id="canvas"
+          style={{ display: 'block' }}
+        ></canvas>
+        <div className="loginBox">
+          <Space className="login-icons">
+            <ThemeIcon />
+          </Space>
+          <div className="loginTitele">
+            <Iconfont className="loginLogo" type="icon-logo"></Iconfont>
+            <span className="primary">React-Admin</span>
+          </div>
+          <Form
+            name="basic"
+            size="large"
+            form={form}
+            style={{ maxWidth: 600 }}
+            initialValues={initialForm}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            <Input
-              allowClear
-              styles={{ input: { paddingLeft: '12px' } }}
-              prefix={<UserOutlined />}
-              placeholder="用户名：admin/tourist"
-            />
-          </Form.Item>
+            <Form.Item<FieldType>
+              name="username"
+              rules={[{ required: true, message: '请输入用户名!' }]}
+            >
+              <Input
+                allowClear
+                styles={{ input: { paddingLeft: '12px' } }}
+                prefix={<UserOutlined />}
+                placeholder="用户名：admin/tourist"
+              />
+            </Form.Item>
 
-          <Form.Item<FieldType>
-            name="password"
-            rules={[{ required: true, message: '请输入密码!' }]}
-          >
-            <Input.Password
-              allowClear
-              styles={{ input: { paddingLeft: '12px' } }}
-              prefix={<LockOutlined />}
-              placeholder="密码：123456"
-            />
-          </Form.Item>
-          <Form.Item<FieldType> name="remember" valuePropName="checked">
-            <Checkbox>{t('login.remember')}</Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <Button block type="primary" htmlType="submit">
-              {t('login.confirm')}
-            </Button>
-          </Form.Item>
-        </Form>
+            <Form.Item<FieldType>
+              name="password"
+              rules={[{ required: true, message: '请输入密码!' }]}
+            >
+              <Input.Password
+                allowClear
+                styles={{ input: { paddingLeft: '12px' } }}
+                prefix={<LockOutlined />}
+                placeholder="密码：123456"
+              />
+            </Form.Item>
+            <Form.Item<FieldType> name="remember" valuePropName="checked">
+              <Checkbox>{t('login.remember')}</Checkbox>
+            </Form.Item>
+            <Form.Item>
+              <Button block type="primary" htmlType="submit">
+                {t('login.confirm')}
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
