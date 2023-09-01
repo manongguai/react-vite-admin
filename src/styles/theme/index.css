@@ -8,6 +8,8 @@
   --text-color: rgb(0 0 0 / 85%);
   --shadow-color: 2px 2px 12px #0000000d;
   --scrollbar-bg-color: #dddee0;
+  --login-bg-color: rgb(255 255 255 / 60%);
+  --login-title-color: #475768;
 }
 
 :root[data-theme='dark'] {
@@ -20,4 +22,6 @@
   --text-color: #d9d9d9;
   --shadow-color: 5px 5px 15px rgb(255 255 255 / 20%);
   --scrollbar-bg-color: #686868;
+  --login-bg-color: rgb(31 31 31 / 30%);
+  --login-title-color: #d9d9d9;
 }
