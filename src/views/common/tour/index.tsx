@@ -4,6 +4,7 @@ import { driver } from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.css'
 import { EllipsisOutlined } from '@ant-design/icons'
 import driverSteps from './steps'
+import './index.scss'
 const TourPage = () => {
   const ref1 = useRef(null)
   const ref2 = useRef(null)
@@ -37,6 +38,7 @@ const TourPage = () => {
   }
 
   const driverObj = driver({
+    popoverClass: 'custom-driver-popover-class',
     showProgress: true,
     steps: driverSteps,
     allowClose: true,
