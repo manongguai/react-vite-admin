@@ -1,6 +1,7 @@
 import { getUserInfo } from '@/api/user'
 import { UserState } from '@/store/interface'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+
 const initialState: UserState = {
   userInfo: {},
   accessToken: '',
@@ -47,7 +48,6 @@ export const setUserInfo = createAsyncThunk('user/getUserInfo', async () => {
   const res = await getUserInfo()
   return res.data
 })
-
 export const { setTokens, setAuthMenus, setAuthRouter, setLogout } =
   userSlice.actions
 export default userSlice.reducer

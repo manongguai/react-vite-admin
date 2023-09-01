@@ -1,5 +1,4 @@
 import http from '@/utils/http'
-
 export interface UserInfo {
   username?: string
   phone?: string

@@ -1,22 +1,10 @@
-import { Button, Dropdown, Menu, MenuProps } from 'antd'
+import { Button, Dropdown, MenuProps } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { HOME_URL } from '@/config/config'
-import { useAppDispatch } from '@/hooks/redux.hooks'
-import { setTabList } from '@/store/modules/tab/tabSlice'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 const MoreBtn = (props: any) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const closeMultipleTab = (tabPath?: string) => {
-    const handleTabsList = props.tabList.filter((item: Menu.MenuOptions) => {
-      return item.path === tabPath || item.path === HOME_URL
-    })
-    dispatch(setTabList(handleTabsList))
-    tabPath ?? navigate(HOME_URL)
-  }
   const menu: MenuProps['items'] = [
     {
       key: '1',
@@ -26,12 +14,12 @@ const MoreBtn = (props: any) => {
     {
       key: '2',
       label: <span>{t('tabs.closeOther')}</span>,
-      onClick: () => closeMultipleTab(pathname)
+      onClick: () => props.closeMultipleTab(pathname)
     },
     {
       key: '3',
       label: <span>{t('tabs.closeAll')}</span>,
-      onClick: () => closeMultipleTab()
+      onClick: () => props.closeMultipleTab()
     }
   ]
   return (

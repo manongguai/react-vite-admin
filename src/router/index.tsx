@@ -1,18 +1,13 @@
-import {
-  Navigate,
-  RouterProvider,
-  createBrowserRouter,
-  redirect,
-  useRoutes
-} from 'react-router-dom'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { lazy } from 'react'
 import lazyLoad from '@/router/lazyLoad'
 import LayoutContainer from '@/layout'
-import Login from '@/views/Login/index'
+import Login from '@/views/login/index'
 import { RouteObject } from './interface'
 import i18n from '@/language'
 import { getAuthRoutes } from '@/api/user'
 import store from '@/store'
+
 const rootLoader = async () => {
   const { data } = await getAuthRoutes()
   store.dispatch

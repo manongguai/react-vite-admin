@@ -5,9 +5,14 @@ import '../index.scss'
 import { useNavigate } from 'react-router-dom'
 import { HOME_URL } from '@/config/config'
 import { useTranslation } from 'react-i18next'
+import { useTabs } from '@/hooks/tabs.hooks'
 const NotFound = () => {
   const navigate = useNavigate()
-  const goHome = () => navigate(HOME_URL)
+  const { delTab } = useTabs()
+  const goHome = () => {
+    delTab()
+    navigate(HOME_URL)
+  }
   const { t } = useTranslation()
   return (
     <Row className="not-found">
