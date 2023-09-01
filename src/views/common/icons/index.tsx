@@ -10,7 +10,7 @@ import Icon, {
   CheckCircleOutlined
 } from '@ant-design/icons'
 import React from 'react'
-import * as copy from 'copy-to-clipboard'
+import copy from 'copy-to-clipboard'
 import IconFont from '@/components/Iconfont'
 interface Component {
   key: string
