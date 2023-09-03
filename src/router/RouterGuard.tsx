@@ -15,6 +15,8 @@ interface IProps {
  * */
 const RouterGuard = (props: IProps) => {
   const loaderData = useRouteLoaderData('root') as string[]
+  console.log(loaderData)
+
   useEffect(() => {
     // 添加tab
     props?.meta?.title && addTab(props.meta.title)

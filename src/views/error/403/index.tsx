@@ -15,20 +15,22 @@ const NotFound = () => {
   }
   const { t } = useTranslation()
   return (
-    <Row className="not-found">
-      <Col span={12}>
-        <img src={errImg} alt="403" />
-      </Col>
-      <Col span={12} className="right">
-        <h1>403</h1>
-        <h2>{t('error.notAuth')}</h2>
-        <div>
-          <Button type="primary" onClick={goHome}>
-            {t('home.backHome')}
-          </Button>
-        </div>
-      </Col>
-    </Row>
+    <div className="error-page">
+      <Row className="not-found">
+        <Col span={12}>
+          <img src={errImg} alt="403" />
+        </Col>
+        <Col span={12} className="right">
+          <h1>403</h1>
+          <h2>{t('error.notAuth')}</h2>
+          <div>
+            <Button type="primary" onClick={goHome}>
+              {t('home.backHome')}
+            </Button>
+          </div>
+        </Col>
+      </Row>
+    </div>
   )
 }
 

@@ -38,18 +38,22 @@ export const routes: RouteObject[] = [
     path: '/',
     loader: rootLoader,
     id: 'root',
-    element: <LayoutContainer />,
     children: [
       {
-        path: '/home',
-        element: lazyLoad(
-          lazy(() => import('@/views/Home')),
+        element: <LayoutContainer />,
+        children: [
           {
-            title: i18n.t('home.title'),
-            requiredAuth: true,
-            code: 'home'
+            path: '/home',
+            element: lazyLoad(
+              lazy(() => import('@/views/Home')),
+              {
+                title: i18n.t('home.title'),
+                requiredAuth: true,
+                code: 'home'
+              }
+            )
           }
-        )
+        ]
       },
       ...routerArray
     ]

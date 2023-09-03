@@ -107,7 +107,8 @@ export const userMock: Record<string, templateOrFn> = {
       'userDetail',
       'bing',
       'commonTour',
-      'commonIcons'
+      'commonIcons',
+      'test'
     ],
     msg: 'success',
     code: 200

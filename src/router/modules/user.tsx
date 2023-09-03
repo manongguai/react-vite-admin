@@ -1,29 +1,35 @@
 import { lazy } from 'react'
 import lazyLoad from '../lazyLoad'
 import { RouteObject } from '../interface'
+import LayoutContainer from '@/layout'
 
 const userRoutes: Array<RouteObject> = [
   {
-    path: '/user/list',
-    element: lazyLoad(
-      lazy(() => import('@/views/user/index')),
+    element: <LayoutContainer />,
+    children: [
       {
-        requiredAuth: true,
-        title: '用户列表',
-        code: 'userList'
-      }
-    )
-  },
-  {
-    path: '/user/detail/:id',
-    element: lazyLoad(
-      lazy(() => import('@/views/user/detail')),
+        path: '/user/list',
+        element: lazyLoad(
+          lazy(() => import('@/views/user/index')),
+          {
+            requiredAuth: true,
+            title: '用户列表',
+            code: 'userList'
+          }
+        )
+      },
       {
-        requiredAuth: true,
-        title: '用户详情',
-        code: 'userDetail'
+        path: '/user/detail/:id',
+        element: lazyLoad(
+          lazy(() => import('@/views/user/detail')),
+          {
+            requiredAuth: true,
+            title: '用户详情',
+            code: 'userDetail'
+          }
+        )
       }
-    )
+    ]
   }
 ]
 

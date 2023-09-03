@@ -1,7 +1,11 @@
-.not-found {
+.error-page {
   background-color: #f0f2f5;
-  height: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
 
+.not-found {
   .right {
     padding-left: 50px;
     margin-top: 150px;

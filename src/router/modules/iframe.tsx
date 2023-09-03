@@ -1,22 +1,28 @@
 import { lazy } from 'react'
 import lazyLoad from '../lazyLoad'
 import { RouteObject } from '../interface'
+import LayoutContainer from '@/layout'
 const iframeRoutes: Array<RouteObject> = [
   {
-    path: '/iframe/bing',
-    loader: () => {
-      return {
-        iframeSrc: 'https://cn.bing.com/'
-      }
-    },
-    element: lazyLoad(
-      lazy(() => import('@/views/Iframe')),
+    element: <LayoutContainer />,
+    children: [
       {
-        requiredAuth: true,
-        code: 'bing',
-        title: '必应'
+        path: '/iframe/bing',
+        loader: () => {
+          return {
+            iframeSrc: 'https://cn.bing.com/'
+          }
+        },
+        element: lazyLoad(
+          lazy(() => import('@/views/Iframe')),
+          {
+            requiredAuth: true,
+            code: 'bing',
+            title: '必应'
+          }
+        )
       }
-    )
+    ]
   }
 ]
 
