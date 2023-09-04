@@ -87,15 +87,7 @@
   .layout-content {
     background-color: var(--main-bg-color);
     padding: 12px;
-    overflow: hidden;
-
-    &-main {
-      padding: 12px;
-      background-color: var(--bg-color);
-      height: 100%;
-      overflow: auto;
-      border: 1px solid var(--border-color) !important;
-    }
+    overflow: auto;
   }
 
   .layout-footer {

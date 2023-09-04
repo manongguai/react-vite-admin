@@ -51,7 +51,7 @@ const TourPage = () => {
     driverObj.drive()
   }
   return (
-    <>
+    <div className="page-container">
       <Card title="漫游式引导">
         <Space>
           <Button onClick={() => startTour()} type="primary">
@@ -76,7 +76,7 @@ const TourPage = () => {
         </Space>
       </Card>
       <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
-    </>
+    </div>
   )
 }
 

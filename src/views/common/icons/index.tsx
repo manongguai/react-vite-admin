@@ -101,7 +101,7 @@ const Icons = () => {
           })}
         </Row>
       </Card>
-      <Card title="IconFont Icons" style={{ marginTop: '20px' }}>
+      <Card title="IconFont Icons" style={{ marginTop: '10px' }}>
         <Row gutter={[20, 20]}>
           {iconFontList.map((key) => {
             return (

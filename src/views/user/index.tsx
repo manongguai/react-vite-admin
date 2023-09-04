@@ -120,7 +120,7 @@ const UserIndex: React.FC = () => {
   }
   return (
     <div>
-      <div className="searchForm">
+      <Card className="searchForm">
         <Form
           initialValues={{
             username: ''
@@ -152,8 +152,10 @@ const UserIndex: React.FC = () => {
             </Col>
           </Row>
         </Form>
-      </div>
-      <Table bordered columns={columns} dataSource={data} />
+      </Card>
+      <Card bodyStyle={{ padding: '15px' }}>
+        <Table bordered columns={columns} dataSource={data} />
+      </Card>
     </div>
   )
 }

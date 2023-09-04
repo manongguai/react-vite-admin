@@ -56,6 +56,20 @@ export const userMock: Record<string, templateOrFn> = {
         ]
       },
       {
+        path: '/draw',
+        title: '图画',
+        children: [
+          {
+            path: '/draw/svg',
+            title: 'svg画图'
+          },
+          {
+            path: '/draw/canvas',
+            title: 'canvas画图'
+          }
+        ]
+      },
+      {
         path: '/user',
         title: '用户管理',
         icon: 'PieChartOutlined',
@@ -108,7 +122,9 @@ export const userMock: Record<string, templateOrFn> = {
       'bing',
       'commonTour',
       'commonIcons',
-      'test'
+      'test',
+      'drawSvg',
+      'drawCanvas'
     ],
     msg: 'success',
     code: 200

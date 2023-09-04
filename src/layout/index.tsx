@@ -30,10 +30,7 @@ const LayoutContainer: React.FC = () => {
         <Header></Header>
         <LayoutTabs></LayoutTabs>
         <Content className="layout-content">
-          <div className="layout-content-main">
-            {/* 可视区 */}
-            <Outlet></Outlet>
-          </div>
+          <Outlet></Outlet>
         </Content>
         {/* 底部 */}
         {themeConfig.footer && <Footer></Footer>}
