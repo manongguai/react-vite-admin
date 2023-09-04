@@ -87,6 +87,9 @@ const SvgTools = (props: Iprops) => {
   const [currentMode, setCurrentMode] = useState<string>(
     props?.drauu?.mode || 'stylus'
   )
+  const [currentColor, setCurrentColor] = useState<string>(
+    props?.drauu?.brush.color || '#000'
+  )
   const [currentDash, setCurrentDash] = useState<string | undefined>(
     props?.drauu?.brush?.dasharray
   )
@@ -110,6 +113,7 @@ const SvgTools = (props: Iprops) => {
   }
   function colorChange(color: string) {
     drauu!.brush.color = color
+    setCurrentColor(color)
   }
   function save() {
     drauu!.el!.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
@@ -151,8 +155,8 @@ const SvgTools = (props: Iprops) => {
         <Col>
           <ColorPicker
             size="small"
-            onChangeComplete={(color) => colorChange(color.toHexString())}
-            value={drauu?.brush.color ? drauu?.brush.color : '#000'}
+            onChange={(color) => colorChange(color.toHexString())}
+            value={currentColor}
             presets={[
               {
                 label: '快速选择',
