@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
+    "build:test": "tsc && vite build --mode=test",
     "preview": "vite preview",
     "prepare": "husky install",
     "lint-staged": "npx lint-staged",

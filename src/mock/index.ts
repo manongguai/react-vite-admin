@@ -7,6 +7,6 @@ function mock() {
   })
 }
 // 生产环境需要更换为正式资源
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.VITE_MOCK == 'true') {
   mock()
 }

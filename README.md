@@ -60,6 +60,12 @@ pnpm run build
 
 ```
 
+```text
+# 打包mock测试环境
+pnpm run build:test
+
+```
+
 - **Lint：**
 
 ```text

@@ -192,7 +192,7 @@ const SvgTools = (props: Iprops) => {
         <Col style={{ width: '100px' }}>
           <Slider
             onChange={sizeChange}
-            min={0}
+            min={1}
             max={40}
             defaultValue={currentSize}
           />
