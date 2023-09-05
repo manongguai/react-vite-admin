@@ -9,22 +9,17 @@ const DrawSvg = () => {
         el: '#svg',
         brush: {
           mode: 'stylus', // 'line', 'rectangle', 'ellipse'
-          color: '#87CEEB',
+          color: '#000',
           size: 5
         }
       })
-      console.log(drauu.brush.color)
-
       return drauu
     })
   }, [])
   return (
     <div className="page-container">
       <SvgTools drauu={drauu}></SvgTools>
-      <svg
-        id="svg"
-        style={{ width: '100%', height: '100%', touchAction: 'none' }}
-      ></svg>
+      <svg id="svg" style={{ width: '100%', height: '100%' }}></svg>
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { Button, Col, ColorPicker, Divider, Row, Slider } from 'antd'
 import styles from './svgTools.module.scss'
 import IconFont from '@/components/Iconfont'
 import { Drauu, DrawingMode } from 'drauu'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface DrawModeAndIcon {
   key: string
@@ -90,9 +90,13 @@ const SvgTools = (props: Iprops) => {
   const [currentColor, setCurrentColor] = useState<string>(
     props?.drauu?.brush.color || '#000'
   )
+  const [currentSize, setCurrentSize] = useState<number>(
+    props?.drauu?.brush.size || 5
+  )
   const [currentDash, setCurrentDash] = useState<string | undefined>(
     props?.drauu?.brush?.dasharray
   )
+  const [colorPickerOpen, setColorPickerOpen] = useState(false)
   function undo() {
     drauu?.undo()
   }
@@ -115,6 +119,10 @@ const SvgTools = (props: Iprops) => {
     drauu!.brush.color = color
     setCurrentColor(color)
   }
+  function sizeChange(value: number) {
+    drauu!.brush.size = value
+    setCurrentSize(value)
+  }
   function save() {
     drauu!.el!.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
     const data = drauu!.el!.outerHTML || ''
@@ -126,13 +134,39 @@ const SvgTools = (props: Iprops) => {
     elem.click()
     document.body.removeChild(elem)
   }
+
   return (
     <div className={styles.svgTools}>
       <Row align="middle" gutter={4}>
+        <Col>
+          <Button
+            onClick={() => undo()}
+            type="text"
+            icon={<IconFont type="icon-houtui" />}
+          ></Button>
+        </Col>
+        <Col>
+          <Button
+            type="text"
+            onClick={redo}
+            icon={<IconFont type="icon-jiantouqianjin1" />}
+          ></Button>
+        </Col>
+        <Col>
+          <Button
+            onClick={clear}
+            type="text"
+            icon={<IconFont type="icon-qingchu" />}
+          ></Button>
+        </Col>
+        <Col>
+          <Divider plain type="vertical" />
+        </Col>
         {drawingModes.map((drawingMode) => {
           return (
             <Col key={drawingMode.key}>
               <Button
+                title={drawingMode.key}
                 className={
                   currentMode == drawingMode.key ? styles.activeItem : ''
                 }
@@ -148,13 +182,47 @@ const SvgTools = (props: Iprops) => {
             </Col>
           )
         })}
+        <Col>
+          <Divider plain type="vertical" />
+        </Col>
+        <Col style={{ width: '100px' }}>
+          <Slider
+            onChange={sizeChange}
+            min={0}
+            max={40}
+            defaultValue={currentSize}
+          />
+        </Col>
+        <Col>
+          <Divider plain type="vertical" />
+        </Col>
+        {dasharrayList.map((dasharray) => {
+          return (
+            <Col key={dasharray.key}>
+              <Button
+                title={dasharray.key}
+                className={
+                  currentDash == dasharray.value ? styles.activeItem : ''
+                }
+                onClick={() => dasharrayChange(dasharray)}
+                type="text"
+                icon={
+                  <IconFont
+                    style={{ fontSize: '14px' }}
+                    type={dasharray.icon}
+                  />
+                }
+              ></Button>
+            </Col>
+          )
+        })}
 
         <Col>
           <Divider plain type="vertical" />
         </Col>
-        <Col>
+        <Col onClick={() => setColorPickerOpen(true)}>
           <ColorPicker
-            size="small"
+            // open={colorPickerOpen}
             onChange={(color) => colorChange(color.toHexString())}
             value={currentColor}
             presets={[
@@ -176,58 +244,6 @@ const SvgTools = (props: Iprops) => {
             ]}
             showText
           />
-        </Col>
-        <Col style={{ width: '150px' }}>
-          <Divider plain type="vertical" />
-        </Col>
-        <Col>
-          <Slider defaultValue={30} />
-        </Col>
-        <Col>
-          <Divider plain type="vertical" />
-        </Col>
-        {dasharrayList.map((dasharray) => {
-          return (
-            <Col key={dasharray.key}>
-              <Button
-                className={
-                  currentDash == dasharray.value ? styles.activeItem : ''
-                }
-                onClick={() => dasharrayChange(dasharray)}
-                type="text"
-                icon={
-                  <IconFont
-                    style={{ fontSize: '14px' }}
-                    type={dasharray.icon}
-                  />
-                }
-              ></Button>
-            </Col>
-          )
-        })}
-        <Col>
-          <Divider plain type="vertical" />
-        </Col>
-        <Col>
-          <Button
-            onClick={() => undo()}
-            type="text"
-            icon={<IconFont type="icon-houtui" />}
-          ></Button>
-        </Col>
-        <Col>
-          <Button
-            type="text"
-            onClick={redo}
-            icon={<IconFont type="icon-jiantouqianjin1" />}
-          ></Button>
-        </Col>
-        <Col>
-          <Button
-            onClick={clear}
-            type="text"
-            icon={<IconFont type="icon-qingchu" />}
-          ></Button>
         </Col>
       </Row>
       <Button
