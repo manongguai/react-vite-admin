@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Drauu, createDrauu } from 'drauu'
 import SvgTools from './components/SvgTools'
+import styles from './svg.module.scss'
 const DrawSvg = () => {
   const [drauu, setDrauu] = useState<Drauu | null>(null)
   useEffect(() => {
@@ -17,9 +18,9 @@ const DrawSvg = () => {
     })
   }, [])
   return (
-    <div className="page-container">
+    <div className={'page-container ' + styles.svgPage}>
       <SvgTools drauu={drauu}></SvgTools>
-      <svg id="svg" style={{ width: '100%', height: '100%' }}></svg>
+      <svg className={styles.svgMain} id="svg"></svg>
     </div>
   )
 }

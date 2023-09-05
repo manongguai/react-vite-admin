@@ -79,6 +79,7 @@ const dasharrayList: Dasharray[] = [
 
 interface Iprops {
   drauu: Drauu | null
+  className?: string
 }
 const SvgTools = (props: Iprops) => {
   const drauu = useMemo(() => {
@@ -140,6 +141,7 @@ const SvgTools = (props: Iprops) => {
       <Row align="middle" gutter={4}>
         <Col>
           <Button
+            title="undo"
             onClick={() => undo()}
             type="text"
             icon={<IconFont type="icon-houtui" />}
@@ -147,6 +149,7 @@ const SvgTools = (props: Iprops) => {
         </Col>
         <Col>
           <Button
+            title="redo"
             type="text"
             onClick={redo}
             icon={<IconFont type="icon-jiantouqianjin1" />}
@@ -155,6 +158,7 @@ const SvgTools = (props: Iprops) => {
         <Col>
           <Button
             onClick={clear}
+            title="clear"
             type="text"
             icon={<IconFont type="icon-qingchu" />}
           ></Button>
