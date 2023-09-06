@@ -12,7 +12,7 @@ const HeaderComponent = () => {
   return (
     <Header className="layout-header">
       {/* 面包屑 */}
-      <Row justify={'space-between'} align="middle">
+      <Row justify={'space-between'} align="middle" wrap={false}>
         <Col>
           <Space align="center" size={20}>
             <CollapseIcon></CollapseIcon>

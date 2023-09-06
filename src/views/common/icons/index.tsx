@@ -70,7 +70,8 @@ const Icons = () => {
           {iconList.map((key) => (
             <Col
               onClick={() => copyText(key)}
-              span={4}
+              span={6}
+              xl={4}
               key={key}
               className="demo-icon-box"
             >
@@ -86,7 +87,8 @@ const Icons = () => {
                 onClick={() => copyText(item.key)}
                 key={item.key}
                 className="demo-icon-box"
-                span={4}
+                span={6}
+                xl={4}
               >
                 <Space direction="vertical" align="center" size={20}>
                   {/* 两种写法都可以 */}
@@ -109,7 +111,8 @@ const Icons = () => {
                 onClick={() => copyText(key)}
                 key={key}
                 className="demo-icon-box"
-                span={4}
+                span={6}
+                xl={4}
               >
                 <Space direction="vertical" align="center" size={20}>
                   <IconFont className="demo-icon" type={key}></IconFont>

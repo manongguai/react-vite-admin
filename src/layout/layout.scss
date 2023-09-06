@@ -55,6 +55,8 @@
 }
 
 .layout-container {
+  min-width: 992px; // 暂时不适配移动端
+
   .ant-layout {
     background-color: var(--bg-color);
   }
