@@ -8,12 +8,14 @@ const Fullscreen = () => {
   const themeConfig = useAppSelector((state) => state.global.themeConfig)
   const [fullScreen, setFullScreen] = useState<boolean>(screenfull.isFullscreen)
   const [messageApi, contextHolder] = message.useMessage()
+  function change() {
+    setFullScreen(screenfull.isFullscreen)
+  }
   useEffect(() => {
-    screenfull.on('change', () => {
-      if (screenfull.isFullscreen) setFullScreen(true)
-      else setFullScreen(false)
-      return () => screenfull.off('change', () => {})
-    })
+    screenfull.isEnabled && screenfull.on('change', change)
+    return () => {
+      screenfull.isEnabled && screenfull.off('change', change)
+    }
   }, [])
 
   const handleFullScreen = () => {
