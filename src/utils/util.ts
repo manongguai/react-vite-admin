@@ -20,3 +20,23 @@ export const getBrowserLang = () => {
   }
   return defaultBrowserLang
 }
+
+export function onMove(callback: (event: MouseEvent) => void) {
+  function moveEvent(event: MouseEvent) {
+    if (event.buttons !== 1) {
+      window.removeEventListener('mousemove', moveEvent)
+      return
+    }
+    callback(event)
+  }
+  window.addEventListener('mousemove', moveEvent)
+  window.addEventListener('contextmenu', remove)
+  window.addEventListener('mouseup', remove)
+  function remove() {
+    console.log('正在触发move事件')
+    window.removeEventListener('mousemove', moveEvent)
+    window.removeEventListener('mouseup', remove)
+    window.removeEventListener('mousemove', remove)
+  }
+  return remove
+}
