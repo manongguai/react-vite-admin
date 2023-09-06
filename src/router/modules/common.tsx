@@ -28,6 +28,17 @@ const commonRoutes: Array<RouteObject> = [
             code: 'commonIcons'
           }
         )
+      },
+      {
+        path: '/common/drag',
+        element: lazyLoad(
+          lazy(() => import('@/views/common/drag/index')),
+          {
+            requiredAuth: true,
+            title: '拖拽组件',
+            code: 'commonDrag'
+          }
+        )
       }
     ]
   }

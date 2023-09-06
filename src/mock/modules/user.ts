@@ -52,6 +52,10 @@ export const userMock: Record<string, templateOrFn> = {
           {
             path: '/common/tour',
             title: '漫游式引导'
+          },
+          {
+            path: '/common/drag',
+            title: '拖拽组件'
           }
         ]
       },
@@ -122,6 +126,7 @@ export const userMock: Record<string, templateOrFn> = {
       'bing',
       'commonTour',
       'commonIcons',
+      'commonDrag',
       'test',
       'drawSvg',
       'drawCanvas'
