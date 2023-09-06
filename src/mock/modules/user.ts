@@ -44,65 +44,85 @@ export const userMock: Record<string, templateOrFn> = {
       {
         path: '/common',
         title: '常用组件',
+        icon: 'AppstoreAddOutlined',
         children: [
           {
             path: '/common/icons',
-            title: '图标使用'
+            title: '图标使用',
+            icon: 'AppstoreOutlined'
           },
           {
             path: '/common/tour',
-            title: '漫游式引导'
+            title: '漫游式引导',
+            icon: 'AppstoreOutlined'
           },
           {
             path: '/common/drag',
-            title: '拖拽组件'
+            title: '拖拽组件',
+            icon: 'AppstoreOutlined'
           }
         ]
       },
       {
         path: '/draw',
         title: '图画',
+        icon: 'CalendarOutlined',
         children: [
           {
             path: '/draw/svg',
-            title: 'svg画图'
+            title: 'svg画图',
+            icon: 'AppstoreOutlined'
           },
           {
             path: '/draw/canvas',
-            title: 'canvas画图'
+            title: 'canvas画图',
+            icon: 'AppstoreOutlined'
           }
         ]
       },
       {
         path: '/user',
         title: '用户管理',
-        icon: 'PieChartOutlined',
+        icon: 'UserOutlined',
         children: [
           {
             path: '/user/list',
-            title: '用户列表'
+            title: '用户列表',
+            icon: 'AppstoreOutlined'
           }
         ]
       },
       {
         path: '/iframe',
         title: '内嵌页面',
+        icon: 'MenuOutlined',
         children: [
           {
             path: '/iframe/bing',
-            title: '必应'
+            title: '必应',
+            icon: 'AppstoreOutlined'
           }
         ]
       },
       {
         path: '/link',
         title: '外部链接',
-        icon: 'PieChartOutlined',
+        icon: 'LinkOutlined',
         children: [
           {
-            path: 'http://www.baidu.com',
-            title: '百度一下',
-            isLink: true
+            path: 'https://github.com/manongguai/react-vite-admin',
+            title: 'GitHub',
+            icon: 'AppstoreOutlined'
+          },
+          {
+            path: 'https://gitee.com/kirk958617/react-vite-admin',
+            title: 'Gitee',
+            icon: 'AppstoreOutlined'
+          },
+          {
+            path: 'https://kirk.wang/',
+            title: '作者博客',
+            icon: 'AppstoreOutlined'
           }
         ]
       }
