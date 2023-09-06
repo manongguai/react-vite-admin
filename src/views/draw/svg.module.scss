@@ -9,3 +9,12 @@
     height: 0;
     cursor: crosshair;
 }
+
+.svgTips {
+    position: fixed;
+    line-height: 1.5;
+    right: 40px;
+    bottom: 50px;
+    opacity: .35;
+    pointer-events: none;
+}

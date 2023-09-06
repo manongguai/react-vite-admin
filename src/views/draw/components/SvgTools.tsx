@@ -1,7 +1,7 @@
 import { Button, Col, ColorPicker, Divider, Row, Slider } from 'antd'
 import styles from './svgTools.module.scss'
 import IconFont from '@/components/Iconfont'
-import { Drauu, DrawingMode } from 'drauu'
+import { Brush, Drauu, DrawingMode } from 'drauu'
 import { useEffect, useMemo, useState } from 'react'
 
 interface DrawModeAndIcon {
@@ -78,64 +78,48 @@ const dasharrayList: Dasharray[] = [
 ]
 
 interface Iprops {
-  drauu: Drauu | null
   className?: string
+  option: Brush
+  onModeChange?: (mode: DrawingMode, arrowEnd: boolean) => void
+  onSizeChange?: (size: number) => void
+  onDashArrayChange?: (dashArray: string | undefined) => void
+  onColorChange?: (color: string) => void
+  onSave?: () => void
+  onUndo?: () => void
+  onRedo?: () => void
+  onClear?: () => void
 }
 const SvgTools = (props: Iprops) => {
-  const drauu = useMemo(() => {
-    return props.drauu
-  }, [props.drauu])
-  const [currentMode, setCurrentMode] = useState<string>(
-    props?.drauu?.mode || 'stylus'
-  )
-  const [currentColor, setCurrentColor] = useState<string>(
-    props?.drauu?.brush.color || '#000'
-  )
-  const [currentSize, setCurrentSize] = useState<number>(
-    props?.drauu?.brush.size || 5
-  )
-  const [currentDash, setCurrentDash] = useState<string | undefined>(
-    props?.drauu?.brush?.dasharray
-  )
-  const [colorPickerOpen, setColorPickerOpen] = useState(false)
+  const option = useMemo(() => {
+    return props.option
+  }, [props.option])
+
   function undo() {
-    drauu?.undo()
+    props.onUndo?.()
   }
   function redo() {
-    drauu?.redo()
+    props.onRedo?.()
   }
   function clear() {
-    drauu?.clear()
+    props.onClear?.()
   }
   function drawingModeChange(drawModeAndIcon: DrawModeAndIcon) {
-    drauu!.brush.arrowEnd = drawModeAndIcon.arrowEnd
-    drauu!.mode = drawModeAndIcon.mode
-    setCurrentMode(drawModeAndIcon.key)
+    // drauu!.brush.arrowEnd = drawModeAndIcon.arrowEnd
+    // drauu!.mode = drawModeAndIcon.mode
+    props.onModeChange?.(drawModeAndIcon.mode, drawModeAndIcon.arrowEnd)
   }
   function dasharrayChange(dashArray: Dasharray) {
-    drauu!.brush.dasharray = dashArray.value
-    setCurrentDash(dashArray.value)
+    props.onDashArrayChange?.(dashArray.value)
   }
   function colorChange(color: string) {
-    drauu!.brush.color = color
-    setCurrentColor(color)
+    props.onColorChange?.(color)
   }
   function sizeChange(value: number) {
-    drauu!.brush.size = value
-    setCurrentSize(value)
+    props.onSizeChange?.(value)
   }
   function save() {
-    drauu!.el!.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
-    const data = drauu!.el!.outerHTML || ''
-    const blob = new Blob([data], { type: 'image/svg+xml' })
-    const elem = window.document.createElement('a')
-    elem.href = window.URL.createObjectURL(blob)
-    elem.download = 'drauu.svg'
-    document.body.appendChild(elem)
-    elem.click()
-    document.body.removeChild(elem)
+    props.onSave?.()
   }
-
   return (
     <div className={styles.svgTools}>
       <Row align="middle" gutter={4}>
@@ -172,7 +156,10 @@ const SvgTools = (props: Iprops) => {
               <Button
                 title={drawingMode.key}
                 className={
-                  currentMode == drawingMode.key ? styles.activeItem : ''
+                  option.mode == drawingMode.mode &&
+                  option.arrowEnd == drawingMode.arrowEnd
+                    ? styles.activeItem
+                    : ''
                 }
                 onClick={() => drawingModeChange(drawingMode)}
                 type="text"
@@ -194,7 +181,7 @@ const SvgTools = (props: Iprops) => {
             onChange={sizeChange}
             min={1}
             max={40}
-            defaultValue={currentSize}
+            defaultValue={option.size}
           />
         </Col>
         <Col>
@@ -206,7 +193,7 @@ const SvgTools = (props: Iprops) => {
               <Button
                 title={dasharray.key}
                 className={
-                  currentDash == dasharray.value ? styles.activeItem : ''
+                  option.dasharray == dasharray.value ? styles.activeItem : ''
                 }
                 onClick={() => dasharrayChange(dasharray)}
                 type="text"
@@ -224,11 +211,11 @@ const SvgTools = (props: Iprops) => {
         <Col>
           <Divider plain type="vertical" />
         </Col>
-        <Col onClick={() => setColorPickerOpen(true)}>
+        <Col>
           <ColorPicker
             // open={colorPickerOpen}
             onChange={(color) => colorChange(color.toHexString())}
-            value={currentColor}
+            value={option.color}
             presets={[
               {
                 label: '快速选择',
