@@ -10,8 +10,8 @@ import Icon, {
   CheckCircleOutlined
 } from '@ant-design/icons'
 import React from 'react'
-import copy from 'copy-to-clipboard'
 import IconFont from '@/components/Iconfont'
+import clipboard from '@/utils/clipboard'
 interface Component {
   key: string
   component: React.ForwardRefExoticComponent<any>
@@ -60,8 +60,7 @@ const iconList: string[] = [
 ]
 const Icons = () => {
   function copyText(key: string) {
-    copy(key)
-    window.$message.success('复制成功')
+    clipboard(key)
   }
   return (
     <>
