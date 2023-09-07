@@ -33,7 +33,7 @@ export function onMove(callback: (event: MouseEvent) => void) {
   window.addEventListener('contextmenu', remove)
   window.addEventListener('mouseup', remove)
   function remove() {
-    console.log('正在触发move事件')
+    console.log('正在触发remove事件')
     window.removeEventListener('mousemove', moveEvent)
     window.removeEventListener('mouseup', remove)
     window.removeEventListener('mousemove', remove)

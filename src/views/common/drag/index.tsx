@@ -1,9 +1,10 @@
 import React from 'react'
 import DraggableBox from './components/DraggableBox'
+import './dragPage.scss'
 const CommonDrag = () => {
   return (
     <div className="page-container">
-      <div style={{ position: 'relative' }}>
+      <div className="drag-parent">
         <DraggableBox
           attrs={{
             w: 200,

@@ -3,12 +3,14 @@ import styles from './draggable.module.scss'
 import { useComponentStyle, usePointStyle } from '../hooks/useStyle'
 import { AttrType } from '../types'
 import { onMove } from '@/utils/util'
+import useMouse from '../hooks/useMouse'
 
 interface DraggableBoxProps {
   children: JSX.Element
   attrs: AttrType
   active?: boolean
   scale?: number // 后续需要验证大于0
+  parent?: boolean
 }
 
 // 锚点
@@ -17,45 +19,16 @@ const pointList = ['t', 'r', 'b', 'l', 'lt', 'rt', 'lb', 'rb']
 const cursorResize = ['n', 'e', 's', 'w', 'nw', 'ne', 'sw', 'se']
 
 const DraggableBox = (props: DraggableBoxProps) => {
-  let remove = () => {}
-  const [attrs, setAttrs] = useState(props.attrs)
-  function onMouseDown(
-    mouseDownEvent: any,
-    point: string,
-    attrs: AttrType,
-    scale: number
-  ) {
-    mouseDownEvent.stopPropagation()
-    mouseDownEvent.preventDefault()
-    const itemAttrX = attrs.x
-    const itemAttrY = attrs.y
-    const itemAttrW = attrs.w
-    const itemAttrH = attrs.h
-    // 记录点击初始位置
-    const startX = mouseDownEvent.screenX
-    const startY = mouseDownEvent.screenY
-    remove = onMove((moveEvent) => {
-      let currX = Math.round((moveEvent.screenX - startX) / scale)
-      let currY = Math.round((moveEvent.screenY - startY) / scale)
-      const isTop = /t/.test(point)
-      const isBottom = /b/.test(point)
-      const isLeft = /l/.test(point)
-      const isRight = /r/.test(point)
-      const newHeight = itemAttrH + (isTop ? -currY : isBottom ? currY : 0)
-      const newWidth = itemAttrW + (isLeft ? -currX : isRight ? currX : 0)
-      attrs.h = newHeight > 0 ? newHeight : 0
-      attrs.w = newWidth > 0 ? newWidth : 0
-      attrs.x = itemAttrX + (isLeft ? currX : 0)
-      attrs.y = itemAttrY + (isTop ? currY : 0)
-      setAttrs({ ...attrs })
-    })
-  }
-  useEffect(() => {
-    return () => remove()
-  }, [])
+  const { attrs, onPonitMouseHandle, onBoxMouseHandle, dragBoxRef } = useMouse(
+    props.attrs,
+    props.scale!,
+    props.parent!
+  )
   return (
     <div
+      ref={dragBoxRef}
       className={styles.draggableBox}
+      onMouseDown={onBoxMouseHandle}
       style={useComponentStyle(attrs, props.scale)}
     >
       {pointList.map((point, index) => {
@@ -63,7 +36,7 @@ const DraggableBox = (props: DraggableBoxProps) => {
           <div
             className={styles.draggablePoint + ' ' + styles[point]}
             key={point}
-            onMouseDown={(e) => onMouseDown(e, point, attrs, props.scale!)}
+            onMouseDown={(e) => onPonitMouseHandle(e, point)}
             style={usePointStyle(point, index, attrs, cursorResize)}
           ></div>
         )
@@ -75,7 +48,8 @@ const DraggableBox = (props: DraggableBoxProps) => {
 }
 DraggableBox.defaultProps = {
   scale: 1,
-  active: false
+  active: false,
+  parent: true
 }
 
 export default DraggableBox
