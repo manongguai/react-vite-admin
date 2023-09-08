@@ -17,14 +17,15 @@
     border: 3px solid var(--primary-color);
     border-radius: 5px;
     background-color: #fff;
-    transform: translate(-50%, -50%);
 
     &.t {
         width: 30px;
+        transform: translate(-50%, -100%);
     }
 
     &.b {
         width: 30px;
+        transform: translate(-50%);
     }
 
     &.l,
@@ -32,12 +33,29 @@
         height: 30px;
     }
 
-    &.r {}
+    &.r {
+        transform: translate(0%, -50%);
+    }
 
-    &.l {}
+    &.l {
+        transform: translate(-100%, -50%);
+    }
 
-    &.rt,
-    &.rb {}
+    &.rt {
+        transform: translate(0%, -100%);
+    }
+
+    &.rb {
+        transform: translate(0%, 0%);
+    }
+
+    &.lb {
+        transform: translate(-100%, 0%);
+    }
+
+    &.lt {
+        transform: translate(-100%, -100%);
+    }
 }
 
 .draggableActiveModal {

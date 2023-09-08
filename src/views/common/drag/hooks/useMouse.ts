@@ -39,22 +39,22 @@ export default function useMouse(
       let x = itemAttrX + (isLeft ? currX : 0)
       let y = itemAttrY + (isTop ? currY : 0)
 
-      if (x > parentWidth - w) {
-        w = Math.abs(parentWidth - x)
-        x = parentWidth - w
-      }
-      if (x < 0) {
-        w = w - Math.abs(x)
-        x = 0
-      }
-      if (y > parentHeight - h) {
-        h = Math.abs(parentHeight - y)
-        y = parentHeight - h
-      }
-      if (y < 0) {
-        h = h - Math.abs(y)
-        y = 0
-      }
+      // if (x > parentWidth - w) {
+      //   w = Math.abs(parentWidth - x)
+      //   x = parentWidth - w
+      // }
+      // if (x < 0) {
+      //   w = w - Math.abs(x)
+      //   x = 0
+      // }
+      // if (y > parentHeight - h) {
+      //   h = Math.abs(parentHeight - y)
+      //   y = parentHeight - h
+      // }
+      // if (y < 0) {
+      //   h = h - Math.abs(y)
+      //   y = 0
+      // }
 
       setAttrs({ x, y, w, h })
     })
