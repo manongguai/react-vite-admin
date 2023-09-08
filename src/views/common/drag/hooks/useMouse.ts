@@ -34,28 +34,32 @@ export default function useMouse(
       const isRight = /r/.test(point)
       const newHeight = itemAttrH + (isTop ? -currY : isBottom ? currY : 0)
       const newWidth = itemAttrW + (isLeft ? -currX : isRight ? currX : 0)
-      let h = newHeight > 0 ? newHeight : 0
-      let w = newWidth > 0 ? newWidth : 0
-      let x = itemAttrX + (isLeft ? currX : 0)
-      let y = itemAttrY + (isTop ? currY : 0)
-
-      // if (x > parentWidth - w) {
-      //   w = Math.abs(parentWidth - x)
-      //   x = parentWidth - w
-      // }
-      // if (x < 0) {
-      //   w = w - Math.abs(x)
-      //   x = 0
-      // }
-      // if (y > parentHeight - h) {
-      //   h = Math.abs(parentHeight - y)
-      //   y = parentHeight - h
-      // }
-      // if (y < 0) {
-      //   h = h - Math.abs(y)
-      //   y = 0
-      // }
-
+      let h = Math.abs(newHeight)
+      let w = Math.abs(newWidth)
+      let x =
+        newWidth > 0
+          ? itemAttrX + (isLeft ? currX : 0)
+          : itemAttrX + (isLeft ? itemAttrW : newWidth)
+      let y =
+        newHeight > 0
+          ? itemAttrY + (isTop ? currY : 0)
+          : itemAttrY + (isTop ? itemAttrH : newHeight)
+      if (parent) {
+        if (x < 0) {
+          w = w + x
+          x = 0
+        }
+        if (y < 0) {
+          h = h + y
+          y = 0
+        }
+        if (x + w > parentWidth) {
+          w = parentWidth - x
+        }
+        if (y + h > parentHeight) {
+          h = parentHeight - y
+        }
+      }
       setAttrs({ x, y, w, h })
     })
   }
