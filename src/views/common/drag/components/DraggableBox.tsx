@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useImperativeHandle, useState } from 'react'
 import './draggable.scss'
 import { useComponentStyle, usePointStyle } from '../hooks/useStyle'
 import { AttrType } from '../types'
@@ -7,7 +7,7 @@ import useMouse from '../hooks/useMouse'
 import { B } from 'mockjs'
 
 export interface DraggableBoxProps {
-  children: JSX.Element
+  children: React.ReactNode
   attrs: AttrType
   active?: boolean
   scale?: number // 后续需要验证大于0
@@ -26,6 +26,7 @@ export interface DraggableBoxProps {
   onResizeStart?: (e: React.MouseEvent, point: string) => void | boolean
   onResize?: (attrs: AttrType, point: string) => void
   onResizeEnd?: (attrs: AttrType, point: string) => void
+  onClick?: (e: React.MouseEvent) => void
 }
 
 // 锚点
@@ -33,7 +34,7 @@ const pointList = ['t', 'r', 'b', 'l', 'lt', 'rt', 'lb', 'rb']
 // 光标朝向
 const cursorResize = ['n', 'e', 's', 'w', 'nw', 'ne', 'sw', 'se']
 
-const DraggableBox = (props: DraggableBoxProps) => {
+const DraggableBox = (props: DraggableBoxProps, ref: any) => {
   const {
     attrs,
     onPonitMouseHandle,
@@ -42,8 +43,10 @@ const DraggableBox = (props: DraggableBoxProps) => {
     isDragging,
     isResizing
   } = useMouse(props)
+  useImperativeHandle(ref, () => dragBoxRef.current)
   return (
     <div
+      onClick={(e) => props.onClick?.(e)}
       ref={dragBoxRef}
       className={
         'draggableBox' +
@@ -77,7 +80,9 @@ const DraggableBox = (props: DraggableBoxProps) => {
     </div>
   )
 }
-DraggableBox.defaultProps = {
+const RefDraggableBox = React.forwardRef(DraggableBox)
+
+RefDraggableBox.defaultProps = {
   scale: 1,
   active: false,
   parent: true,
@@ -85,5 +90,4 @@ DraggableBox.defaultProps = {
   draggable: true,
   zIndex: 20
 }
-
-export default DraggableBox
+export default RefDraggableBox

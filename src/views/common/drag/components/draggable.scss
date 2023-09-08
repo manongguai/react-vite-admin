@@ -2,11 +2,7 @@
     position: absolute;
     cursor: move;
     box-sizing: content-box;
-
-    &:hover {
-        outline: 1px dashed #1890FF;
-    }
-
+    outline: 1px dashed #1890FF;
 }
 
 .draggablePoint {

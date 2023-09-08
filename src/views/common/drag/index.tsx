@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import DraggableBox from './components/DraggableBox'
 import './dragPage.scss'
 import { AttrType } from './types'
@@ -7,6 +7,7 @@ const CommonDrag = () => {
     attrs: AttrType
     content: string
   }
+  const [activeIndex, setActiveIndex] = useState<number>(-1)
   const list: DragItem[] = [
     {
       attrs: {
@@ -27,8 +28,9 @@ const CommonDrag = () => {
       content: '测试2'
     }
   ]
-  function onDragStart() {
+  function onDragStart(index: number) {
     console.log('onDragStart')
+    setActiveIndex(index)
   }
   function onDrag(attrs: AttrType) {
     console.log('onDrag')
@@ -49,25 +51,47 @@ const CommonDrag = () => {
     console.log(attrs)
     console.log(point)
   }
+  const dragRefList = useRef<any[]>([])
+  function getDragRef(dom: React.MutableRefObject<HTMLDivElement | null>) {
+    dragRefList.current.push(dom)
+  }
+  function handle(e: any) {
+    setActiveIndex(-1)
+  }
+  useEffect(() => {
+    // 获取实例
+    console.log(dragRefList.current)
+  }, [])
   return (
     <div className="page-container">
-      <div className="drag-parent">
+      <div className="drag-parent" onClick={handle}>
         {list.map((item, index) => {
           return (
             <DraggableBox
-              onDragStart={onDragStart}
+              ref={getDragRef}
+              onClick={(e) => e.stopPropagation()}
+              onDragStart={() => onDragStart(index)}
               onDrag={onDrag}
               onDragEnd={onDragEnd}
               onResizeStart={onResizeStart}
               onResize={onResize}
               onResizeEnd={onResizeEnd}
               key={index}
-              active={true}
+              active={activeIndex == index}
               classNameDragging="dragging"
               classNameActiveModal="modal"
               attrs={item.attrs}
             >
-              <div>{item.content}</div>
+              <div
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                {item.content}
+              </div>
             </DraggableBox>
           )
         })}
