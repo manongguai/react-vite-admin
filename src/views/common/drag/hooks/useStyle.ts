@@ -49,8 +49,8 @@ export const useComponentStyle = (attr: AttrType, scale?: number) => {
     zIndex: 1,
     left: `${attr.x}px`,
     top: `${attr.y}px`,
-    width: `${scale ? scale * attr.w : attr.w}px`,
-    height: `${scale ? scale * attr.h : attr.h}px`
+    width: `${attr.w}px`,
+    height: `${attr.h}px`
   }
   return componentStyle
 }

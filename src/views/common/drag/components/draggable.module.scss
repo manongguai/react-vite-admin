@@ -19,18 +19,18 @@
     background-color: #fff;
 
     &.t {
-        width: 30px;
+        width: 20px;
         transform: translate(-50%, -100%);
     }
 
     &.b {
-        width: 30px;
+        width: 20px;
         transform: translate(-50%);
     }
 
     &.l,
     &.r {
-        height: 30px;
+        height: 20px;
     }
 
     &.r {
