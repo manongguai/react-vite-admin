@@ -21,10 +21,13 @@ export const getBrowserLang = () => {
   return defaultBrowserLang
 }
 
-export function onMove(callback: (event: MouseEvent) => void) {
+export function onMove(
+  callback: (event: MouseEvent) => void,
+  removeCallback?: () => void
+) {
   function moveEvent(event: MouseEvent) {
     if (event.buttons !== 1) {
-      window.removeEventListener('mousemove', moveEvent)
+      remove()
       return
     }
     callback(event)
@@ -37,6 +40,7 @@ export function onMove(callback: (event: MouseEvent) => void) {
     window.removeEventListener('mousemove', moveEvent)
     window.removeEventListener('mouseup', remove)
     window.removeEventListener('mousemove', remove)
+    removeCallback?.()
   }
   return remove
 }

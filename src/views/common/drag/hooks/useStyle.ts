@@ -43,10 +43,10 @@ export const usePointStyle = (
 }
 
 // 拖拽组件位置
-export const useComponentStyle = (attr: AttrType, scale?: number) => {
+export const useComponentStyle = (attr: AttrType, zIndex: number) => {
   if (!attr) return {}
   const componentStyle = {
-    zIndex: 1,
+    zIndex,
     left: `${attr.x}px`,
     top: `${attr.y}px`,
     width: `${attr.w}px`,
