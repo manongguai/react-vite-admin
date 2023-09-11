@@ -4,3 +4,4 @@ export interface AttrType {
   x: number
   y: number
 }
+export type DragMode = 'manual' | 'auto'

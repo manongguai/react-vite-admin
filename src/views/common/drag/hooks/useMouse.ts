@@ -7,7 +7,6 @@ export default function useMouse(props: DraggableBoxProps) {
   const {
     attrs: defaultAttrs,
     scale,
-    parent,
     draggable,
     resizable,
     onDragStart,
@@ -17,15 +16,16 @@ export default function useMouse(props: DraggableBoxProps) {
     onResize,
     onResizeEnd
   } = props
+
   const [attrs, setAttrs] = useState(defaultAttrs)
   const [isDragging, setIsDrag] = useState(false)
   const [isResizing, setIsResize] = useState(false)
   const dragBoxRef = useRef<HTMLDivElement | null>(null)
   let mouseEventRemove = () => {}
-  function onPonitMouseHandle(mouseDownEvent: React.MouseEvent, point: string) {
+  function onPointMouseHandle(mouseDownEvent: React.MouseEvent, point: string) {
     mouseDownEvent.stopPropagation()
     mouseDownEvent.preventDefault()
-    if (!draggable) return
+    if (!resizable) return
     const resizeStartReturn = onResizeStart?.(mouseDownEvent, point)
     if (resizeStartReturn === false) return
     // 记录初始位置和大小
@@ -40,6 +40,7 @@ export default function useMouse(props: DraggableBoxProps) {
       .offsetWidth
     const parentHeight = (dragBoxRef.current!.parentNode! as HTMLElement)
       .offsetHeight
+    let newAttrs = JSON.parse(JSON.stringify(attrs))
     mouseEventRemove = onMove(
       (moveEvent) => {
         setIsResize(true)
@@ -61,7 +62,7 @@ export default function useMouse(props: DraggableBoxProps) {
           newHeight > 0
             ? itemAttrY + (isTop ? currY : 0)
             : itemAttrY + (isTop ? itemAttrH : newHeight)
-        if (parent) {
+        if (props.parent) {
           if (x < 0) {
             w = w + x
             x = 0
@@ -78,10 +79,13 @@ export default function useMouse(props: DraggableBoxProps) {
           }
         }
         onResize?.({ x, y, w, h }, point)
-        setAttrs({ x, y, w, h })
+        newAttrs = { x, y, w, h }
+        if (props.mode == 'auto') {
+          setAttrs(newAttrs)
+        }
       },
       () => {
-        onResizeEnd?.(attrs, point)
+        onResizeEnd?.(newAttrs, point)
         setIsResize(false)
       }
     )
@@ -89,7 +93,7 @@ export default function useMouse(props: DraggableBoxProps) {
   function onBoxMouseHandle(e: React.MouseEvent, distance = 0) {
     e.preventDefault()
     e.stopPropagation()
-    if (!resizable) return
+    if (!draggable) return
     const dragStartReturn = onDragStart?.(e)
     if (dragStartReturn === false) return
     // 记录初始位置和大小
@@ -104,6 +108,7 @@ export default function useMouse(props: DraggableBoxProps) {
       .offsetWidth
     const parentHeight = (dragBoxRef.current!.parentNode! as HTMLElement)
       .offsetHeight
+    let newAttrs = JSON.parse(JSON.stringify(attrs))
     mouseEventRemove = onMove(
       (moveEvent) => {
         setIsDrag(true)
@@ -114,7 +119,7 @@ export default function useMouse(props: DraggableBoxProps) {
           itemAttrY + (moveEvent.screenY - startY) / scale!
         )
         // 要预留的距离
-        if (parent) {
+        if (props.parent) {
           // 基于左上角位置检测
           currX = currX < 0 ? 0 : currX
           currY = currY < 0 ? 0 : currY
@@ -134,20 +139,28 @@ export default function useMouse(props: DraggableBoxProps) {
             currY > parentHeight - distance ? parentHeight - distance : currY
         }
         onDrag?.({ ...attrs, x: currX, y: currY })
-        setAttrs({ ...attrs, x: currX, y: currY })
+        newAttrs = { ...newAttrs, x: currX, y: currY }
+        if (props.mode === 'auto') {
+          setAttrs(newAttrs)
+        }
       },
       () => {
-        onDragEnd?.(attrs)
+        onDragEnd?.(newAttrs)
         setIsDrag(false)
       }
     )
   }
   useEffect(() => {
+    if (props.mode === 'manual') {
+      setAttrs(props.attrs)
+    }
+  }, [props.attrs, props.mode])
+  useEffect(() => {
     return mouseEventRemove()
-  })
+  }, [])
   return {
     attrs,
-    onPonitMouseHandle,
+    onPointMouseHandle,
     onBoxMouseHandle,
     dragBoxRef,
     isDragging,

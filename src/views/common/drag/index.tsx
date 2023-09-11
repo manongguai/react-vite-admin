@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import DraggableBox from './components/DraggableBox'
 import './dragPage.scss'
-import { AttrType } from './types'
+import { AttrType, DragMode } from './types'
+import { Form, Select, Switch } from 'antd'
 const CommonDrag = () => {
   interface DragItem {
     attrs: AttrType
@@ -58,25 +59,69 @@ const CommonDrag = () => {
   function handle(e: any) {
     setActiveIndex(-1)
   }
+  interface FieldType {
+    draggable: boolean
+    resizable: boolean
+    mode: DragMode
+    parent: boolean
+  }
+  const [form, setForm] = useState<FieldType>({
+    draggable: true,
+    resizable: true,
+    mode: 'auto',
+    parent: true
+  })
+  function formChange(changedValues: Partial<FieldType>, allValues: FieldType) {
+    console.log(changedValues)
+    setForm(allValues)
+  }
   useEffect(() => {
     // 获取实例
-    console.log(dragRefList.current)
+    // console.log(dragRefList.current)
   }, [])
   return (
-    <div className="page-container">
+    <div className="darg-page">
+      <div className="drag-option">
+        <Form layout="inline" onValuesChange={formChange} initialValues={form}>
+          <Form.Item<FieldType>
+            name="mode"
+            label="mode,手动模式需要自定义attrs"
+          >
+            <Select
+              options={[
+                { value: 'manual', label: 'manual' },
+                { value: 'auto', label: 'auto' }
+              ]}
+            ></Select>
+          </Form.Item>
+          <Form.Item<FieldType> name="draggable" label="draggable">
+            <Switch checked={form.draggable} />
+          </Form.Item>
+          <Form.Item<FieldType> label="resizable" name="resizable">
+            <Switch checked={form.resizable} />
+          </Form.Item>
+          <Form.Item<FieldType> label="parent" name="parent">
+            <Switch checked={form.parent} />
+          </Form.Item>
+        </Form>
+      </div>
       <div className="drag-parent" onClick={handle}>
         {list.map((item, index) => {
           return (
             <DraggableBox
+              mode={form.mode}
               ref={getDragRef}
               onClick={(e) => e.stopPropagation()}
               onDragStart={() => onDragStart(index)}
               onDrag={onDrag}
+              draggable={form.draggable}
+              resizable={form.resizable}
               onDragEnd={onDragEnd}
               onResizeStart={onResizeStart}
               onResize={onResize}
               onResizeEnd={onResizeEnd}
               key={index}
+              parent={form.parent}
               active={activeIndex == index}
               classNameDragging="dragging"
               classNameActiveModal="modal"

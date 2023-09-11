@@ -1,12 +1,11 @@
-import React, { useEffect, useImperativeHandle, useState } from 'react'
+import React, { useImperativeHandle } from 'react'
 import './draggable.scss'
 import { useComponentStyle, usePointStyle } from '../hooks/useStyle'
-import { AttrType } from '../types'
-import { onMove } from '@/utils/util'
+import { AttrType, DragMode } from '../types'
 import useMouse from '../hooks/useMouse'
-import { B } from 'mockjs'
 
 export interface DraggableBoxProps {
+  mode?: DragMode // 手动模式还是自动模式，手动模式是需要自己给attrs赋值
   children: React.ReactNode
   attrs: AttrType
   active?: boolean
@@ -37,7 +36,7 @@ const cursorResize = ['n', 'e', 's', 'w', 'nw', 'ne', 'sw', 'se']
 const DraggableBox = (props: DraggableBoxProps, ref: any) => {
   const {
     attrs,
-    onPonitMouseHandle,
+    onPointMouseHandle,
     onBoxMouseHandle,
     dragBoxRef,
     isDragging,
@@ -66,7 +65,7 @@ const DraggableBox = (props: DraggableBoxProps, ref: any) => {
             <div
               className={'draggablePoint' + ' ' + point}
               key={point}
-              onMouseDown={(e) => onPonitMouseHandle(e, point)}
+              onMouseDown={(e) => onPointMouseHandle(e, point)}
               style={usePointStyle(point, index, attrs, cursorResize)}
             ></div>
           )
@@ -88,6 +87,7 @@ RefDraggableBox.defaultProps = {
   parent: true,
   resizable: true,
   draggable: true,
-  zIndex: 20
+  zIndex: 20,
+  mode: 'auto'
 }
 export default RefDraggableBox
