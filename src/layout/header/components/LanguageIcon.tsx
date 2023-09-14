@@ -5,7 +5,10 @@ import IconFont from '@/components/Iconfont'
 import { languageEnums } from '@/enums/languageEnum'
 
 const LanguageIcon = (props: any) => {
-  const language = useAppSelector((state) => state.global.language)
+  const { language, themeConfig } = useAppSelector((state) => ({
+    language: state.global.language,
+    themeConfig: state.global.themeConfig
+  }))
   const dispatch = useAppDispatch()
   const items = [
     {
@@ -22,22 +25,26 @@ const LanguageIcon = (props: any) => {
     }
   ]
   return (
-    <div className="header-icon" id="driver-zhongyingwen">
-      <Dropdown
-        menu={{
-          items: items
-        }}
-        placement="bottom"
-        trigger={['click']}
-        arrow={true}
-      >
-        <IconFont
-          {...props}
-          style={{ fontSize: '18px' }}
-          type="icon-zhongyingwen1"
-        ></IconFont>
-      </Dropdown>
-    </div>
+    <>
+      {themeConfig.languageIcon && (
+        <div className="header-icon" id="driver-zhongyingwen">
+          <Dropdown
+            menu={{
+              items: items
+            }}
+            placement="bottom"
+            trigger={['click']}
+            arrow={true}
+          >
+            <IconFont
+              {...props}
+              style={{ fontSize: '18px' }}
+              type="icon-zhongyingwen1"
+            ></IconFont>
+          </Dropdown>
+        </div>
+      )}
+    </>
   )
 }
 export default LanguageIcon
