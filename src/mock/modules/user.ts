@@ -81,6 +81,18 @@ export const userMock: Record<string, templateOrFn> = {
         ]
       },
       {
+        path: '/three',
+        title: 'threeJs',
+        icon: 'CalendarOutlined',
+        children: [
+          {
+            path: '/three/car',
+            title: '3D Car',
+            icon: 'AppstoreOutlined'
+          }
+        ]
+      },
+      {
         path: '/user',
         title: '用户管理',
         icon: 'UserOutlined',
@@ -149,7 +161,8 @@ export const userMock: Record<string, templateOrFn> = {
       'commonDrag',
       'test',
       'drawSvg',
-      'drawCanvas'
+      'drawCanvas',
+      'threeCar'
     ],
     msg: 'success',
     code: 200
