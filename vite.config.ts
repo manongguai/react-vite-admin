@@ -11,6 +11,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd())
   const viteEnv = wrapperEnv(env)
   return {
+    base: './',
     plugins: [
       react(),
       createHtmlPlugin({
