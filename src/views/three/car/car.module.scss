@@ -2,3 +2,39 @@
     width: 100%;
     height: 100%;
 }
+
+.selector {
+    position: absolute;
+    right: 40px;
+    top: 20px;
+    line-height: 1.5;
+    color: #333;
+
+    .selectorTitle {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .selectorTitleSecond {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .colorBox {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        margin-bottom: 10px;
+    }
+
+    .colorItem {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+    }
+
+    .currentColor {
+        border: 2px solid #fff;
+    }
+}

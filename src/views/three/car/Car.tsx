@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -9,7 +9,9 @@ import styles from './car.module.scss'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入draco解码器
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { Col, Radio, RadioChangeEvent, Row } from 'antd'
 const Car = () => {
+  const [count, setCount] = useState(0)
   const canvasDom = useRef<HTMLDivElement>(null)
   // 创建场景
   const scene = new THREE.Scene()
@@ -47,15 +49,24 @@ const Car = () => {
     // 更新相机投影矩阵
     camera.updateProjectionMatrix()
   }
+  let requestAnimation: number
   function render() {
-    controller.update()
+    controller && controller.update()
     renderer.render(scene, camera)
-    requestAnimationFrame(render)
+    requestAnimation = window.requestAnimationFrame(render)
   }
 
-  let wheels = []
+  let wheels: THREE.Mesh[] = []
   // 车身，车前脸，引擎盖，挡风玻璃
-  let carBody, frontCar, hoodCar, glassCar
+  let carBody: THREE.Mesh<
+      THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+      THREE.Material | THREE.Material[],
+      THREE.Object3DEventMap
+    >,
+    frontCar,
+    hoodCar,
+    glassCar
+
   // 创建材质
   // 车身物理材质
   const bodyMaterial = new THREE.MeshPhysicalMaterial({
@@ -65,21 +76,46 @@ const Car = () => {
     clearcoat: 1, // 清漆
     clearcoatRoughness: 0 // 清漆粗糙度
   })
+
+  const frontMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xff0000,
+    metalness: 1, // 金属度
+    roughness: 0.5, // 粗糙程度
+    clearcoat: 1, // 清漆
+    clearcoatRoughness: 0 // 清漆粗糙度
+  })
+  const hoodMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xff0000,
+    metalness: 1, // 金属度
+    roughness: 0.5, // 粗糙程度
+    clearcoat: 1, // 清漆
+    clearcoatRoughness: 0 // 清漆粗糙度
+  })
+  const wheelsMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xff0000,
+    metalness: 1, // 金属度
+    roughness: 0.1 // 粗糙程度
+  })
+  const glassMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    metalness: 0,
+    transmission: 1, // 透明度
+    transparent: true,
+    roughness: 0
+  })
+  // 初始化渲染器，渲染背景
+  renderer.setClearColor('#000')
+  scene.background = new THREE.Color('#ccc')
+  render()
+  // 添加网格地面
+  const gridHelper = new THREE.GridHelper()
+  gridHelper.material.opacity = 0.2
+  gridHelper.material.transparent = true
+  scene.add(gridHelper)
+  // // 实例化加载器gltf
+
   useEffect(() => {
     canvasDom.current!.appendChild(renderer.domElement)
-    onresize()
-    window.addEventListener('resize', onresize)
-    // 初始化渲染器，渲染背景
-    renderer.setClearColor('#000')
-    scene.background = new THREE.Color('#ccc')
-    render()
-    // 添加网格地面
-    const gridHelper = new THREE.GridHelper()
-    gridHelper.material.opacity = 0.2
-    gridHelper.material.transparent = true
-    scene.add(gridHelper)
-
-    // 实例化加载器gltf
     const gltfLoader = new GLTFLoader()
     // 实例化加载器draco
     const dracoLoader = new DRACOLoader()
@@ -92,13 +128,15 @@ const Car = () => {
       '/models/bmw01.glb',
       // 加载完成回调
       (gltf) => {
-        console.log(gltf)
         const bmw = gltf.scene
         scene.add(bmw)
         bmw.traverse((child) => {
           if ((child as THREE.Mesh)?.isMesh) {
             if (child.name.includes('轮毂')) {
-              wheels.push(child)
+              wheels.push(child as THREE.Mesh)
+              wheels.forEach((child) => {
+                child.material = wheelsMaterial
+              })
             }
             if (child.name.includes('Mesh002')) {
               carBody = child as THREE.Mesh
@@ -106,12 +144,15 @@ const Car = () => {
             }
             if (child.name.includes('前脸')) {
               frontCar = child as THREE.Mesh
+              frontCar.material = frontMaterial
             }
             if (child.name.includes('引擎盖_1')) {
               hoodCar = child as THREE.Mesh
+              hoodCar.material = hoodMaterial
             }
             if (child.name.includes('挡风玻璃')) {
               glassCar = child as THREE.Mesh
+              glassCar.material = glassMaterial
             }
           }
         })
@@ -147,13 +188,88 @@ const Car = () => {
     light9.position.set(-5, 10, 0)
     scene.add(light9)
     return () => {
+      window.cancelAnimationFrame(requestAnimation)
+    }
+  }, [])
+
+  useEffect(() => {
+    onresize()
+    window.addEventListener('resize', onresize)
+    return () => {
       window.removeEventListener('resize', onresize)
     }
   })
+  interface GlassMaterialItem {
+    label: string
+    value: number
+  }
+  const bodyColors = ['red', 'blue', 'green', 'gray', 'orange', 'purple']
+  const glassMaterials: GlassMaterialItem[] = [
+    {
+      label: '磨砂',
+      value: 1
+    },
+    {
+      label: '冰晶',
+      value: 0
+    }
+  ]
+  const [currentColor, setCurrentColor] = useState('red')
+  const [currentGlassMaterial, setCurrentGlassMaterial] = useState(0)
+
+  function onGlassChange(e: RadioChangeEvent) {
+    // setCurrentGlassMaterial(e.target.value)
+    bodyMaterial.clearcoatRoughness = e.target.value
+    frontMaterial.clearcoatRoughness = e.target.value
+    hoodMaterial.clearcoatRoughness = e.target.value
+  }
+  function onColorChange(color: string) {
+    // setCurrentColor(color)
+    bodyMaterial.color.set(color)
+    frontMaterial.color.set(color)
+    hoodMaterial.color.set(color)
+    wheelsMaterial.color.set(color)
+  }
   return (
-    <div className="page-container">
-      {import.meta.env.PUBLIC_URL}
-      <div className={styles.canvasContainer} ref={canvasDom}></div>
+    <div className="page-container" style={{ position: 'relative' }}>
+      <div
+        id="canvasDom"
+        className={styles.canvasContainer}
+        ref={canvasDom}
+      ></div>
+      <div className={styles.selector}>
+        <div className={styles.selectorTitle}>汽车展示与选配</div>
+        <div className={styles.selectorTitleSecond}>选择车身颜色</div>
+        <div className={styles.colorBox}>
+          <Row gutter={20}>
+            {bodyColors.map((color, index) => {
+              return (
+                <Col key={index}>
+                  <div
+                    onClick={() => onColorChange(color)}
+                    style={{
+                      backgroundColor: color
+                    }}
+                    className={
+                      styles.colorItem +
+                      ' ' +
+                      (currentColor == color ? styles.currentColor : '')
+                    }
+                  ></div>
+                </Col>
+              )
+            })}
+          </Row>
+        </div>
+        <div className={styles.selectorTitleSecond}>选择贴膜材质</div>
+        <Radio.Group
+          options={glassMaterials}
+          onChange={onGlassChange}
+          value={currentGlassMaterial}
+          optionType="button"
+          buttonStyle="solid"
+        />
+      </div>
     </div>
   )
 }
