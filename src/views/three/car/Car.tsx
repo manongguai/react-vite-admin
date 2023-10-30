@@ -11,7 +11,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { Col, Radio, RadioChangeEvent, Row } from 'antd'
 const Car = () => {
-  const [count, setCount] = useState(0)
   const canvasDom = useRef<HTMLDivElement>(null)
   // 创建场景
   const scene = new THREE.Scene()
@@ -58,51 +57,84 @@ const Car = () => {
 
   let wheels: THREE.Mesh[] = []
   // 车身，车前脸，引擎盖，挡风玻璃
-  let carBody: THREE.Mesh<
-      THREE.BufferGeometry<THREE.NormalBufferAttributes>,
-      THREE.Material | THREE.Material[],
-      THREE.Object3DEventMap
-    >,
-    frontCar,
-    hoodCar,
-    glassCar
-
+  let frontCar =
+    useRef<
+      THREE.Mesh<
+        THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+        THREE.Material | THREE.Material[],
+        THREE.Object3DEventMap
+      >
+    >()
+  let carBody =
+    useRef<
+      THREE.Mesh<
+        THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+        THREE.Material | THREE.Material[],
+        THREE.Object3DEventMap
+      >
+    >()
+  let hoodCar =
+    useRef<
+      THREE.Mesh<
+        THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+        THREE.Material | THREE.Material[],
+        THREE.Object3DEventMap
+      >
+    >()
+  let glassCar =
+    useRef<
+      THREE.Mesh<
+        THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+        THREE.Material | THREE.Material[],
+        THREE.Object3DEventMap
+      >
+    >()
   // 创建材质
   // 车身物理材质
-  const bodyMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xff0000,
-    metalness: 1, // 金属度
-    roughness: 0.5, // 粗糙程度
-    clearcoat: 1, // 清漆
-    clearcoatRoughness: 0 // 清漆粗糙度
-  })
+  let bodyMaterial = useRef(
+    new THREE.MeshPhysicalMaterial({
+      color: 0xff0000,
+      metalness: 1, // 金属度
+      roughness: 0.5, // 粗糙程度
+      clearcoat: 1, // 清漆
+      clearcoatRoughness: 0 // 清漆粗糙度
+    })
+  )
 
-  const frontMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xff0000,
-    metalness: 1, // 金属度
-    roughness: 0.5, // 粗糙程度
-    clearcoat: 1, // 清漆
-    clearcoatRoughness: 0 // 清漆粗糙度
-  })
-  const hoodMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xff0000,
-    metalness: 1, // 金属度
-    roughness: 0.5, // 粗糙程度
-    clearcoat: 1, // 清漆
-    clearcoatRoughness: 0 // 清漆粗糙度
-  })
-  const wheelsMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xff0000,
-    metalness: 1, // 金属度
-    roughness: 0.1 // 粗糙程度
-  })
-  const glassMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    metalness: 0,
-    transmission: 1, // 透明度
-    transparent: true,
-    roughness: 0
-  })
+  const frontMaterial = useRef(
+    new THREE.MeshPhysicalMaterial({
+      color: 0xff0000,
+      metalness: 1, // 金属度
+      roughness: 0.5, // 粗糙程度
+      clearcoat: 1, // 清漆
+      clearcoatRoughness: 0 // 清漆粗糙度
+    })
+  )
+  const hoodMaterial = useRef(
+    new THREE.MeshPhysicalMaterial({
+      color: 0xff0000,
+      metalness: 1, // 金属度
+      roughness: 0.5, // 粗糙程度
+      clearcoat: 1, // 清漆
+      clearcoatRoughness: 0 // 清漆粗糙度
+    })
+  )
+  const wheelsMaterial = useRef(
+    new THREE.MeshPhysicalMaterial({
+      color: 0xff0000,
+      metalness: 1, // 金属度
+      roughness: 0.1 // 粗糙程度
+    })
+  )
+  const glassMaterial = useRef(
+    new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      metalness: 0,
+      transmission: 1, // 透明度
+      transparent: true,
+      roughness: 0
+    })
+  )
   // 初始化渲染器，渲染背景
   renderer.setClearColor('#000')
   scene.background = new THREE.Color('#ccc')
@@ -135,24 +167,24 @@ const Car = () => {
             if (child.name.includes('轮毂')) {
               wheels.push(child as THREE.Mesh)
               wheels.forEach((child) => {
-                child.material = wheelsMaterial
+                child.material = wheelsMaterial.current
               })
             }
             if (child.name.includes('Mesh002')) {
-              carBody = child as THREE.Mesh
-              carBody.material = bodyMaterial
+              carBody.current = child as THREE.Mesh
+              carBody.current.material = bodyMaterial.current
             }
             if (child.name.includes('前脸')) {
-              frontCar = child as THREE.Mesh
-              frontCar.material = frontMaterial
+              frontCar.current = child as THREE.Mesh
+              frontCar.current.material = frontMaterial.current
             }
             if (child.name.includes('引擎盖_1')) {
-              hoodCar = child as THREE.Mesh
-              hoodCar.material = hoodMaterial
+              hoodCar.current = child as THREE.Mesh
+              hoodCar.current.material = hoodMaterial.current
             }
             if (child.name.includes('挡风玻璃')) {
-              glassCar = child as THREE.Mesh
-              glassCar.material = glassMaterial
+              glassCar.current = child as THREE.Mesh
+              glassCar.current.material = glassMaterial.current
             }
           }
         })
@@ -190,7 +222,7 @@ const Car = () => {
     return () => {
       window.cancelAnimationFrame(requestAnimation)
     }
-  }, [])
+  }, ['currentColor'])
 
   useEffect(() => {
     onresize()
@@ -198,7 +230,7 @@ const Car = () => {
     return () => {
       window.removeEventListener('resize', onresize)
     }
-  })
+  }, [])
   interface GlassMaterialItem {
     label: string
     value: number
@@ -218,17 +250,17 @@ const Car = () => {
   const [currentGlassMaterial, setCurrentGlassMaterial] = useState(0)
 
   function onGlassChange(e: RadioChangeEvent) {
-    // setCurrentGlassMaterial(e.target.value)
-    bodyMaterial.clearcoatRoughness = e.target.value
-    frontMaterial.clearcoatRoughness = e.target.value
-    hoodMaterial.clearcoatRoughness = e.target.value
+    setCurrentGlassMaterial(e.target.value)
+    bodyMaterial.current.clearcoatRoughness = e.target.value
+    frontMaterial.current.clearcoatRoughness = e.target.value
+    hoodMaterial.current.clearcoatRoughness = e.target.value
   }
   function onColorChange(color: string) {
-    // setCurrentColor(color)
-    bodyMaterial.color.set(color)
-    frontMaterial.color.set(color)
-    hoodMaterial.color.set(color)
-    wheelsMaterial.color.set(color)
+    setCurrentColor(color)
+    bodyMaterial.current.color.set(color)
+    frontMaterial.current.color.set(color)
+    hoodMaterial.current.color.set(color)
+    wheelsMaterial.current.color.set(color)
   }
   return (
     <div className="page-container" style={{ position: 'relative' }}>
