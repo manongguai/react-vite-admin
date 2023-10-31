@@ -17,6 +17,17 @@ const drawRoutes: Array<RouteObject> = [
             code: 'threeCar'
           }
         )
+      },
+      {
+        path: '/three/christmas',
+        element: lazyLoad(
+          lazy(() => import('@/views/three/christmas/Christmas')),
+          {
+            requiredAuth: true,
+            title: '圣诞贺卡',
+            code: 'threeChristmas'
+          }
+        )
       }
     ]
   }

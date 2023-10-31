@@ -3,7 +3,8 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
+    "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
@@ -38,7 +39,9 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "vite.config.ts",
-    "getEnv.ts"
+    "getEnv.ts",
+    "src/views/three/christmas/Water2.js",
+    "src/views/three/christmas/Water2.js"
   ],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }

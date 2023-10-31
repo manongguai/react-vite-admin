@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-// 导入GUI
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js'
 import styles from './car.module.scss'
 // 导入gltf加载器
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'

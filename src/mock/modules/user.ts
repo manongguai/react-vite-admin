@@ -87,7 +87,12 @@ export const userMock: Record<string, templateOrFn> = {
         children: [
           {
             path: '/three/car',
-            title: '3D Car',
+            title: '3D汽车展示',
+            icon: 'AppstoreOutlined'
+          },
+          {
+            path: '/three/christmas',
+            title: '圣诞贺卡',
             icon: 'AppstoreOutlined'
           }
         ]
@@ -162,7 +167,8 @@ export const userMock: Record<string, templateOrFn> = {
       'test',
       'drawSvg',
       'drawCanvas',
-      'threeCar'
+      'threeCar',
+      'threeChristmas'
     ],
     msg: 'success',
     code: 200
