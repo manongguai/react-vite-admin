@@ -7,7 +7,7 @@ import styles from './christmas.module.scss'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入draco解码器
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import gasp from 'gasp'
+import gsap from 'gsap'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import { Water } from './Water2'
 const Christmas = () => {
@@ -69,6 +69,8 @@ const Christmas = () => {
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.ACESFilmicToneMapping
   renderer.toneMappingExposure = 0.5 // 曝光度
+  renderer.shadowMap.enabled = true // 允许光源阴影
+
   //   创建水面
   const waterGeometry = new THREE.CircleGeometry(300, 32)
   const waterMesh = new Water(waterGeometry, {
@@ -81,14 +83,66 @@ const Christmas = () => {
   waterMesh.rotation.x = -Math.PI / 2
   waterMesh.position.y = -0.4
   scene.add(waterMesh)
+  // 创建点光源
+  const pointLight = new THREE.PointLight(0xffffff, 50)
+  pointLight.position.set(0.1, 2.4, 0)
+  pointLight.castShadow = true
+  scene.add(pointLight)
 
-  function render() {
+  //   创建点光源组
+  const pointLightGroup = new THREE.Group()
+  pointLightGroup.position.set(-8, 2.5, -1.5)
+  let pointLightArr: THREE.Mesh[] = []
+  const radius = 2
+  for (let i = 0; i < 3; i++) {
+    const pointLight = new THREE.PointLight(0xffffff, 1)
+    // 创建球体等灯泡
+    const sphereGeometry = new THREE.SphereGeometry(0.2, 32, 32)
+    const sphereMaterial = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      emissive: 0xffffff,
+      emissiveIntensity: 10
+    })
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+
+    sphere.position.set(
+      radius * Math.cos((i * 2 * Math.PI) / 3),
+      Math.cos((i * 2 * Math.PI) / 3),
+      radius * Math.sin((i * 2 * Math.PI) / 3)
+    )
+    sphere.add(pointLight)
+    pointLightArr.push(sphere)
+    pointLightGroup.add(sphere)
+  }
+
+  scene.add(pointLightGroup)
+  // 使用补间函数，从0到2π，使灯泡旋转
+  let options = {
+    angle: 0
+  }
+  gsap.to(options, {
+    angle: Math.PI * 2,
+    duration: 10,
+    repeat: -1,
+    ease: 'linear',
+    onUpdate: () => {
+      pointLightGroup.rotation.y = options.angle
+      pointLightArr.forEach((item, index) => {
+        item.position.set(
+          radius * Math.cos((index * 2 * Math.PI) / 3),
+          Math.cos((index * 2 * Math.PI) / 3 + options.angle * 5),
+          radius * Math.sin((index * 2 * Math.PI) / 3)
+        )
+      })
+    }
+  })
+  function animate() {
     controller && controller.update()
     renderer.render(scene, camera)
-    requestAnimation = window.requestAnimationFrame(render)
+    requestAnimation = window.requestAnimationFrame(animate)
   }
   useEffect(() => {
-    render()
+    animate()
     canvasDom.current!.appendChild(renderer.domElement)
     const gltfLoader = new GLTFLoader()
     // 实例化加载器draco
@@ -107,6 +161,11 @@ const Christmas = () => {
           // 隐藏原水面
           if (child.name === 'Plane') {
             child.visible = false
+          }
+          if ((child as THREE.Mesh)?.isMesh) {
+            // 物体允许发射阴影和接收阴影
+            child.castShadow = true
+            child.receiveShadow = true
           }
         })
       }

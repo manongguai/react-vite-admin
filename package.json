@@ -17,6 +17,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.5",
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/gsap": "^3.0.0",
     "@types/nprogress": "^0.2.0",
     "@types/three": "^0.157.2",
     "@vitejs/plugin-react": "^4.0.3",
@@ -26,6 +27,7 @@
     "drauu": "^0.3.5",
     "driver.js": "^1.2.1",
     "gasp": "^0.0.2",
+    "gsap": "^3.12.2",
     "i18next": "^23.4.6",
     "less": "^4.2.0",
     "normalize.css": "^8.0.1",
