@@ -10,6 +10,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import gsap from 'gsap'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import { Water } from './Water2'
+import { on } from 'events'
 const Christmas = () => {
   const canvasDom = useRef<HTMLDivElement>(null)
   let requestAnimation: number
@@ -120,6 +121,7 @@ const Christmas = () => {
   let options = {
     angle: 0
   }
+  // 旋转灯动效
   gsap.to(options, {
     angle: Math.PI * 2,
     duration: 10,
@@ -136,6 +138,89 @@ const Christmas = () => {
       })
     }
   })
+
+  let scenes = [
+    {
+      text: '圣诞快乐',
+      callback() {
+        // 执行函数切换位置
+        translateCamera(
+          new THREE.Vector3(-3.23, 3, 4.06),
+          new THREE.Vector3(-8, 2, 0)
+        )
+      }
+    },
+    {
+      text: '感谢在这么大的世界里遇见了你',
+      callback() {
+        translateCamera(new THREE.Vector3(7, 0, 23), new THREE.Vector3(0, 0, 0))
+      }
+    },
+    {
+      text: '愿与你探寻世界的每一个角落',
+      callback() {
+        translateCamera(new THREE.Vector3(10, 3, 0), new THREE.Vector3(5, 2, 0))
+      }
+    },
+    {
+      text: '愿将天上的星星送给你',
+      callback() {
+        translateCamera(new THREE.Vector3(7, 0, 23), new THREE.Vector3(0, 0, 0))
+        // makeHeart()
+      }
+    },
+    {
+      text: '愿你一生健康，平安喜乐',
+      callback() {
+        translateCamera(
+          new THREE.Vector3(-20, 1.3, 6.6),
+          new THREE.Vector3(5, 2, 0)
+        )
+      }
+    }
+  ]
+  let index = useRef(0)
+  let isAnimate = useRef(false)
+  function onscroll(e: WheelEvent) {
+    if (isAnimate.current) return
+    isAnimate.current = true
+    if (e.deltaY > 0) {
+      index.current += 1
+      if (index.current > scenes.length) {
+        index.current = 0
+      }
+      scenes[index.current].callback()
+    }
+    setTimeout(() => {
+      isAnimate.current = false
+    }, 1000)
+  }
+  function addScrollEvent() {
+    window.addEventListener('wheel', onscroll, false)
+  }
+  // 使用补间动画移动相机
+  let timeLine1 = gsap.timeline()
+  let timeline2 = gsap.timeline()
+
+  // 定义相机移动函数
+  function translateCamera(position: THREE.Vector3, target: THREE.Vector3) {
+    timeLine1.to(camera.position, {
+      x: position.x,
+      y: position.y,
+      z: position.z,
+      duration: 1,
+      ease: 'power2.inOut'
+    })
+
+    timeline2.to(controller.target, {
+      x: target.x,
+      y: target.y,
+      z: target.z,
+      duration: 1,
+      ease: 'power2.inOut'
+    })
+  }
+
   function animate() {
     controller && controller.update()
     renderer.render(scene, camera)
@@ -168,10 +253,11 @@ const Christmas = () => {
             child.receiveShadow = true
           }
         })
+        addScrollEvent()
       }
     )
-
     return () => {
+      window.removeEventListener('wheel', onscroll)
       window.cancelAnimationFrame(requestAnimation)
     }
   }, [])
