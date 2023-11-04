@@ -23,8 +23,8 @@ const Christmas = () => {
     0.1,
     1000
   )
-  camera.position.set(0, 2, 6)
-  camera.lookAt(0, 0, 0)
+  camera.position.set(-3.23, 2.98, 4.06)
+  camera.updateProjectionMatrix()
   // 创建渲染器
   const renderer = new THREE.WebGLRenderer({
     antialias: true // 抗锯齿
@@ -35,6 +35,8 @@ const Christmas = () => {
   controller.enableDamping = true
   // 设置阻尼系数
   controller.dampingFactor = 0.05 // 数值越小，惯性越大
+  controller.target.set(-8, 2, 0)
+
   function onresize() {
     renderer.setSize(
       canvasDom.current!.offsetWidth,
@@ -179,17 +181,19 @@ const Christmas = () => {
       }
     }
   ]
-  let index = useRef(0)
+  let [index, setIndex] = useState(0)
+  let i = 0
   let isAnimate = useRef(false)
   function onscroll(e: WheelEvent) {
     if (isAnimate.current) return
     isAnimate.current = true
     if (e.deltaY > 0) {
-      index.current += 1
-      if (index.current > scenes.length) {
-        index.current = 0
+      i += 1
+      if (i >= scenes.length) {
+        i = 0
       }
-      scenes[index.current].callback()
+      setIndex(i)
+      scenes[i].callback()
     }
     setTimeout(() => {
       isAnimate.current = false
@@ -269,12 +273,42 @@ const Christmas = () => {
     }
   }, [])
   return (
-    <div className="page-container">
+    <div className="page-container" style={{ position: 'relative' }}>
       <div
         id="canvasDom"
         className={styles.canvasContainer}
         ref={canvasDom}
       ></div>
+      <div
+        className={[styles.scenes, index == 0 ? styles.lastScene : ''].join(
+          ' '
+        )}
+        style={{
+          transform: `translate3d(0, ${-index * 100}%, 0)`
+        }}
+      >
+        {scenes.map((scene, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                width: '100%',
+                height: '100%'
+              }}
+            >
+              <h1
+                style={{
+                  padding: '50px 50px',
+                  fontSize: '30px',
+                  color: 'white'
+                }}
+              >
+                {scene.text}
+              </h1>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

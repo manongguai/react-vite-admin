@@ -2,3 +2,18 @@
     width: 100%;
     height: 100%;
 }
+
+.scenes {
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 2s;
+    pointer-events: none;
+}
+
+.lastScene {
+    transition: none !important;
+}
