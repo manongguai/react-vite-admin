@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -19,17 +19,11 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install Dependencies
-        run: pnpm install
-
       - name: Build
-        run: pnpm run docs:build
+        run: npm run build:test
 
       - name: Deploy to Hosting Service
-        if: github.ref == 'refs/heads/main' #对分支进行检测
+        if: github.ref == 'refs/heads/master' #对分支进行检测
         uses: moonpathbg/scp_uploader@latest
         with:
           host: ${{ secrets.HOST }}
