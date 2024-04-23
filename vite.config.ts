@@ -48,7 +48,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       //     drop_debugger: true
       //   }
       // },
-      rollupOptions: {}
+      rollupOptions: {
+        output: {
+          // Static resource classification and packaging
+          chunkFileNames: 'assets/js/[name]-[hash].js',
+          entryFileNames: 'assets/js/[name]-[hash].js',
+          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+        }
+      }
     }
   }
 }
