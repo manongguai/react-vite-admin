@@ -22,7 +22,7 @@ export const getUserInfo = () => {
 }
 
 export const login = (userInfo: ReqLoginForm) => {
-  return http.post<ResLogin>('/login', userInfo, {
+  return http.post<ResLogin>('/auth/login', userInfo, {
     notAllowCancel: true
   })
 }

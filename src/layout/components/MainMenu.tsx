@@ -39,7 +39,22 @@ const MainMenu = (props: any) => {
     }
   }
   const getMenuData = async () => {
-    const { data } = await getMenus()
+    let data: Menu.MenuOptions[] = []
+    try {
+      const res = await getMenus()
+      data = res.data!
+    } catch (error) {
+      console.log(error)
+    }
+    const homeRoute = data?.find((t) => t.path === '/home')
+    if (!homeRoute) {
+      data?.unshift({
+        path: '/home',
+        title: '首页',
+        icon: 'PieChartOutlined',
+        code: 'home'
+      })
+    }
     if (!data) return
     setMenuList(deepLoopFloat(data))
     dispatch(setBreadcrumbs(findAllBreadcrumb(data)))

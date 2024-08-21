@@ -20,6 +20,7 @@ declare global {
       icon?: string
       close?: boolean
       children?: MenuOptions[]
+      code: string
     }
   }
   export interface SetAction<T> {
