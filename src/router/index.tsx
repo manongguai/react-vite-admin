@@ -6,12 +6,15 @@ import Login from '@/views/login/index'
 import { RouteObject } from './interface'
 import i18n from '@/language'
 import { getAuthRoutes } from '@/api/user'
-import store from '@/store'
 
 const rootLoader = async () => {
-  const { data } = await getAuthRoutes()
-  store.dispatch
-  return data
+  try {
+    const { data } = await getAuthRoutes()
+    return data
+  } catch (error) {
+    console.log(error)
+    return []
+  }
 }
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
