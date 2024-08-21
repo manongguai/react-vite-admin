@@ -7,15 +7,6 @@ import { RouteObject } from './interface'
 import i18n from '@/language'
 import { getAuthRoutes } from '@/api/user'
 
-const rootLoader = async () => {
-  try {
-    const { data } = await getAuthRoutes()
-    return data
-  } catch (error) {
-    console.log(error)
-    return []
-  }
-}
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
   eager: true
@@ -39,7 +30,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: '/',
-    loader: rootLoader,
+    // loader: rootLoader,
     id: 'root',
     children: [
       {

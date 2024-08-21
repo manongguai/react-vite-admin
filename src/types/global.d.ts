@@ -12,15 +12,22 @@ declare global {
     browserLanguage: string
   }
   export type { RootState } from '@/store'
+
   // * Menu
   export namespace Menu {
+    type MenuType = 1 | 2 | 3
     interface MenuOptions {
       path: string
-      title: string
+      name: string
       icon?: string
       close?: boolean
-      children?: MenuOptions[]
       code: string
+      parentId: string
+      id: string
+      type: MenuType
+    }
+    type MenuTreeOptions = MenuOptions & {
+      children?: MenuTreeOptions[]
     }
   }
   export interface SetAction<T> {

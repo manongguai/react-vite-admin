@@ -13,8 +13,9 @@ interface IProps {
 /**
  * @description 路由守卫组件
  * */
+
 const RouterGuard = (props: IProps) => {
-  const loaderData = useRouteLoaderData('root') as string[]
+  const { accessToken, authRouter } = useAppSelector((state) => state.user)
   useEffect(() => {
     // 添加tab
     props?.meta?.title && addTab(props.meta.title)
@@ -22,12 +23,11 @@ const RouterGuard = (props: IProps) => {
   const { addTab } = useTabs()
   // * 在跳转路由之前，清除所有的请求
   axiosCanceler.removeAllPending()
-  const { accessToken } = useAppSelector((state) => state.user)
   const { meta } = props
   if (!meta?.requiredAuth) return props.children
   if (!accessToken) return <Navigate to="/login" replace />
   const staticRouter = ['/', 'home', '404', '403']
-  const routerList = loaderData.concat(staticRouter)
+  const routerList = authRouter.concat(staticRouter)
   if (!routerList.includes(meta.code)) return <Navigate to="/403" />
   return <>{props.children}</>
 }

@@ -45,15 +45,15 @@ export const getItem = (
 }
 // 处理后台返回菜单 key 值为 antd 菜单需要的 key 值
 export const deepLoopFloat = (
-  menuList: Menu.MenuOptions[],
+  menuList: Menu.MenuTreeOptions[],
   newArr: MenuItem[] = []
 ) => {
-  menuList.forEach((item: Menu.MenuOptions) => {
+  menuList.forEach((item: Menu.MenuTreeOptions) => {
     if (!item?.children?.length)
-      return newArr.push(getItem(item.title, item.path, getAntIcon(item.icon!)))
+      return newArr.push(getItem(item.name, item.path, getAntIcon(item.icon!)))
     newArr.push(
       getItem(
-        item.title,
+        item.name,
         item.path,
         getAntIcon(item.icon!),
         deepLoopFloat(item.children)
@@ -69,10 +69,10 @@ export const deepLoopFloat = (
  * @returns object
  */
 export const findAllBreadcrumb = (
-  menuList: Menu.MenuOptions[]
+  menuList: Menu.MenuTreeOptions[]
 ): { [key: string]: any } => {
   let handleBreadcrumbList: any = {}
-  const loop = (menuItem: Menu.MenuOptions) => {
+  const loop = (menuItem: Menu.MenuTreeOptions) => {
     // 下面判断代码解释 *** !item?.children?.length   ==>   (item.children && item.children.length > 0)
     if (menuItem?.children?.length)
       menuItem.children.forEach((item) => loop(item))
@@ -94,11 +94,11 @@ export const findAllBreadcrumb = (
  */
 export const getBreadcrumbList = (
   path: string,
-  menuList: Menu.MenuOptions[]
+  menuList: Menu.MenuTreeOptions[]
 ) => {
   let tempPath: any[] = []
   try {
-    const getNodePath = (node: Menu.MenuOptions) => {
+    const getNodePath = (node: Menu.MenuTreeOptions) => {
       tempPath.push(node)
       // 找到符合条件的节点，通过throw终止掉递归
       if (node.path === path) {
@@ -126,4 +126,33 @@ export const getBreadcrumbList = (
 export const logout = () => {
   store.dispatch(setLogout())
   window.location.href = '/login'
+}
+
+export function buildMenuTree(
+  menuList: Menu.MenuOptions[]
+): Menu.MenuOptions[] {
+  const menuMap: {
+    [k: string]: {
+      children: Menu.MenuTreeOptions[]
+      path: string
+      name: string
+      icon?: string
+      close?: boolean
+      code: string
+      parentId: string
+      id: string
+      type: Menu.MenuType
+    }
+  } = Object.fromEntries(
+    menuList
+      .filter((menu) => menu.type === 1)
+      .map((menu) => [menu.id, { ...menu, children: [] }])
+  )
+  return Object.values(menuMap).filter((menu) => {
+    if (menu.parentId !== '0') {
+      menuMap[menu.parentId]?.children.push(menu)
+      return false
+    }
+    return true
+  })
 }

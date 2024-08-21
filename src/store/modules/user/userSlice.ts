@@ -31,6 +31,9 @@ const userSlice = createSlice({
     },
     setAuthMenus: (state, action: SetAction<Menu.MenuOptions[]>) => {
       state.authMenus = action.payload
+      state.authRouter = action.payload
+        .filter((menu) => menu.type === 1)
+        .map((t) => t.code)
     },
     setAuthRouter: (state, action: SetAction<string[]>) => {
       state.authRouter = action.payload

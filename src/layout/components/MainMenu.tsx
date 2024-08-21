@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Menu, MenuProps } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { deepLoopFloat, findAllBreadcrumb, getOpenKeys } from '@/utils/system'
+import {
+  deepLoopFloat,
+  findAllBreadcrumb,
+  getOpenKeys,
+  buildMenuTree
+} from '@/utils/system'
 import { getMenus } from '@/api/user'
 import { setAuthRouter, setAuthMenus } from '@/store/modules/user/userSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
@@ -50,13 +55,16 @@ const MainMenu = (props: any) => {
     if (!homeRoute) {
       data?.unshift({
         path: '/home',
-        title: '首页',
+        name: '首页',
         icon: 'PieChartOutlined',
-        code: 'home'
+        code: 'home',
+        type: 1,
+        parentId: '0',
+        id: '1'
       })
     }
-    if (!data) return
-    setMenuList(deepLoopFloat(data))
+    const menuTree: Menu.MenuTreeOptions[] = buildMenuTree(data)
+    setMenuList(deepLoopFloat(menuTree))
     dispatch(setBreadcrumbs(findAllBreadcrumb(data)))
     dispatch(setAuthMenus(data))
   }

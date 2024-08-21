@@ -67,7 +67,7 @@ export class CommonService extends HttpService {
         // * 如果当前请求不需要显示 loading,在api服务中通过指定的第三个参数: { headers: { noLoading: true } }来控制不显示loading，参见loginApi
         config.noLoading || showFullScreenLoading()
         const token: string = store.getState().user.accessToken
-        config.headers['token'] = token // token,需要改成store
+        config.headers['Authorization'] = token // token,需要改成store
         return config
       },
       (error: AxiosError) => {

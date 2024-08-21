@@ -13,7 +13,7 @@ export interface ResLogin {
 }
 export const getUserInfo = () => {
   return http.get<UserInfo>(
-    '/userInfo',
+    '/user/one/info',
     {},
     {
       notAllowCancel: true
@@ -29,7 +29,7 @@ export const login = (userInfo: ReqLoginForm) => {
 
 export const getMenus = () => {
   return http.get<Menu.MenuOptions[]>(
-    '/menus',
+    '/perm/menu',
     {},
     {
       notAllowCancel: true
@@ -39,7 +39,7 @@ export const getMenus = () => {
 
 export const getAuthRoutes = () => {
   return http.get<string[]>(
-    '/authRoutes',
+    '/perm/authRoutes',
     {},
     {
       notAllowCancel: true
