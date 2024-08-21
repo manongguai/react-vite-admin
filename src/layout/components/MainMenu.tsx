@@ -51,6 +51,7 @@ const MainMenu = (props: any) => {
     } catch (error) {
       console.log(error)
     }
+
     const homeRoute = data?.find((t) => t.path === '/home')
     if (!homeRoute) {
       data?.unshift({

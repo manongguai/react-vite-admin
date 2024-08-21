@@ -84,7 +84,7 @@ export class CommonService extends HttpService {
         axiosCanceler.removePending(config)
         config.noLoading || tryHideFullScreenLoading()
         // * 登录失效（code == 599）
-        if (data.code === ResultEnum.OVERDUE) {
+        if (data.code === ResultEnum.Unauthorized) {
           const token: string = store.getState().user.accessToken
           if (!token) {
             logout()
@@ -108,6 +108,16 @@ export class CommonService extends HttpService {
           error.config.noLoading || tryHideFullScreenLoading()
           axiosCanceler.removePending(error.config)
         }
+        if (error.response?.status === ResultEnum.Unauthorized) {
+          const token: string = store.getState().user.accessToken
+          if (!token) {
+            logout()
+            message.error(i18n.t('notification.pleaseLogin'))
+            return Promise.resolve()
+          }
+          const refresher = Refresher.getInstance()
+          return refresher.predict(error.response.config)
+        }
         if (error.code != 'ERR_CANCELED') {
           message.error(error.message)
         }
@@ -120,8 +130,8 @@ export class RefresherService extends HttpService {
   useRequestInterceptors() {
     this.service.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        const token: string = store.getState().user.accessToken
-        config.headers['token'] = token // token,需要改成store
+        const token: string = store.getState().user.refreshToken
+        config.headers['Authorization'] = 'Bearer ' + token // token,需要改成store
         return config
       },
       (error: AxiosError) => {

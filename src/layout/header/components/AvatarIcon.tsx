@@ -75,7 +75,7 @@ const AvatarIcon = () => {
         trigger={['click']}
       >
         <Space>
-          <div>{userInfo.username}</div>
+          <div>{userInfo?.username}</div>
           <Avatar size="large" src={avatar} />
         </Space>
       </Dropdown>

@@ -33,8 +33,8 @@ const InfoModal = (props: Props) => {
         onCancel={handleCancel}
         destroyOnClose={true}
       >
-        <p>UserName: {props.userInfo.username}</p>
-        <p>Phone: {props.userInfo.phone}</p>
+        <p>UserName: {props.userInfo?.username}</p>
+        <p>Phone: {props.userInfo?.phone}</p>
       </Modal>
     </>
   )

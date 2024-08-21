@@ -62,4 +62,6 @@ export const routes: RouteObject[] = [
   }
 ]
 export const browserRouter = createBrowserRouter(routes)
+console.log(browserRouter)
+
 export default browserRouter

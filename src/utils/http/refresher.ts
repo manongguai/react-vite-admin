@@ -2,6 +2,8 @@ import { AxiosRequestConfig } from 'axios'
 import { CommonService, RefresherService } from './index'
 import Queue from 'queue'
 import { ResLogin } from '@/api/user'
+import store from '@/store'
+import { setTokens } from '@/store/modules/user/userSlice'
 class Refresher {
   private static instance: Refresher
   queue: Queue
@@ -22,7 +24,7 @@ class Refresher {
   }
   static getInstance() {
     if (!Refresher.instance) {
-      return new Refresher()
+      return (Refresher.instance = new Refresher())
     }
     return Refresher.instance
   }
@@ -33,7 +35,7 @@ class Refresher {
    */
   successHandle(e: any) {
     console.log('task success >>>>>>')
-    e.detail.job.resolve(e.detail.result)
+    e.detail.job.resolve(e.detail.result[0])
   }
   /**
    * task 失败
@@ -51,8 +53,8 @@ class Refresher {
    */
   predict(request: AxiosRequestConfig): Promise<any> {
     const task = async (): Promise<any> => {
-      const token = localStorage.getItem('token') || ''
-      const headerJwt = request.headers?.token || ''
+      const headerJwt = request.headers?.Authorization || ''
+      const token: string = store.getState().user.accessToken
       if (token && headerJwt === token) {
         await this.refreshToken()
       }
@@ -80,18 +82,14 @@ class Refresher {
    * @returns
    */
   async refreshToken() {
-    const refreshToken = localStorage.getItem('refreshToken') || ''
     return this.refreshService
       .request<ResLogin>({
-        url: '/refreshToken',
+        url: '/auth/update/token',
         method: 'POST',
-        data: {
-          refresh_jwt: refreshToken // refresh token所需参数，自行处理
-        }
+        data: {}
       })
       .then(({ data }) => {
-        localStorage.setItem('token', data!.accessToken)
-        localStorage.setItem('refreshToken', data!.refreshToken)
+        store.dispatch(setTokens(data!))
         return Promise.resolve()
       })
   }
