@@ -51,12 +51,14 @@ function buildDynamicRoute(menu: Menu.MenuTreeOptions): RouteObject {
       path: menu.path
     }
   }
+  const element = viewModules[`../views${menu.path}/index.tsx`]
+  if (!element) {
+    throw new Error(`找不到 ${menu.path} 对应的路由文件`)
+  }
   return {
     path: menu.path,
     element: lazyLoad(
-      lazy(() =>
-        Promise.resolve(viewModules[`../views${menu.path}/index.tsx`])
-      ),
+      lazy(() => Promise.resolve(element)),
       {
         title: menu.name,
         requiredAuth: true,

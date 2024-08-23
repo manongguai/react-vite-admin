@@ -21,17 +21,17 @@ const useMenu = () => {
       console.log(error)
     }
     const homeRoute = data?.find((t) => t.path === '/home')
-    if (!homeRoute) {
-      data?.unshift({
-        path: '/home',
-        name: '首页',
-        icon: 'PieChartOutlined',
-        code: 'home',
-        type: 1,
-        parentId: '0',
-        id: '1'
-      })
-    }
+    // if (!homeRoute) {
+    //   data?.unshift({
+    //     path: '/home',
+    //     name: '首页',
+    //     icon: 'PieChartOutlined',
+    //     code: 'home',
+    //     type: 1,
+    //     parentId: '0',
+    //     id: '1'
+    //   })
+    // }
     dispatch(setBreadcrumbs(findAllBreadcrumb(data)))
     dispatch(setAuthMenus(data))
   }

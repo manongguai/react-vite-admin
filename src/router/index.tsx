@@ -39,7 +39,7 @@ export const staticRoutes: RouteObject[] = [
       {
         path: '/home',
         element: lazyLoad(
-          lazy(() => import('@/views/Home')),
+          lazy(() => import('@/views/home')),
           {
             title: i18n.t('home.title'),
             requiredAuth: true,
