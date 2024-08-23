@@ -8,7 +8,7 @@ import {
   buildMenuTree
 } from '@/utils/system'
 import { getMenus } from '@/api/user'
-import { setAuthRouter, setAuthMenus } from '@/store/modules/user/userSlice'
+import { setAuthMenus } from '@/store/modules/user/userSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { setBreadcrumbs } from '@/store/modules/breadcrumb/breadcrumbSlice'
 import { isLink } from '@/utils/is'

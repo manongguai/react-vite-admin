@@ -1,11 +1,11 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom'
-import { lazy } from 'react'
+import { Navigate, useRoutes } from 'react-router-dom'
+import { lazy, useEffect, useState } from 'react'
 import lazyLoad from '@/router/lazyLoad'
 import LayoutContainer from '@/layout'
 import Login from '@/views/login/index'
 import { RouteObject } from './interface'
 import i18n from '@/language'
-import { getAuthRoutes } from '@/api/user'
+import useLoadRoutes from './useLoadRoutes'
 
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
@@ -16,6 +16,7 @@ const metaRouters = import.meta.glob('./modules/*.tsx', {
     [key: string]: any
   }
 >
+
 // * 处理路由
 export const routerArray: RouteObject[] = []
 Object.keys(metaRouters).forEach((item) => {
@@ -23,33 +24,26 @@ Object.keys(metaRouters).forEach((item) => {
     routerArray.push(...metaRouters[item][key])
   })
 })
-export const routes: RouteObject[] = [
+export const staticRoutes: RouteObject[] = [
   {
     path: '/',
     element: <Navigate to="/home" />
   },
   {
     path: '/',
-    // loader: rootLoader,
-    id: 'root',
+    element: <LayoutContainer />,
     children: [
       {
-        element: <LayoutContainer />,
-        children: [
+        path: '/home',
+        element: lazyLoad(
+          lazy(() => import('@/views/Home')),
           {
-            path: '/home',
-            element: lazyLoad(
-              lazy(() => import('@/views/Home')),
-              {
-                title: i18n.t('home.title'),
-                requiredAuth: true,
-                code: 'home'
-              }
-            )
+            title: i18n.t('home.title'),
+            requiredAuth: true,
+            code: 'home'
           }
-        ]
-      },
-      ...routerArray
+        )
+      }
     ]
   },
   {
@@ -61,7 +55,16 @@ export const routes: RouteObject[] = [
     element: <Navigate to="/404" />
   }
 ]
-export const browserRouter = createBrowserRouter(routes)
-console.log(browserRouter)
+const Router = () => {
+  const { dynamicRoutes } = useLoadRoutes()
+  const [routes, setRoutes] = useState([] as RouteObject[])
+  useEffect(() => {
+    dynamicRoutes.forEach((route) => {
+      staticRoutes[1].children!.push(route)
+    })
+    setRoutes(staticRoutes)
+  }, [dynamicRoutes])
 
-export default browserRouter
+  return useRoutes(routes)
+}
+export default Router

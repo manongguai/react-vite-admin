@@ -1,7 +1,7 @@
 import { languageEnums } from '@/enums/languageEnum'
+import { MetaProps, RouteObject } from '@/router/interface'
 import { MappingAlgorithm } from 'antd'
 import { SizeType } from 'antd/es/config-provider/SizeContext'
-
 export interface UserInfo {
   username?: string
   phone?: string
@@ -11,7 +11,7 @@ export interface UserState {
   accessToken: string
   refreshToken: string
   authMenus: Menu.MenuOptions[]
-  authRouter: string[]
+  authRouterCode: string[]
 }
 
 export type GlobalTheme = 'light' | 'dark'

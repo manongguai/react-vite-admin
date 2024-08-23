@@ -2,8 +2,8 @@ import useTheme from '@/hooks/theme.hooks'
 import { ConfigProvider } from 'antd'
 import AppProvider from './components/AppProvider'
 import useLanguage from './hooks/language.hooks'
-import { RouterProvider } from 'react-router-dom'
-import browserRouter from '@/router'
+import { BrowserRouter } from 'react-router-dom'
+import Router from '@/router'
 
 function App() {
   const { themeAlgorithm, componentSize, primary } = useTheme()
@@ -22,7 +22,9 @@ function App() {
       {/* 提供带有上下文的全局消息api */}
       <AppProvider>
         <div className="app">
-          <RouterProvider router={browserRouter} />
+          <BrowserRouter>
+            <Router></Router>
+          </BrowserRouter>
         </div>
       </AppProvider>
     </ConfigProvider>

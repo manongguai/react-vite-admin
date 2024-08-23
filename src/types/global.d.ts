@@ -1,3 +1,4 @@
+import { MetaProps } from '@/router/interface'
 import '@/store'
 declare global {
   import { MessageInstance, HookAPI, NotificationInstance } from 'antd'
@@ -25,6 +26,7 @@ declare global {
       parentId: string
       id: string
       type: MenuType
+      meta?: MetaProps
     }
     type MenuTreeOptions = MenuOptions & {
       children?: MenuTreeOptions[]
