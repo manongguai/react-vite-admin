@@ -54,13 +54,17 @@ const LoginView = () => {
       })
     })
   }
+  function initBg() {
+    initBackground(theme)
+  }
   const onFinishFailed = (errorInfo: any) => {}
   useEffect(() => {
     const stop = initBackground(theme)
-    window.onresize = function () {
-      initBackground(theme)
+    window.addEventListener('resize', initBg)
+    return () => {
+      stop()
+      window.removeEventListener('resize', initBg)
     }
-    return () => stop()
   }, [theme])
   return (
     <>
