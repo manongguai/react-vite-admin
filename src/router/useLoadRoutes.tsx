@@ -13,7 +13,6 @@ const viewModules = import.meta.glob('../views/**/*.tsx', {
     default: ComponentType<{}>
   }
 >
-console.log(viewModules)
 
 export default function useLoadRoutes() {
   const { authMenus } = useAppSelector((store) => store.user)

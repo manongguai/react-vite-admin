@@ -27,6 +27,8 @@ const userSlice = createSlice({
       state.accessToken = ''
       state.refreshToken = ''
       state.userInfo = {}
+      state.authRouterCode = []
+      state.authMenus = []
     },
     setAuthMenus: (state, action: SetAction<Menu.MenuOptions[]>) => {
       state.authMenus = action.payload

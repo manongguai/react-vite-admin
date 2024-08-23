@@ -6,6 +6,7 @@ import Login from '@/views/login/index'
 import { RouteObject } from './interface'
 import i18n from '@/language'
 import useLoadRoutes from './useLoadRoutes'
+import FullLoading from '@/components/Loading/FullLoading'
 
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
@@ -57,12 +58,15 @@ export const staticRoutes: RouteObject[] = [
 ]
 const Router = () => {
   const { dynamicRoutes } = useLoadRoutes()
-  const [routes, setRoutes] = useState([] as RouteObject[])
+  const [routes, setRoutes] = useState(staticRoutes)
   useEffect(() => {
-    dynamicRoutes.forEach((route) => {
-      staticRoutes[1].children!.push(route)
-    })
-    setRoutes(staticRoutes)
+    if (dynamicRoutes.length > 0) {
+      const newRoutes = [...staticRoutes]
+      dynamicRoutes.forEach((route) => {
+        newRoutes[1].children!.push(route)
+      })
+      setRoutes(newRoutes)
+    }
   }, [dynamicRoutes])
 
   return useRoutes(routes)
