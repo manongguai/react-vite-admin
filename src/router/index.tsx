@@ -7,6 +7,8 @@ import { RouteObject } from './interface'
 import i18n from '@/language'
 import useLoadRoutes from './useLoadRoutes'
 import FullLoading from '@/components/Loading/FullLoading'
+import { useAppSelector } from '@/hooks/redux.hooks'
+import useMenu from '@/hooks/menu.hooks'
 
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
@@ -57,7 +59,11 @@ export const staticRoutes: RouteObject[] = [
   }
 ]
 const Router = () => {
+  useMenu() // 请求菜单
   const { dynamicRoutes } = useLoadRoutes()
+  const [isLoaded, setIsLoaded] = useState(false)
+  const { accessToken } = useAppSelector((store) => store.user)
+
   const [routes, setRoutes] = useState(staticRoutes)
   useEffect(() => {
     if (dynamicRoutes.length > 0) {
@@ -66,9 +72,13 @@ const Router = () => {
         newRoutes[1].children!.push(route)
       })
       setRoutes(newRoutes)
+      setIsLoaded(true)
     }
   }, [dynamicRoutes])
 
+  if (accessToken && !isLoaded) {
+    return useRoutes([{ path: '*', element: <FullLoading></FullLoading> }])
+  }
   return useRoutes(routes)
 }
 export default Router

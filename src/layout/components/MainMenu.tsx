@@ -16,8 +16,9 @@ type MenuItem = Required<MenuProps>['items'][number]
 
 const MainMenu = (props: any) => {
   const navigateTo = useNavigate()
-  const { collapsed } = useAppSelector((state) => ({
-    collapsed: state.global.collapsed
+  const { collapsed, authMenus } = useAppSelector((state) => ({
+    collapsed: state.global.collapsed,
+    authMenus: state.user.authMenus
   }))
   const dispatch = useAppDispatch()
   const { pathname } = useLocation()
@@ -44,34 +45,12 @@ const MainMenu = (props: any) => {
     }
   }
   const getMenuData = async () => {
-    let data: Menu.MenuOptions[] = []
-    try {
-      const res = await getMenus()
-      data = res.data!
-    } catch (error) {
-      console.log(error)
-    }
-
-    const homeRoute = data?.find((t) => t.path === '/home')
-    if (!homeRoute) {
-      data?.unshift({
-        path: '/home',
-        name: '首页',
-        icon: 'PieChartOutlined',
-        code: 'home',
-        type: 1,
-        parentId: '0',
-        id: '1'
-      })
-    }
-    const menuTree: Menu.MenuTreeOptions[] = buildMenuTree(data)
+    const menuTree: Menu.MenuTreeOptions[] = buildMenuTree(authMenus)
     setMenuList(deepLoopFloat(menuTree))
-    dispatch(setBreadcrumbs(findAllBreadcrumb(data)))
-    dispatch(setAuthMenus(data))
   }
   useEffect(() => {
     getMenuData()
-  }, [])
+  }, [authMenus])
   return (
     <Menu
       {...props}
