@@ -46,6 +46,28 @@ export const staticRoutes: RouteObject[] = [
             code: 'home'
           }
         )
+      },
+      {
+        path: '/404',
+        element: lazyLoad(
+          lazy(() => import('@/views/error/404')),
+          {
+            requiredAuth: true,
+            title: 'Not Found',
+            code: '404'
+          }
+        )
+      },
+      {
+        path: '/403',
+        element: lazyLoad(
+          lazy(() => import('@/views/error/403')),
+          {
+            requiredAuth: true,
+            title: 'Not Authorized',
+            code: '403'
+          }
+        )
       }
     ]
   },
