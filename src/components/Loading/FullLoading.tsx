@@ -3,7 +3,7 @@ import './index.scss'
 
 const FullLoading = ({ tip = 'Loading' }: { tip?: string }) => {
   return (
-    <div id="loading">
+    <div id="full-loading">
       <div className="request-loading">
         <Spin tip={tip} size="large">
           <div className="content" />

@@ -14,7 +14,8 @@
 }
 
 /* 请求 Loading 遮罩层样式 */
-#loading {
+#loading,
+#full-loading {
   position: fixed;
   inset: 0;
   z-index: 9998;
