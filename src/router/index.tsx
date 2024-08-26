@@ -21,10 +21,10 @@ const metaRouters = import.meta.glob('./modules/*.tsx', {
 >
 
 // * 处理路由
-export const routerArray: RouteObject[] = []
+export const localRoutes: RouteObject[] = []
 Object.keys(metaRouters).forEach((item) => {
   Object.keys(metaRouters[item]).forEach((key: any) => {
-    routerArray.push(...metaRouters[item][key])
+    localRoutes.push(...metaRouters[item][key])
   })
 })
 export const staticRoutes: RouteObject[] = [
@@ -46,31 +46,10 @@ export const staticRoutes: RouteObject[] = [
             code: 'home'
           }
         )
-      },
-      {
-        path: '/404',
-        element: lazyLoad(
-          lazy(() => import('@/views/error/404')),
-          {
-            requiredAuth: true,
-            title: 'Not Found',
-            code: '404'
-          }
-        )
-      },
-      {
-        path: '/403',
-        element: lazyLoad(
-          lazy(() => import('@/views/error/403')),
-          {
-            requiredAuth: true,
-            title: 'Not Authorized',
-            code: '403'
-          }
-        )
       }
     ]
   },
+  ...localRoutes,
   {
     path: '/login',
     element: <Login />

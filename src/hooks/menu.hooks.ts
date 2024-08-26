@@ -9,7 +9,9 @@ const useMenu = () => {
   const { accessToken } = useAppSelector((store) => store.user)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    getMenuData()
+    if (accessToken) {
+      getMenuData()
+    }
   }, [accessToken])
 
   async function getMenuData() {
