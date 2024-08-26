@@ -1,5 +1,5 @@
 import { HOME_URL } from '@/config/config'
-import { TabState } from '@/store/interface'
+import { TabItem, TabState } from '@/store/interface'
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: TabState = {
@@ -13,7 +13,7 @@ const tabSlice = createSlice({
     setTabActive: (state, action: SetAction<string>) => {
       state.tabActive = action.payload
     },
-    setTabList: (state, action: SetAction<Menu.MenuOptions[]>) => {
+    setTabList: (state, action: SetAction<TabItem[]>) => {
       state.tabList = action.payload
     }
   }

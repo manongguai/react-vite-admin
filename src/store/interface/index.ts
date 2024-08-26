@@ -43,8 +43,12 @@ export interface BreadcrumbState {
     [propName: string]: any
   }
 }
+export interface TabItem {
+  path: string
+  title: string
+}
 
 export interface TabState {
   tabActive: string
-  tabList: Menu.MenuOptions[]
+  tabList: TabItem[]
 }

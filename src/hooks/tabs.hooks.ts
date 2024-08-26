@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from './redux.hooks'
 import { setTabActive, setTabList } from '@/store/modules/tab/tabSlice'
 import { HOME_URL } from '@/config/config'
+import { TabItem } from '@/store/interface'
 
 export function useTabs() {
   const tabList = useAppSelector((state) => state.tab.tabList)
@@ -18,13 +19,11 @@ export function useTabs() {
       navigate(nextTab.path)
     }
     dispatch(
-      setTabList(
-        tabList.filter((item: Menu.MenuOptions) => item.path !== tabPath)
-      )
+      setTabList(tabList.filter((item: TabItem) => item.path !== tabPath))
     )
   }
   const closeMultipleTab = (tabPath?: string) => {
-    const handleTabsList = tabList.filter((item: Menu.MenuOptions) => {
+    const handleTabsList = tabList.filter((item: TabItem) => {
       return item.path === tabPath || item.path === HOME_URL
     })
     dispatch(setTabList(handleTabsList))
@@ -32,7 +31,7 @@ export function useTabs() {
   }
   const addTab = (title: string) => {
     let newTabList = JSON.parse(JSON.stringify(tabList))
-    if (tabList.every((item: Menu.MenuOptions) => item.path !== pathname)) {
+    if (tabList.every((item: TabItem) => item.path !== pathname)) {
       newTabList.push({
         title: title,
         path: pathname

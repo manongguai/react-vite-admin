@@ -7,6 +7,7 @@ import './index.scss'
 import MoreBtn from './MoreBtn'
 import { useAppSelector } from '@/hooks/redux.hooks'
 import { useTabs } from '@/hooks/tabs.hooks'
+import { TabItem } from '@/store/interface'
 
 const LayoutTabs = () => {
   const { tabList, themeConfig } = useAppSelector((state) => ({
@@ -22,13 +23,13 @@ const LayoutTabs = () => {
   const { delTab, closeMultipleTab } = useTabs()
 
   const items = useMemo(() => {
-    return tabList.map((item: Menu.MenuOptions) => {
+    return tabList.map((item: TabItem) => {
       return {
         key: item.path,
         label: (
           <span>
             {item.path == HOME_URL ? <HomeFilled /> : ''}
-            {item.name}
+            {item.title}
           </span>
         ),
         closeIcon: item.path == HOME_URL ? false : <CloseOutlined />
