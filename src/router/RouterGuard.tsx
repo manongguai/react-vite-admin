@@ -18,7 +18,6 @@ const RouterGuard = (props: IProps) => {
   const { accessToken, authRouterCode = [] } = useAppSelector(
     (state) => state.user
   )
-
   useEffect(() => {
     // 添加tab
     props?.meta?.title && addTab(props.meta.title)
@@ -29,9 +28,10 @@ const RouterGuard = (props: IProps) => {
   const { meta } = props
   if (!meta?.requiredAuth) return props.children
   if (!accessToken) return <Navigate to="/login" replace />
-  const staticRouter = ['/', 'home', '404', '403', 'test1']
-  const routerList = authRouterCode.concat(staticRouter)
-  if (!routerList.includes(meta.code)) return <Navigate to="/403" />
+  // 动态路由不再校验code
+  // const staticRouter = ['/', 'home', '404', '403', 'test1']
+  // const routerList = authRouterCode.concat(staticRouter)
+  // if (!routerList.includes(meta.code)) return <Navigate to="/403" />
   return <>{props.children}</>
 }
 

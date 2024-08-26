@@ -28,7 +28,7 @@ const LayoutTabs = () => {
         label: (
           <span>
             {item.path == HOME_URL ? <HomeFilled /> : ''}
-            {item.title}
+            {item.name}
           </span>
         ),
         closeIcon: item.path == HOME_URL ? false : <CloseOutlined />

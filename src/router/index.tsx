@@ -1,4 +1,9 @@
-import { Navigate, useRoutes } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+  useRoutes
+} from 'react-router-dom'
 import { lazy, useEffect, useState } from 'react'
 import lazyLoad from '@/router/lazyLoad'
 import LayoutContainer from '@/layout'
@@ -9,7 +14,6 @@ import useLoadRoutes from './useLoadRoutes'
 import FullLoading from '@/components/Loading/FullLoading'
 import { useAppSelector } from '@/hooks/redux.hooks'
 import useMenu from '@/hooks/menu.hooks'
-
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
   eager: true
@@ -76,10 +80,14 @@ const Router = () => {
       setIsLoaded(true)
     }
   }, [dynamicRoutes])
-
   if (accessToken && !isLoaded) {
-    return useRoutes([{ path: '*', element: <FullLoading></FullLoading> }])
+    // setRoutes([{ path: '*', element: <FullLoading></FullLoading> }])
+    const routeMatch = createBrowserRouter([
+      { path: '*', element: <FullLoading></FullLoading> }
+    ])
+    return <RouterProvider router={routeMatch} />
   }
-  return useRoutes(routes)
+  const router = createBrowserRouter(routes)
+  return <RouterProvider router={router} />
 }
 export default Router

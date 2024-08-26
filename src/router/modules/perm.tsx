@@ -32,7 +32,7 @@ const permRoutes: Array<RouteObject> = [
       {
         path: '/perm/depts',
         element: lazyLoad(
-          lazy(() => import('@/views/perm/depts2/index')),
+          lazy(() => import('@/views/perm/depts/index')),
           {
             requiredAuth: true,
             title: '部门管理',

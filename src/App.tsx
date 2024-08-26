@@ -22,9 +22,9 @@ function App() {
       {/* 提供带有上下文的全局消息api */}
       <AppProvider>
         <div className="app">
-          <BrowserRouter>
-            <Router></Router>
-          </BrowserRouter>
+          {/* <BrowserRouter> */}
+          <Router></Router>
+          {/* </BrowserRouter> */}
         </div>
       </AppProvider>
     </ConfigProvider>
