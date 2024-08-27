@@ -119,7 +119,7 @@ export const getBreadcrumbList = (
       getNodePath(menuList[i])
     }
   } catch (e) {
-    return tempPath.map((item) => item.title)
+    return tempPath.map((item) => item.name)
   }
 }
 

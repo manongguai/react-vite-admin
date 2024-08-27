@@ -1,16 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Menu, MenuProps } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
-import {
-  deepLoopFloat,
-  findAllBreadcrumb,
-  getOpenKeys,
-  buildMenuTree
-} from '@/utils/system'
-import { getMenus } from '@/api/user'
-import { setAuthMenus } from '@/store/modules/user/userSlice'
+import { deepLoopFloat, getOpenKeys, buildMenuTree } from '@/utils/system'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
-import { setBreadcrumbs } from '@/store/modules/breadcrumb/breadcrumbSlice'
 import { isLink } from '@/utils/is'
 type MenuItem = Required<MenuProps>['items'][number]
 

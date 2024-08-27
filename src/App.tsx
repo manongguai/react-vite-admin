@@ -4,7 +4,15 @@ import AppProvider from './components/AppProvider'
 import useLanguage from './hooks/language.hooks'
 import { BrowserRouter } from 'react-router-dom'
 import Router from '@/router'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider
+} from 'react-query'
 
+const queryClient = new QueryClient()
 function App() {
   const { themeAlgorithm, componentSize, primary } = useTheme()
   const { locale } = useLanguage()
