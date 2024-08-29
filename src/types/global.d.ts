@@ -21,7 +21,6 @@ declare global {
       path: string
       name: string
       icon?: string
-      close?: boolean
       code: string
       parentId: string
       id: string

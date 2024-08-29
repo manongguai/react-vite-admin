@@ -1,7 +1,13 @@
 import { message, Modal, notification } from 'antd'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false // default: true
+    }
+  }
+})
 
 const AppProvider = (props: { children: JSX.Element }) => {
   const [messageApi, messageContextHolder] = message.useMessage()

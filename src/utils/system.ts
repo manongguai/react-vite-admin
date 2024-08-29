@@ -130,7 +130,7 @@ export const logout = () => {
 
 export function buildMenuTree(
   menuList: Menu.MenuOptions[]
-): Menu.MenuOptions[] {
+): Menu.MenuTreeOptions[] {
   const menuMap: {
     [k: string]: {
       children: Menu.MenuTreeOptions[]

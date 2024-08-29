@@ -2,15 +2,8 @@ import useTheme from '@/hooks/theme.hooks'
 import { ConfigProvider } from 'antd'
 import AppProvider from './components/AppProvider'
 import useLanguage from './hooks/language.hooks'
-import { BrowserRouter } from 'react-router-dom'
 import Router from '@/router'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider
-} from 'react-query'
+import { QueryClient } from 'react-query'
 
 const queryClient = new QueryClient()
 function App() {
