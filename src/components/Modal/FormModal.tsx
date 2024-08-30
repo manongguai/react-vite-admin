@@ -1,42 +1,79 @@
-import { Form, Modal } from 'antd'
-import { useState } from 'react'
+import React, { useEffect } from 'react'
+import { Modal, Button, Form } from 'antd'
+import FormPro, { FormOption } from '../Form/FormPro'
 
-function FormModal({
-  show,
-  type,
-  data,
-  title,
-  children,
-  onCancel,
-  onOk,
-  confirmLoading
-}: ModalProps) {
-  const [form] = Form.useForm()
-  return (
-    <Modal
-      title={`${{ add: '新增', edit: '修改', see: '查看' }[type]}`}
-      open={show}
-      onOk={onOk}
-      onCancel={onCancel}
-      confirmLoading={confirmLoading}
-    >
-      <Form disabled={type == 'see'} form={form} initialValues={data}>
-        {children}
-      </Form>
-    </Modal>
-  )
+interface FormModalProps {
+  visible?: boolean
+  onClose?: () => void
+  onSubmit?: (values: any) => void
+  formOptions?: FormOption[]
+  initialValues?: Record<string, any>
+  mode?: 'add' | 'edit' | 'see'
 }
 
-export type OperateType = 'add' | 'see' | 'edit'
-export interface ModalProps {
-  show: boolean
-  type: OperateType
-  data: Record<string, any>
-  title: string
-  children: React.ReactNode
-  onCancel?: (e: React.MouseEvent<HTMLButtonElement>) => void
-  onOk?: (e: React.MouseEvent<HTMLButtonElement>) => void
-  confirmLoading?: boolean
+const FormModal: React.FC<FormModalProps> = ({
+  visible = false,
+  onClose,
+  onSubmit,
+  formOptions = [],
+  initialValues = {},
+  mode = 'add'
+}) => {
+  const [form] = Form.useForm()
+
+  useEffect(() => {
+    if (visible) {
+      if (Object.keys(initialValues).length > 0) {
+        // 如果 initialValues 非空，则重置并设置表单值
+        form.setFieldsValue(initialValues)
+      } else {
+        // 如果 initialValues 为空，则只重置表单
+        setTimeout(() => {
+          form.resetFields()
+        })
+      }
+    }
+  }, [visible, initialValues, form])
+
+  const isSeeMode = mode === 'see'
+
+  return (
+    <Modal
+      open={visible}
+      title={mode === 'add' ? '新增' : mode === 'edit' ? '编辑' : '查看'}
+      onCancel={onClose}
+      footer={[
+        <Button key="cancel" onClick={onClose}>
+          取消
+        </Button>,
+        !isSeeMode && (
+          <Button
+            key="submit"
+            type="primary"
+            onClick={() =>
+              document
+                .querySelector('form')
+                ?.dispatchEvent(
+                  new Event('submit', { cancelable: true, bubbles: true })
+                )
+            }
+          >
+            提交
+          </Button>
+        )
+      ]}
+    >
+      <FormPro
+        form={form} // 传递form实例
+        formOptions={formOptions}
+        initialValues={initialValues}
+        mode={mode}
+        onFinish={(...args) => {
+          onSubmit?.(...args)
+        }}
+      />
+    </Modal>
+  )
 }
 
 export default FormModal

@@ -13,6 +13,9 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { TableRecordData } from './index.type'
+import FormModal from '@/components/Modal/FormModal'
+import { useSetState } from 'react-use'
+import type { FormOption, Mode } from '@/components/Form/FormPro'
 
 const MenusPage = () => {
   const { data: sourceData, isLoading } = useQuery([], getAllMenus)
@@ -25,6 +28,28 @@ const MenusPage = () => {
     }
     return []
   }, [sourceData])
+
+  const [modal, setModal] = useSetState<{
+    visible: boolean
+    mode: Mode
+    formOptions: FormOption[]
+    initialValues: Record<string, any>
+  }>({
+    visible: false,
+    mode: 'add',
+    formOptions: [
+      {
+        type: 'input',
+        name: 'name',
+        label: '名称',
+        rules: [{ required: true, message: '名称不能为空' }],
+        componentProps: {
+          placeholder: '请输入名称'
+        }
+      }
+    ],
+    initialValues: {}
+  })
 
   const onTreeSelect = (
     keys: React.Key[],
@@ -110,7 +135,11 @@ const MenusPage = () => {
       render: (v: number, record: TableRecordData) => {
         const controls = []
         controls.push(
-          <span key="0" className="control-btn green">
+          <span
+            onClick={() => onModalShow(record, 'see')}
+            key="0"
+            className="control-btn green"
+          >
             <Tooltip placement="top" title="查看">
               <EyeOutlined />
             </Tooltip>
@@ -118,7 +147,11 @@ const MenusPage = () => {
         )
 
         controls.push(
-          <span key="1" className="control-btn blue">
+          <span
+            onClick={() => onModalShow(record, 'edit')}
+            key="1"
+            className="control-btn blue"
+          >
             <Tooltip placement="top" title="修改">
               <ToolOutlined />
             </Tooltip>
@@ -131,7 +164,7 @@ const MenusPage = () => {
             okText="确定"
             cancelText="取消"
           >
-            <span className="control-btn red">
+            <span onClick={() => onDel(record)} className="control-btn red">
               <Tooltip placement="top" title="删除">
                 <DeleteOutlined />
               </Tooltip>
@@ -150,6 +183,24 @@ const MenusPage = () => {
     }
   ]
 
+  function onModalClose() {
+    console.log('close modal')
+    setModal({
+      visible: false
+    })
+  }
+  function onModalSubmit() {
+    console.log('submit modal')
+  }
+
+  function onModalShow(record: TableRecordData | null, mode: Mode) {
+    setModal({
+      visible: true,
+      mode,
+      initialValues: record ? { ...record } : {}
+    })
+  }
+  function onDel(record: TableRecordData) {}
   return (
     <MenuPageWrapper>
       <LeftWrapper>
@@ -167,7 +218,11 @@ const MenusPage = () => {
       </LeftWrapper>
       <RightWrapper>
         <TableHeaderRow>
-          <Button icon={<PlusCircleOutlined />} type="primary">
+          <Button
+            onClick={() => onModalShow(null, 'add')}
+            icon={<PlusCircleOutlined />}
+            type="primary"
+          >
             {' '}
             {`添加${treeSelected ? treeSelected.name : '根级'}子菜单`}
           </Button>
@@ -177,7 +232,6 @@ const MenusPage = () => {
             columns={tableColumns}
             loading={isLoading}
             dataSource={tableData}
-            scroll={{ y: '600px' }}
             pagination={{
               showQuickJumper: true,
               showTotal: (total) => `共 ${total} 条数据`
@@ -185,6 +239,11 @@ const MenusPage = () => {
           ></Table>
         </TableWrapper>
       </RightWrapper>
+      <FormModal
+        {...modal}
+        onClose={onModalClose}
+        onSubmit={onModalSubmit}
+      ></FormModal>
     </MenuPageWrapper>
   )
 }
@@ -199,6 +258,7 @@ const MenuPageWrapper = styled.div`
 
 const LeftWrapper = styled.div`
   width: 300px;
+  min-width: 300px;
   height: 100%;
   border: solid 1px var(--border-color);
   display: flex;
