@@ -8,13 +8,14 @@ import { MetaProps } from './interface'
  * @returns element
  */
 const lazyLoad = (
-  Comp: React.LazyExoticComponent<React.ComponentType>,
-  meta?: MetaProps
+  Comp: React.LazyExoticComponent<React.ComponentType> | React.ComponentType,
+  meta: MetaProps,
+  props: Record<string, any> = {}
 ): React.ReactNode => {
   return (
     <RouterGuard meta={meta}>
       <Suspense fallback={<Spin className="router-spin"></Spin>}>
-        <Comp />
+        <Comp {...props} />
       </Suspense>
     </RouterGuard>
   )

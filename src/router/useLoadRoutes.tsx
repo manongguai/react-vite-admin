@@ -53,7 +53,21 @@ function buildDynamicRoute(menu: Menu.MenuTreeOptions): RouteObject {
   }
   const element = viewModules[`../views${menu.path}/index.tsx`]
   if (!element) {
-    throw new Error(`找不到 ${menu.path} 对应的路由文件`)
+    console.error(`找不到 ${menu.path} 对应的路由文件`)
+    return {
+      path: menu.path,
+      element: lazyLoad(
+        ErrorElement,
+        {
+          title: menu.name,
+          requiredAuth: true,
+          code: menu.code
+        },
+        {
+          errText: `找不到 ${menu.path} 对应的路由文件,请在views文件夹下创建`
+        }
+      )
+    }
   }
   return {
     path: menu.path,
@@ -66,4 +80,8 @@ function buildDynamicRoute(menu: Menu.MenuTreeOptions): RouteObject {
       }
     )
   }
+}
+
+export function ErrorElement({ errText }: { errText?: string }) {
+  return <div>{errText}</div>
 }
