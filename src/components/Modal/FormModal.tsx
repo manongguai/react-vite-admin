@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Modal, Button, Form } from 'antd'
+import { Modal, Button, Form, ColProps } from 'antd'
 import FormPro, { FormOption } from '../Form/FormPro'
 
 interface FormModalProps {
@@ -7,6 +7,7 @@ interface FormModalProps {
   onClose?: () => void
   onSubmit?: (values: any) => void
   formOptions?: FormOption[]
+  labelCol?: ColProps
   initialValues?: Record<string, any>
   mode?: 'add' | 'edit' | 'see'
 }
@@ -17,6 +18,7 @@ const FormModal: React.FC<FormModalProps> = ({
   onSubmit,
   formOptions = [],
   initialValues = {},
+  labelCol,
   mode = 'add'
 }) => {
   const [form] = Form.useForm()
@@ -66,6 +68,7 @@ const FormModal: React.FC<FormModalProps> = ({
       <FormPro
         form={form} // 传递form实例
         formOptions={formOptions}
+        labelCol={labelCol}
         initialValues={initialValues}
         mode={mode}
         onFinish={(...args) => {

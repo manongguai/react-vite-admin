@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Form,
   Input,
@@ -9,6 +9,7 @@ import {
   Switch,
   Upload,
   Cascader,
+  InputNumber,
   FormItemProps,
   InputProps,
   SelectProps,
@@ -18,7 +19,9 @@ import {
   SwitchProps,
   UploadProps,
   CascaderProps,
-  Button
+  InputNumberProps,
+  Button,
+  ColProps
 } from 'antd'
 
 export type Mode = 'add' | 'edit' | 'see'
@@ -33,6 +36,7 @@ export interface FormOptionBase {
     | 'switch'
     | 'upload'
     | 'cascader'
+    | 'inputNumber'
     | 'custom'
   name: string
   label: string
@@ -46,6 +50,8 @@ export interface FormOptionBase {
     | SwitchProps
     | UploadProps
     | CascaderProps<any>
+    | InputNumberProps
+  hidden?: boolean | ((values: any) => boolean)
 }
 
 export interface InputOption extends FormOptionBase {
@@ -91,6 +97,11 @@ export interface CascaderOption extends FormOptionBase {
   componentProps?: CascaderProps<any>
 }
 
+export interface InputNumberOption extends FormOptionBase {
+  type: 'inputNumber'
+  componentProps?: InputNumberProps
+}
+
 export interface CustomOption extends FormOptionBase {
   type: 'custom'
   component: React.ReactElement
@@ -105,14 +116,16 @@ export type FormOption =
   | SwitchOption
   | UploadOption
   | CascaderOption
+  | InputNumberOption
   | CustomOption
 
 export interface FormProProps {
   formOptions: FormOption[]
   initialValues?: Record<string, any>
   mode?: Mode
+  labelCol?: ColProps
   onFinish: (values: any) => void
-  form?: ReturnType<typeof Form.useForm>[0] // 添加form参数类型
+  form?: ReturnType<typeof Form.useForm>[0]
 }
 
 const FormPro: React.FC<FormProProps> = ({
@@ -120,11 +133,12 @@ const FormPro: React.FC<FormProProps> = ({
   initialValues = {},
   mode = 'add',
   onFinish,
-  form // 接受外部传入的form实例
+  labelCol,
+  form
 }) => {
   const [internalForm] = Form.useForm()
-  const formInstance = form || internalForm // 使用外部传入的form或内部生成的form
-
+  const formInstance = form || internalForm
+  const [formValues, setFormValues] = useState(initialValues)
   const isSeeMode = mode === 'see'
 
   const renderFormItem = (item: FormOption) => {
@@ -132,6 +146,18 @@ const FormPro: React.FC<FormProProps> = ({
       name: item.name,
       label: item.label,
       rules: item.rules || []
+    }
+
+    // 显隐逻辑
+    const shouldHide = useMemo(() => {
+      if (typeof item.hidden === 'function') {
+        return item.hidden(formValues)
+      }
+      return item.hidden || false
+    }, [item.hidden, formValues])
+
+    if (shouldHide) {
+      return null
     }
 
     switch (item.type) {
@@ -224,6 +250,15 @@ const FormPro: React.FC<FormProProps> = ({
             />
           </Form.Item>
         )
+      case 'inputNumber':
+        return (
+          <Form.Item {...commonProps} key={item.name}>
+            <InputNumber
+              disabled={isSeeMode}
+              {...(item.componentProps as InputNumberProps)}
+            />
+          </Form.Item>
+        )
       case 'custom':
         return (
           <Form.Item {...commonProps} key={item.name}>
@@ -236,7 +271,18 @@ const FormPro: React.FC<FormProProps> = ({
   }
 
   return (
-    <Form form={form} onFinish={onFinish} initialValues={initialValues}>
+    <Form
+      labelCol={labelCol}
+      form={formInstance}
+      onFinish={onFinish}
+      initialValues={initialValues}
+      onValuesChange={(changedValues) => {
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          ...changedValues
+        }))
+      }}
+    >
       {formOptions.map((item) => renderFormItem(item))}
     </Form>
   )

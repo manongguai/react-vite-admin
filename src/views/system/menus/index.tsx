@@ -7,7 +7,15 @@ import {
   PlusCircleOutlined,
   ToolOutlined
 } from '@ant-design/icons'
-import { Popconfirm, Table, Tooltip, Tree, Divider, Button } from 'antd'
+import {
+  Popconfirm,
+  Table,
+  Tooltip,
+  Tree,
+  Divider,
+  Button,
+  ColProps
+} from 'antd'
 import { DataNode, EventDataNode } from 'antd/es/tree'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
@@ -33,19 +41,58 @@ const MenusPage = () => {
     visible: boolean
     mode: Mode
     formOptions: FormOption[]
+    labelCol: ColProps
     initialValues: Record<string, any>
   }>({
     visible: false,
     mode: 'add',
+    labelCol: { span: 4 },
     formOptions: [
       {
         type: 'input',
         name: 'name',
-        label: '名称',
+        label: '菜单名称',
         rules: [{ required: true, message: '名称不能为空' }],
         componentProps: {
           placeholder: '请输入名称'
         }
+      },
+      {
+        type: 'input',
+        name: 'path',
+        hidden: (form) => {
+          return form.type !== 1
+        },
+        label: '菜单链接',
+        rules: [{ required: true, message: '菜单链接不能为空' }],
+        componentProps: {
+          placeholder: '请输入菜单链接'
+        }
+      },
+      {
+        type: 'input',
+        name: 'code',
+        label: '编码',
+        rules: [{ required: true, message: '唯一编码不能为空' }],
+        componentProps: {
+          placeholder: '请输入唯一编码'
+        }
+      },
+      {
+        type: 'radio',
+        name: 'type',
+        label: '菜单类型',
+        rules: [{ required: true, message: '菜单类型不能为空' }],
+        options: [
+          { label: '菜单', value: 1 },
+          { label: '按钮', value: 3 }
+        ]
+      },
+      {
+        type: 'inputNumber',
+        name: 'sort',
+        label: '排序',
+        rules: [{ required: true, message: '排序不能为空' }]
       }
     ],
     initialValues: {}
@@ -184,12 +231,12 @@ const MenusPage = () => {
   ]
 
   function onModalClose() {
-    console.log('close modal')
     setModal({
       visible: false
     })
   }
-  function onModalSubmit() {
+  function onModalSubmit(values: any) {
+    console.log(values)
     console.log('submit modal')
   }
 
@@ -197,7 +244,7 @@ const MenusPage = () => {
     setModal({
       visible: true,
       mode,
-      initialValues: record ? { ...record } : {}
+      initialValues: record ? { ...record } : { sort: 0, type: 1 }
     })
   }
   function onDel(record: TableRecordData) {}
