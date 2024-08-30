@@ -27,7 +27,10 @@ const FormModal: React.FC<FormModalProps> = ({
     if (visible) {
       if (Object.keys(initialValues).length > 0) {
         // 如果 initialValues 非空，则重置并设置表单值
-        form.setFieldsValue(initialValues)
+        setTimeout(() => {
+          form.resetFields()
+          form.setFieldsValue(initialValues)
+        })
       } else {
         // 如果 initialValues 为空，则只重置表单
         setTimeout(() => {

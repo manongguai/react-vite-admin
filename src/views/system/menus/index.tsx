@@ -1,4 +1,4 @@
-import { getAllMenus } from '@/api/system'
+import { createMenu, getAllMenus, updateMenu } from '@/api/system'
 import IconFont from '@/components/Iconfont'
 import { buildMenuTree } from '@/utils/system'
 import {
@@ -14,7 +14,8 @@ import {
   Tree,
   Divider,
   Button,
-  ColProps
+  ColProps,
+  message
 } from 'antd'
 import { DataNode, EventDataNode } from 'antd/es/tree'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -26,7 +27,7 @@ import { useSetState } from 'react-use'
 import type { FormOption, Mode } from '@/components/Form/FormPro'
 
 const MenusPage = () => {
-  const { data: sourceData, isLoading } = useQuery([], getAllMenus)
+  const { data: sourceData, isLoading, refetch } = useQuery([], getAllMenus)
   const [treeSelected, setTreeSelected] = useState<Menu.MenuTreeOptions | null>(
     null
   )
@@ -36,7 +37,7 @@ const MenusPage = () => {
     }
     return []
   }, [sourceData])
-
+  const [currentData, setCurrentData] = useState<TableRecordData | null>(null)
   const [modal, setModal] = useSetState<{
     visible: boolean
     mode: Mode
@@ -90,7 +91,7 @@ const MenusPage = () => {
       },
       {
         type: 'inputNumber',
-        name: 'sort',
+        name: 'orderNum',
         label: '排序',
         rules: [{ required: true, message: '排序不能为空' }]
       }
@@ -231,20 +232,38 @@ const MenusPage = () => {
   ]
 
   function onModalClose() {
+    setCurrentData(null)
     setModal({
       visible: false
     })
   }
-  function onModalSubmit(values: any) {
-    console.log(values)
-    console.log('submit modal')
+  async function onModalSubmit(values: any) {
+    const params = {
+      ...values,
+      menuPermList: [],
+      parentId: treeSelected?.parentId || '0',
+      icon: ''
+    }
+    if (currentData && currentData.id) {
+      params.id = currentData.id
+    }
+    if (modal.mode == 'add') {
+      const res = await createMenu(params)
+      message.success('菜单创建成功')
+    } else if (modal.mode == 'edit') {
+      const res = await updateMenu(params)
+      message.success('菜单更新成功')
+    }
+    onModalClose()
+    refetch()
   }
 
   function onModalShow(record: TableRecordData | null, mode: Mode) {
+    setCurrentData(record)
     setModal({
       visible: true,
       mode,
-      initialValues: record ? { ...record } : { sort: 0, type: 1 }
+      initialValues: record ? { ...record } : { orderNum: 0, type: 1 }
     })
   }
   function onDel(record: TableRecordData) {}
