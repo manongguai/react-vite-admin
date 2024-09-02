@@ -56,7 +56,11 @@ class Refresher {
       const headerJwt = request.headers?.Authorization || ''
       const token: string = store.getState().user.accessToken
       if (token && headerJwt === token) {
-        await this.refreshToken()
+        try {
+          await this.refreshToken()
+        } catch (error) {
+          throw new Error('refresh token error')
+        }
       }
       // 1、refreshToken成功后，缓存中的jwt将会更新，
       // 2、若缓存中的jwt已被刷新，代表refresh已被其他通讯捕获并已发送成功，当前通讯才返回1029，此时直接使用新的jwt重发
