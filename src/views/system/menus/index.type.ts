@@ -3,3 +3,8 @@ export interface TableRecordData extends Menu.MenuTreeOptions {
   serial: number
   control: string
 }
+
+export interface menuPermItem {
+  apiMethod: string
+  apiUrl: string
+}

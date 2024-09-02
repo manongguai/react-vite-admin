@@ -13,7 +13,6 @@ declare global {
     browserLanguage: string
   }
   export type { RootState } from '@/store'
-
   // * Menu
   export namespace Menu {
     type MenuType = 1 | 2 | 3

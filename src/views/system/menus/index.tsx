@@ -1,4 +1,11 @@
-import { createMenu, deleteMenu, getAllMenus, updateMenu } from '@/api/system'
+import {
+  createMenu,
+  deleteMenu,
+  getAllMenus,
+  getAllPerms,
+  getMenuPerm,
+  updateMenu
+} from '@/api/system'
 import IconFont from '@/components/Iconfont'
 import { buildMenuTreeForPage } from '@/utils/system'
 import {
@@ -28,7 +35,12 @@ import type { FormOption, Mode } from '@/components/Form/FormPro'
 import { menuTypeMap } from '@/constants'
 
 const MenusPage = () => {
-  const { data: sourceData, isLoading, refetch } = useQuery([], getAllMenus)
+  const {
+    data: sourceData,
+    isLoading,
+    refetch
+  } = useQuery('getAllMenus', getAllMenus)
+  const { data: permsData } = useQuery('getAllPerms', getAllPerms)
   const [treeSelected, setTreeSelected] = useState<Menu.MenuTreeOptions | null>(
     null
   )
@@ -38,18 +50,32 @@ const MenusPage = () => {
     }
     return []
   }, [sourceData])
+
+  const permOptions = useMemo(() => {
+    if (permsData) {
+      return permsData.data!.map((perm) => {
+        return {
+          label: perm.method + '+' + perm.path,
+          value: perm.method + '+' + perm.path
+        }
+      })
+    }
+    return []
+  }, [permsData])
   const [currentData, setCurrentData] = useState<TableRecordData | null>(null)
   const [modal, setModal] = useSetState<{
     visible: boolean
     mode: Mode
-    formOptions: FormOption[]
     labelCol: ColProps
     initialValues: Record<string, any>
   }>({
     visible: false,
     mode: 'add',
     labelCol: { span: 4 },
-    formOptions: [
+    initialValues: {}
+  })
+  const formOptions = useMemo<FormOption[]>(() => {
+    return [
       {
         type: 'input',
         name: 'name',
@@ -58,6 +84,16 @@ const MenusPage = () => {
         componentProps: {
           placeholder: '请输入名称'
         }
+      },
+      {
+        type: 'radio',
+        name: 'type',
+        label: '菜单类型',
+        rules: [{ required: true, message: '菜单类型不能为空' }],
+        options: [
+          { label: '菜单', value: 1 },
+          { label: '按钮', value: 3 }
+        ]
       },
       {
         type: 'input',
@@ -72,6 +108,16 @@ const MenusPage = () => {
         }
       },
       {
+        type: 'select',
+        name: 'menuPermList',
+        label: '权限集合',
+        options: permOptions,
+        componentProps: {
+          placeholder: '请选择权限集合',
+          mode: 'multiple'
+        }
+      },
+      {
         type: 'input',
         name: 'code',
         label: '编码',
@@ -80,25 +126,15 @@ const MenusPage = () => {
           placeholder: '请输入唯一编码'
         }
       },
-      {
-        type: 'radio',
-        name: 'type',
-        label: '菜单类型',
-        rules: [{ required: true, message: '菜单类型不能为空' }],
-        options: [
-          { label: '菜单', value: 1 },
-          { label: '按钮', value: 3 }
-        ]
-      },
+
       {
         type: 'inputNumber',
         name: 'orderNum',
         label: '排序',
         rules: [{ required: true, message: '排序不能为空' }]
       }
-    ],
-    initialValues: {}
-  })
+    ]
+  }, [permsData])
 
   const onTreeSelect = (
     keys: React.Key[],
@@ -250,7 +286,10 @@ const MenusPage = () => {
   async function onModalSubmit(values: any) {
     const params = {
       ...values,
-      menuPermList: [],
+      menuPermList: values.menuPermList.map((item: string) => {
+        const [apiMethod, apiUrl] = item.split('+')
+        return { apiMethod, apiUrl }
+      }),
       parentId: treeSelected?.id || '0',
       icon: ''
     }
@@ -268,13 +307,29 @@ const MenusPage = () => {
     refetch()
   }
 
-  function onModalShow(record: TableRecordData | null, mode: Mode) {
+  async function onModalShow(record: TableRecordData | null, mode: Mode) {
     setCurrentData(record)
-    setModal({
-      visible: true,
-      mode,
-      initialValues: record ? { ...record } : { orderNum: 0, type: 1 }
-    })
+    let newModal = {}
+    if (record) {
+      const { data: menuPermList } = await getMenuPerm(record?.id as string)
+      newModal = {
+        visible: true,
+        mode,
+        initialValues: {
+          ...record,
+          menuPermList: menuPermList!.map(
+            (item) => item.apiMethod + '+' + item.apiUrl
+          )
+        }
+      }
+    } else {
+      newModal = {
+        visible: true,
+        mode,
+        initialValues: { orderNum: 0, type: 1, menuPermList: [] }
+      }
+    }
+    setModal(newModal)
   }
   async function onDel(record: TableRecordData) {
     const res = await deleteMenu(record.id)
@@ -321,6 +376,7 @@ const MenusPage = () => {
       </RightWrapper>
       <FormModal
         {...modal}
+        formOptions={formOptions}
         onClose={onModalClose}
         onSubmit={onModalSubmit}
       ></FormModal>
