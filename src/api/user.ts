@@ -1,4 +1,5 @@
 import http from '@/utils/http'
+import { UserData } from '@/views/perm/users/type'
 export interface UserInfo {
   username?: string
   phone?: string
@@ -44,5 +45,26 @@ export const getAuthRoutes = () => {
     {
       notAllowCancel: true
     }
+  )
+}
+
+export const getUserList = ({
+  page,
+  size,
+  status,
+  account
+}: {
+  page: number
+  size: number
+  status?: number
+  account?: string
+}) => {
+  return http.get<{
+    list: UserData[]
+    total: number
+  }>(
+    `/user/list?page=${page}&size=${size}&status=${status || ''}&account=${
+      account || ''
+    }`
   )
 }
