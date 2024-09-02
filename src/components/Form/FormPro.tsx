@@ -23,6 +23,7 @@ import {
   Button,
   ColProps
 } from 'antd'
+import { log } from 'node:console'
 
 export type Mode = 'add' | 'edit' | 'see'
 
@@ -154,7 +155,7 @@ const FormPro: React.FC<FormProProps> = ({
         return item.hidden(formValues)
       }
       return item.hidden || false
-    }, [item.hidden, formValues])
+    }, [item.hidden, formValues, initialValues])
 
     if (shouldHide) {
       return null

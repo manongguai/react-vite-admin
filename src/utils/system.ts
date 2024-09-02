@@ -142,11 +142,44 @@ export function buildMenuTree(
       parentId: string
       id: string
       type: Menu.MenuType
+      disabled?: boolean
     }
   } = Object.fromEntries(
     menuList
       .filter((menu) => menu.type === 1)
-      .map((menu) => [menu.id, { ...menu, children: [] }])
+      .map((menu) => [
+        menu.id,
+        { ...menu, children: [], disabled: menu.type === 3 ? true : false }
+      ])
+  )
+  return Object.values(menuMap).filter((menu) => {
+    if (menu.parentId !== '0') {
+      menuMap[menu.parentId]?.children.push(menu)
+      return false
+    }
+    return true
+  })
+}
+
+export function buildMenuTreeForPage(menuList: Menu.MenuOptions[]) {
+  const menuMap: {
+    [k: string]: {
+      children: Menu.MenuTreeOptions[]
+      path: string
+      name: string
+      icon?: string
+      close?: boolean
+      code: string
+      parentId: string
+      id: string
+      type: Menu.MenuType
+      disabled?: boolean
+    }
+  } = Object.fromEntries(
+    menuList.map((menu) => [
+      menu.id,
+      { ...menu, children: [], disabled: menu.type === 3 ? true : false }
+    ])
   )
   return Object.values(menuMap).filter((menu) => {
     if (menu.parentId !== '0') {

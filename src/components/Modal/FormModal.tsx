@@ -45,6 +45,7 @@ const FormModal: React.FC<FormModalProps> = ({
   return (
     <Modal
       open={visible}
+      destroyOnClose
       title={mode === 'add' ? '新增' : mode === 'edit' ? '编辑' : '查看'}
       onCancel={onClose}
       footer={[

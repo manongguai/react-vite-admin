@@ -1,6 +1,6 @@
-import { createMenu, getAllMenus, updateMenu } from '@/api/system'
+import { createMenu, deleteMenu, getAllMenus, updateMenu } from '@/api/system'
 import IconFont from '@/components/Iconfont'
-import { buildMenuTree } from '@/utils/system'
+import { buildMenuTreeForPage } from '@/utils/system'
 import {
   DeleteOutlined,
   EyeOutlined,
@@ -25,6 +25,7 @@ import { TableRecordData } from './index.type'
 import FormModal from '@/components/Modal/FormModal'
 import { useSetState } from 'react-use'
 import type { FormOption, Mode } from '@/components/Form/FormPro'
+import { menuTypeMap } from '@/constants'
 
 const MenusPage = () => {
   const { data: sourceData, isLoading, refetch } = useQuery([], getAllMenus)
@@ -33,7 +34,7 @@ const MenusPage = () => {
   )
   const treeMenus = useMemo(() => {
     if (sourceData) {
-      return buildMenuTree(sourceData.data!)
+      return buildMenuTreeForPage(sourceData.data!)
     }
     return []
   }, [sourceData])
@@ -156,6 +157,14 @@ const MenusPage = () => {
       key: 'name'
     },
     {
+      title: '菜单类型',
+      dataIndex: 'type',
+      key: 'type',
+      render: (v: Menu.MenuType) => {
+        return menuTypeMap[v]
+      }
+    },
+    {
       title: '路径',
       dataIndex: 'path',
       key: 'path',
@@ -211,8 +220,9 @@ const MenusPage = () => {
             title="确定删除吗?"
             okText="确定"
             cancelText="取消"
+            onConfirm={() => onDel(record)}
           >
-            <span onClick={() => onDel(record)} className="control-btn red">
+            <span className="control-btn red">
               <Tooltip placement="top" title="删除">
                 <DeleteOutlined />
               </Tooltip>
@@ -241,7 +251,7 @@ const MenusPage = () => {
     const params = {
       ...values,
       menuPermList: [],
-      parentId: treeSelected?.parentId || '0',
+      parentId: treeSelected?.id || '0',
       icon: ''
     }
     if (currentData && currentData.id) {
@@ -266,7 +276,11 @@ const MenusPage = () => {
       initialValues: record ? { ...record } : { orderNum: 0, type: 1 }
     })
   }
-  function onDel(record: TableRecordData) {}
+  async function onDel(record: TableRecordData) {
+    const res = await deleteMenu(record.id)
+    message.success('菜单删除成功')
+    refetch()
+  }
   return (
     <MenuPageWrapper>
       <LeftWrapper>
