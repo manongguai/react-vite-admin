@@ -1,11 +1,11 @@
 // 动态渲染 Icon 图标
 import * as Icons from '@ant-design/icons'
-import { RouteObject } from '@/router/interface'
 import React from 'react'
-import { Menu, MenuProps } from 'antd'
+import { MenuProps } from 'antd'
 import store from '@/store'
 import { setLogout } from '@/store/modules/user/userSlice'
 import { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon'
+import { navigate } from '@/router/nagivage'
 type MenuItem = Required<MenuProps>['items'][number]
 const customIcons: { [key: string]: any } = Icons
 export const getAntIcon = (
@@ -125,7 +125,7 @@ export const getBreadcrumbList = (
 
 export const logout = () => {
   store.dispatch(setLogout())
-  window.location.href = '/login'
+  navigate?.('/login')
 }
 
 export function buildMenuTree(

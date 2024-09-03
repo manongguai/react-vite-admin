@@ -1,13 +1,40 @@
-import { ColProps, Divider, message, Popconfirm, Table, Tooltip } from 'antd'
+import {
+  ColProps,
+  Divider,
+  message,
+  Popconfirm,
+  Table,
+  Tooltip,
+  Flex,
+  Avatar,
+  Button
+} from 'antd'
 import { UserData } from './type'
-import { DeleteOutlined, EyeOutlined, ToolOutlined } from '@ant-design/icons'
-import { useState } from 'react'
+import {
+  DeleteOutlined,
+  EyeOutlined,
+  PlusCircleOutlined,
+  RedoOutlined,
+  ToolOutlined
+} from '@ant-design/icons'
+import { useMemo, useState } from 'react'
 import { FormOption, Mode } from '@/components/Form/FormPro'
 import { useSetState } from 'react-use'
 import { useQuery } from 'react-query'
-import { getUserList, UserParams } from '@/api/user'
+import {
+  createUser,
+  deleteUser,
+  getUserList,
+  getUserRoles,
+  resetPassword,
+  updateUser,
+  UserParams
+} from '@/api/user'
 import { PageWrapper } from '@/components/Page'
 import FormSearch from '@/components/Form/FormSearch'
+import FormModal from '@/components/Form/FormModal'
+import { getAllRoles } from '@/api/role'
+import styled from 'styled-components'
 
 export default function UsersPage() {
   const [searchParams, setSearchParams] = useSetState<UserParams>({
@@ -24,8 +51,19 @@ export default function UsersPage() {
       return res.data
     }
   )
+  const { data: roleData } = useQuery('getAllRoles', getAllRoles)
   const [currentData, setCurrentData] = useState<UserData | null>(null)
-
+  const rolesOptions = useMemo(() => {
+    if (roleData) {
+      return roleData.data!.map((role) => {
+        return {
+          label: role.name,
+          value: role.id
+        }
+      })
+    }
+    return []
+  }, [roleData])
   const [modal, setModal] = useSetState<{
     visible: boolean
     mode: Mode
@@ -48,7 +86,14 @@ export default function UsersPage() {
     {
       title: '账号',
       dataIndex: 'username',
-      key: 'username'
+      key: 'username',
+      render: (v: string, record: UserData) => {
+        return (
+          <Flex align="center" gap={5}>
+            <Avatar src={record.avatar}></Avatar> {v}
+          </Flex>
+        )
+      }
     },
     {
       title: '手机号',
@@ -84,7 +129,7 @@ export default function UsersPage() {
     {
       title: '操作',
       key: 'control',
-      width: 120,
+      width: 160,
       render: (v: number, record: UserData) => {
         const controls = []
         controls.push(
@@ -125,6 +170,21 @@ export default function UsersPage() {
             </span>
           </Popconfirm>
         )
+        controls.push(
+          <Popconfirm
+            key="3"
+            title="确定重置密码吗?"
+            okText="确定"
+            cancelText="取消"
+            onConfirm={() => onResetPassword(record)}
+          >
+            <span className="control-btn red">
+              <Tooltip placement="top" title="重置密码">
+                <RedoOutlined />
+              </Tooltip>
+            </span>
+          </Popconfirm>
+        )
         const result: JSX.Element[] = []
         controls.forEach((item, index) => {
           if (index) {
@@ -151,43 +211,49 @@ export default function UsersPage() {
       params.id = currentData.id
     }
     if (modal.mode == 'add') {
-      // const res = await createMenu(params)
-      message.success('菜单创建成功')
+      const res = await createUser(params)
+      message.success('创建成功')
     } else if (modal.mode == 'edit') {
-      // const res = await updateMenu(params)
-      message.success('菜单更新成功')
+      const res = await updateUser(params)
+      message.success('更新成功')
     }
     onModalClose()
     refetch()
   }
-
   async function onModalShow(record: UserData | null, mode: Mode) {
     setCurrentData(record)
     let newModal = {}
     if (record) {
-      // const { data: menuPermList } = await getMenuPerm(record?.id as string)
+      const { data: roleIds } = await getUserRoles(record?.id as string)
       newModal = {
         visible: true,
         mode,
         initialValues: {
-          ...record
+          ...record,
+          roleIds
         }
       }
     } else {
       newModal = {
         visible: true,
         mode,
-        initialValues: { orderNum: 0, type: 1, menuPermList: [] }
+        initialValues: { roleIds: [] }
       }
     }
     setModal(newModal)
   }
   async function onDel(record: UserData) {
-    // const res = await deleteMenu(record.id)
-    message.success('菜单删除成功')
+    const res = await deleteUser(record.id)
+    message.success('删除成功')
     refetch()
   }
-  const formOptions: FormOption[] = [
+
+  async function onResetPassword(record: UserData) {
+    await resetPassword(record.id)
+    message.success('重置密码成功')
+    refetch()
+  }
+  const searchFormOptions: FormOption[] = [
     {
       type: 'input',
       name: 'username',
@@ -213,6 +279,55 @@ export default function UsersPage() {
     }
   ]
 
+  const modalFormOptions = useMemo<FormOption[]>(() => {
+    return [
+      {
+        type: 'input',
+        name: 'username',
+        label: '用户名',
+        rules: [{ required: true, message: '用户名不能为空' }],
+        componentProps: {
+          disabled: modal.mode != 'add',
+          placeholder: '请输入用户名',
+          allowClear: true
+        }
+      },
+      {
+        type: 'input',
+        name: 'phone',
+        label: '手机号',
+        rules: [{ required: true, message: '手机号不能为空' }],
+        componentProps: {
+          placeholder: '请输入手机号',
+          allowClear: true
+        }
+      },
+      {
+        type: 'input',
+        name: 'email',
+        label: '邮箱',
+        rules: [{ required: true, message: '邮箱不能为空' }],
+        componentProps: {
+          placeholder: '请输入邮箱',
+          allowClear: true
+        }
+      },
+      {
+        type: 'select',
+        name: 'roleIds',
+        label: '角色',
+        options: rolesOptions,
+        hidden: () => {
+          return currentData?.type === 0
+        },
+        componentProps: {
+          placeholder: '请选择角色',
+          mode: 'multiple'
+        }
+      }
+    ]
+  }, [rolesOptions, currentData, modal])
+
   function onSearch(values: { username: string; status: number | undefined }) {
     setSearchParams({
       ...values,
@@ -235,9 +350,23 @@ export default function UsersPage() {
             status: undefined
           })
         }
-        formOptions={formOptions}
+        formOptions={searchFormOptions}
         onSearch={onSearch}
       />
+      <Flex
+        justify="end"
+        style={{
+          marginBottom: '16px'
+        }}
+      >
+        <Button
+          onClick={() => onModalShow(null, 'add')}
+          icon={<PlusCircleOutlined />}
+          type="primary"
+        >
+          新增
+        </Button>
+      </Flex>
       <Table
         columns={tableColumns}
         rowKey="id"
@@ -248,10 +377,16 @@ export default function UsersPage() {
           pageSize: 10,
           total: data?.total || 0,
           current: 1,
-          showTotal: (total) => `共 ${total} 条数据`,
+          showTotal: () => `共 ${data?.total} 条数据`,
           onChange: onPageChange
         }}
       ></Table>
+      <FormModal
+        {...modal}
+        formOptions={modalFormOptions}
+        onClose={onModalClose}
+        onSubmit={onModalSubmit}
+      ></FormModal>
     </PageWrapper>
   )
 }

@@ -134,7 +134,7 @@ const MenusPage = () => {
         rules: [{ required: true, message: '排序不能为空' }]
       }
     ]
-  }, [permsData])
+  }, [permOptions])
 
   const onTreeSelect = (
     keys: React.Key[],

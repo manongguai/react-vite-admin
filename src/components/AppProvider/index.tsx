@@ -1,3 +1,4 @@
+import { NavigationSetter } from '@/router/nagivage'
 import { message, Modal, notification } from 'antd'
 import { QueryClient, QueryClientProvider } from 'react-query'
 

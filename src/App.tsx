@@ -3,9 +3,7 @@ import { ConfigProvider } from 'antd'
 import AppProvider from './components/AppProvider'
 import useLanguage from './hooks/language.hooks'
 import Router from '@/router'
-import { QueryClient } from 'react-query'
 
-const queryClient = new QueryClient()
 function App() {
   const { themeAlgorithm, componentSize, primary } = useTheme()
   const { locale } = useLanguage()

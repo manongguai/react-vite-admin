@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   Navigate,
+  Outlet,
   RouterProvider,
   useRoutes
 } from 'react-router-dom'
@@ -14,6 +15,7 @@ import useLoadRoutes from './useLoadRoutes'
 import FullLoading from '@/components/Loading/FullLoading'
 import { useAppSelector } from '@/hooks/redux.hooks'
 import useMenu from '@/hooks/menu.hooks'
+import { NavigationSetter } from './nagivage'
 // * 导入所有router
 const metaRouters = import.meta.glob('./modules/*.tsx', {
   eager: true
@@ -31,36 +33,48 @@ Object.keys(metaRouters).forEach((item) => {
     localRoutes.push(...metaRouters[item][key])
   })
 })
+
+export function BaseLayoutContainer() {
+  return (
+    <>
+      <NavigationSetter></NavigationSetter>
+      <Outlet></Outlet>
+    </>
+  )
+}
+
 export const staticRoutes: RouteObject[] = [
   {
     path: '/',
-    element: <Navigate to="/home" />
-  },
-  {
-    path: '/',
-    element: <LayoutContainer />,
+    element: <BaseLayoutContainer></BaseLayoutContainer>,
     children: [
       {
-        path: '/home',
-        element: lazyLoad(
-          lazy(() => import('@/views/home')),
+        path: '/',
+        element: <LayoutContainer />,
+        children: [
           {
-            title: i18n.t('home.title'),
-            requiredAuth: true,
-            code: 'home'
+            path: '/home',
+            element: lazyLoad(
+              lazy(() => import('@/views/home')),
+              {
+                title: i18n.t('home.title'),
+                requiredAuth: true,
+                code: 'home'
+              }
+            )
           }
-        )
+        ]
+      },
+      ...localRoutes,
+      {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '*',
+        element: <Navigate to="/404" />
       }
     ]
-  },
-  ...localRoutes,
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '*',
-    element: <Navigate to="/404" />
   }
 ]
 const Router = () => {
@@ -74,7 +88,7 @@ const Router = () => {
     if (dynamicRoutes.length > 0) {
       const newRoutes = [...staticRoutes]
       dynamicRoutes.forEach((route) => {
-        newRoutes[1].children!.push(route)
+        newRoutes[0].children![1].children!.push(route)
       })
       setRoutes(newRoutes)
       setIsLoaded(true)
@@ -88,6 +102,6 @@ const Router = () => {
     return <RouterProvider router={routeMatch} />
   }
   const router = createBrowserRouter(routes)
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router}></RouterProvider>
 }
 export default Router

@@ -118,8 +118,18 @@ export class CommonService extends HttpService {
           const refresher = Refresher.getInstance()
           return refresher.predict(error.response.config)
         }
+        if (error.response?.status === ResultEnum.Forbidden) {
+          logout()
+          return Promise.reject(error)
+        }
         if (error.code != 'ERR_CANCELED') {
-          message.error(error.message)
+          let errTxt = ''
+          // @ts-ignore
+          const serverErr = error.response?.data?.error || ''
+          if (Array.isArray(serverErr)) {
+            errTxt += serverErr.join('\n')
+          }
+          message.error(errTxt || error.message)
         }
         return Promise.reject(error)
       }

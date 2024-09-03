@@ -1,6 +1,6 @@
 import http from '@/utils/http'
 import { isNullOrUnDef } from '@/utils/is'
-import { UserData } from '@/views/perm/users/type'
+import { createUserDto, updateUserDto, UserData } from '@/views/perm/users/type'
 export interface UserInfo {
   username?: string
   phone?: string
@@ -64,4 +64,26 @@ export const getUserList = ({ page, size, status, username }: UserParams) => {
       isNullOrUnDef(status) ? '' : status
     }&username=${username || ''}`
   )
+}
+
+export const createUser = (data: createUserDto) => {
+  return http.post('/user', data)
+}
+export const updateUser = (data: updateUserDto) => {
+  return http.put('/user', data)
+}
+export const deleteUser = (id: string) => {
+  return http.delete('/user/' + id)
+}
+
+export const getUserRoles = (id: string) => {
+  return http.get('/user/' + id + '/role')
+}
+
+export const resetPassword = (id: string) => {
+  return http.put(`user/password/reset/${id}`)
+}
+
+export const changeStatus = (data: { id: string; status: number }) => {
+  return http.put(`/user/status/change`, data)
 }
