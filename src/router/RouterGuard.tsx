@@ -23,8 +23,14 @@ const RouterGuard = (props: IProps) => {
     props?.meta?.title && addTab(props.meta.title)
   }, [props])
   const { addTab } = useTabs()
+
   // * 在跳转路由之前，清除所有的请求
-  axiosCanceler.removeAllPending()
+  useEffect(() => {
+    return () => {
+      axiosCanceler.removeAllPending()
+    }
+  }, [])
+
   const { meta } = props
   if (!meta?.requiredAuth) return props.children
   if (!accessToken) return <Navigate to="/login" replace />
