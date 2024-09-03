@@ -1,4 +1,5 @@
 import http from '@/utils/http'
+import { isNullOrUnDef } from '@/utils/is'
 import { UserData } from '@/views/perm/users/type'
 export interface UserInfo {
   username?: string
@@ -48,23 +49,19 @@ export const getAuthRoutes = () => {
   )
 }
 
-export const getUserList = ({
-  page,
-  size,
-  status,
-  account
-}: {
+export interface UserParams {
   page: number
   size: number
-  status?: number
-  account?: string
-}) => {
+  status?: number | undefined
+  username?: string
+}
+export const getUserList = ({ page, size, status, username }: UserParams) => {
   return http.get<{
     list: UserData[]
     total: number
   }>(
-    `/user/list?page=${page}&size=${size}&status=${status || ''}&account=${
-      account || ''
-    }`
+    `/user/list?page=${page}&size=${size}&status=${
+      isNullOrUnDef(status) ? '' : status
+    }&username=${username || ''}`
   )
 }

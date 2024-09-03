@@ -5,18 +5,25 @@ import { useState } from 'react'
 import { FormOption, Mode } from '@/components/Form/FormPro'
 import { useSetState } from 'react-use'
 import { useQuery } from 'react-query'
-import { getUserList } from '@/api/user'
+import { getUserList, UserParams } from '@/api/user'
 import { PageWrapper } from '@/components/Page'
 import FormSearch from '@/components/Form/FormSearch'
 
 export default function UsersPage() {
-  const { data, isLoading, refetch } = useQuery('', async () => {
-    const res = await getUserList({
-      page: 1,
-      size: 10
-    })
-    return res.data
+  const [searchParams, setSearchParams] = useSetState<UserParams>({
+    status: undefined,
+    username: '',
+    page: 1,
+    size: 10
   })
+
+  const { data, isLoading, refetch } = useQuery(
+    ['userList', searchParams],
+    async () => {
+      const res = await getUserList(searchParams)
+      return res.data
+    }
+  )
   const [currentData, setCurrentData] = useState<UserData | null>(null)
 
   const [modal, setModal] = useSetState<{
@@ -181,27 +188,56 @@ export default function UsersPage() {
     refetch()
   }
   const formOptions: FormOption[] = [
-    { type: 'input', name: 'name', label: '姓名' },
+    {
+      type: 'input',
+      name: 'username',
+      label: '用户名',
+      componentProps: {
+        placeholder: '请输入用户名',
+        allowClear: true
+      }
+    },
     {
       type: 'select',
-      name: 'gender',
-      label: '性别',
+      name: 'status',
+      label: '状态',
+      componentProps: {
+        placeholder: '请选择状态',
+        allowClear: true,
+        showSearch: true
+      },
       options: [
-        { label: '男', value: 'male' },
-        { label: '女', value: 'female' }
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 }
       ]
-    },
-    { type: 'datePicker', name: 'birthdate', label: '出生日期' }
+    }
   ]
+
+  function onSearch(values: { username: string; status: number | undefined }) {
+    setSearchParams({
+      ...values,
+      page: 1
+    })
+  }
+  function onPageChange(page: number, size: number) {
+    setSearchParams({
+      page,
+      size
+    })
+  }
+
   return (
     <PageWrapper>
       <FormSearch
+        onReset={() =>
+          onSearch({
+            username: '',
+            status: undefined
+          })
+        }
         formOptions={formOptions}
-        column={3}
-        onSearch={(values) => console.log('搜索值', values)}
-        onReset={() => console.log('重置表单')}
+        onSearch={onSearch}
       />
-
       <Table
         columns={tableColumns}
         rowKey="id"
@@ -209,7 +245,11 @@ export default function UsersPage() {
         dataSource={data?.list || []}
         pagination={{
           showQuickJumper: true,
-          showTotal: (total) => `共 ${total} 条数据`
+          pageSize: 10,
+          total: data?.total || 0,
+          current: 1,
+          showTotal: (total) => `共 ${total} 条数据`,
+          onChange: onPageChange
         }}
       ></Table>
     </PageWrapper>

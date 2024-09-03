@@ -5,6 +5,7 @@ import FormPro, { FormOption, FormProProps } from './FormPro'
 export interface FormSearchProps extends Omit<FormProProps, 'onFinish'> {
   onSearch: (values: any) => void
   onReset?: () => void
+  searchColSpan?: number
 }
 
 const FormSearch: React.FC<FormSearchProps> = ({
@@ -12,24 +13,13 @@ const FormSearch: React.FC<FormSearchProps> = ({
   initialValues = {},
   mode = 'add',
   labelCol,
-  column = 3,
   onSearch,
   onReset,
+  searchColSpan = 6,
   form
 }) => {
   const [internalForm] = Form.useForm()
   const formInstance = form || internalForm
-
-  const handleSearch = () => {
-    formInstance
-      .validateFields()
-      .then((values) => {
-        onSearch(values)
-      })
-      .catch((errorInfo) => {
-        console.error('Validate Failed:', errorInfo)
-      })
-  }
 
   const handleReset = () => {
     formInstance.resetFields()
@@ -39,28 +29,26 @@ const FormSearch: React.FC<FormSearchProps> = ({
   }
 
   return (
-    <>
-      <FormPro
-        formOptions={formOptions}
-        initialValues={initialValues}
-        mode={mode}
-        labelCol={labelCol}
-        form={formInstance}
-        column={column}
-      />
-      <Row gutter={24}>
-        <Col span={24 / column} offset={((column - 1) * 24) / column}>
-          <Form.Item>
-            <Button type="primary" onClick={handleSearch}>
-              搜索
-            </Button>
-            <Button onClick={handleReset} style={{ marginLeft: 8 }}>
-              重置
-            </Button>
-          </Form.Item>
-        </Col>
-      </Row>
-    </>
+    <FormPro
+      formOptions={formOptions}
+      initialValues={initialValues}
+      mode={mode}
+      labelCol={labelCol}
+      form={formInstance}
+      onFinish={onSearch}
+      colDefaultSpan={6}
+    >
+      <Col span={searchColSpan}>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            搜索
+          </Button>
+          <Button onClick={handleReset} style={{ marginLeft: 8 }}>
+            重置
+          </Button>
+        </Form.Item>
+      </Col>
+    </FormPro>
   )
 }
 

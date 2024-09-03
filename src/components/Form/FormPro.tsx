@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { ComponentType, useMemo, useState } from 'react'
 import {
   Form,
   Input,
@@ -127,9 +127,10 @@ export interface FormProProps {
   initialValues?: Record<string, any>
   mode?: Mode
   labelCol?: ColProps
-  column?: number // 每行展示的表单项数目
   onFinish?: (values: any) => void
   form?: FormInstance
+  children?: React.ReactNode
+  colDefaultSpan?: number
 }
 
 const FormPro: React.FC<FormProProps> = ({
@@ -138,8 +139,9 @@ const FormPro: React.FC<FormProProps> = ({
   mode = 'add',
   onFinish,
   labelCol,
-  column = 1, // 默认一行展示3个表单项
-  form
+  form,
+  children,
+  colDefaultSpan = 24
 }) => {
   const [internalForm] = Form.useForm()
   const formInstance = form || internalForm
@@ -164,7 +166,7 @@ const FormPro: React.FC<FormProProps> = ({
       return null
     }
 
-    const colSpan = item.colProps?.span || 24 / column
+    const colSpan = item.colProps?.span || colDefaultSpan
 
     return (
       <Col span={colSpan} key={item.name}>
@@ -277,7 +279,10 @@ const FormPro: React.FC<FormProProps> = ({
         }))
       }}
     >
-      <Row gutter={24}>{formOptions.map((item) => renderFormItem(item))}</Row>
+      <Row gutter={24}>
+        {formOptions.map((item) => renderFormItem(item))}
+        {children}
+      </Row>
     </Form>
   )
 }
