@@ -10,7 +10,10 @@ import {
   Upload,
   Cascader,
   InputNumber,
-  FormItemProps,
+  Button,
+  Row,
+  Col,
+  ColProps,
   InputProps,
   SelectProps,
   RadioGroupProps,
@@ -18,12 +21,10 @@ import {
   DatePickerProps,
   SwitchProps,
   UploadProps,
-  CascaderProps,
   InputNumberProps,
-  Button,
-  ColProps
+  CascaderProps
 } from 'antd'
-import { log } from 'node:console'
+import { FormItemProps, FormInstance } from 'antd/lib/form'
 
 export type Mode = 'add' | 'edit' | 'see'
 
@@ -53,6 +54,7 @@ export interface FormOptionBase {
     | CascaderProps<any>
     | InputNumberProps
   hidden?: boolean | ((values: any) => boolean)
+  colProps?: ColProps // 每个表单项的布局
 }
 
 export interface InputOption extends FormOptionBase {
@@ -125,8 +127,9 @@ export interface FormProProps {
   initialValues?: Record<string, any>
   mode?: Mode
   labelCol?: ColProps
-  onFinish: (values: any) => void
-  form?: ReturnType<typeof Form.useForm>[0]
+  column?: number // 每行展示的表单项数目
+  onFinish?: (values: any) => void
+  form?: FormInstance
 }
 
 const FormPro: React.FC<FormProProps> = ({
@@ -135,6 +138,7 @@ const FormPro: React.FC<FormProProps> = ({
   mode = 'add',
   onFinish,
   labelCol,
+  column = 1, // 默认一行展示3个表单项
   form
 }) => {
   const [internalForm] = Form.useForm()
@@ -149,126 +153,115 @@ const FormPro: React.FC<FormProProps> = ({
       rules: item.rules || []
     }
 
-    // 显隐逻辑
     const shouldHide = useMemo(() => {
       if (typeof item.hidden === 'function') {
         return item.hidden(formValues)
       }
       return item.hidden || false
-    }, [item.hidden, formValues, initialValues])
+    }, [item.hidden, formValues])
 
     if (shouldHide) {
       return null
     }
 
-    switch (item.type) {
-      case 'input':
-        return (
-          <Form.Item {...commonProps} key={item.name}>
-            <Input
-              disabled={isSeeMode}
-              {...(item.componentProps as InputProps)}
-            />
-          </Form.Item>
-        )
-      case 'select':
-        return (
-          <Form.Item {...commonProps} key={item.name}>
-            <Select
-              disabled={isSeeMode}
-              {...(item.componentProps as SelectProps<any>)}
-            >
-              {(item.options || []).map((opt) => (
-                <Select.Option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        )
-      case 'radio':
-        return (
-          <Form.Item {...commonProps} key={item.name}>
-            <Radio.Group
-              disabled={isSeeMode}
-              {...(item.componentProps as RadioGroupProps)}
-            >
-              {(item.options || []).map((opt) => (
-                <Radio key={opt.value} value={opt.value}>
-                  {opt.label}
-                </Radio>
-              ))}
-            </Radio.Group>
-          </Form.Item>
-        )
-      case 'checkbox':
-        return (
-          <Form.Item {...commonProps} key={item.name} valuePropName="checked">
-            <Checkbox
-              disabled={isSeeMode}
-              {...(item.componentProps as CheckboxProps)}
-            >
-              {item.label}
-            </Checkbox>
-          </Form.Item>
-        )
-      case 'datePicker':
-        return (
-          <Form.Item {...commonProps} key={item.name}>
-            <DatePicker
-              disabled={isSeeMode}
-              {...(item.componentProps as DatePickerProps)}
-            />
-          </Form.Item>
-        )
-      case 'switch':
-        return (
-          <Form.Item {...commonProps} key={item.name} valuePropName="checked">
-            <Switch
-              disabled={isSeeMode}
-              {...(item.componentProps as SwitchProps)}
-            />
-          </Form.Item>
-        )
-      case 'upload':
-        return (
-          <Form.Item {...commonProps} key={item.name} valuePropName="fileList">
-            <Upload
-              disabled={isSeeMode}
-              {...(item.componentProps as UploadProps)}
-            >
-              <Button>点击上传</Button>
-            </Upload>
-          </Form.Item>
-        )
-      case 'cascader':
-        return (
-          <Form.Item {...commonProps} key={item.name}>
-            <Cascader
-              disabled={isSeeMode}
-              {...(item.componentProps as CascaderProps<any>)}
-              options={item.options}
-            />
-          </Form.Item>
-        )
-      case 'inputNumber':
-        return (
-          <Form.Item {...commonProps} key={item.name}>
-            <InputNumber
-              disabled={isSeeMode}
-              {...(item.componentProps as InputNumberProps)}
-            />
-          </Form.Item>
-        )
-      case 'custom':
-        return (
-          <Form.Item {...commonProps} key={item.name}>
-            {React.cloneElement(item.component, { disabled: isSeeMode })}
-          </Form.Item>
-        )
-      default:
-        return null
-    }
+    const colSpan = item.colProps?.span || 24 / column
+
+    return (
+      <Col span={colSpan} key={item.name}>
+        <Form.Item {...commonProps}>
+          {(() => {
+            switch (item.type) {
+              case 'input':
+                return (
+                  <Input
+                    disabled={isSeeMode}
+                    {...(item.componentProps as InputProps)}
+                  />
+                )
+              case 'select':
+                return (
+                  <Select
+                    disabled={isSeeMode}
+                    {...(item.componentProps as SelectProps<any>)}
+                  >
+                    {(item.options || []).map((opt) => (
+                      <Select.Option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                )
+              case 'radio':
+                return (
+                  <Radio.Group
+                    disabled={isSeeMode}
+                    {...(item.componentProps as RadioGroupProps)}
+                  >
+                    {(item.options || []).map((opt) => (
+                      <Radio key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </Radio>
+                    ))}
+                  </Radio.Group>
+                )
+              case 'checkbox':
+                return (
+                  <Checkbox
+                    disabled={isSeeMode}
+                    {...(item.componentProps as CheckboxProps)}
+                  >
+                    {item.label}
+                  </Checkbox>
+                )
+              case 'datePicker':
+                return (
+                  <DatePicker
+                    disabled={isSeeMode}
+                    {...(item.componentProps as DatePickerProps)}
+                  />
+                )
+              case 'switch':
+                return (
+                  <Switch
+                    disabled={isSeeMode}
+                    {...(item.componentProps as SwitchProps)}
+                  />
+                )
+              case 'upload':
+                return (
+                  <Upload
+                    disabled={isSeeMode}
+                    {...(item.componentProps as UploadProps)}
+                  >
+                    <Button>点击上传</Button>
+                  </Upload>
+                )
+              case 'cascader':
+                return (
+                  <Cascader
+                    disabled={isSeeMode}
+                    {...(item.componentProps as CascaderProps<any>)}
+                    options={item.options}
+                  />
+                )
+              case 'inputNumber':
+                return (
+                  <InputNumber
+                    disabled={isSeeMode}
+                    {...(item.componentProps as InputNumberProps)}
+                  />
+                )
+              case 'custom':
+                return React.cloneElement(item.component, {
+                  disabled: isSeeMode
+                })
+              default:
+                return null
+            }
+          })()}
+        </Form.Item>
+      </Col>
+    )
   }
 
   return (
@@ -284,7 +277,7 @@ const FormPro: React.FC<FormProProps> = ({
         }))
       }}
     >
-      {formOptions.map((item) => renderFormItem(item))}
+      <Row gutter={24}>{formOptions.map((item) => renderFormItem(item))}</Row>
     </Form>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Modal, Button, Form, ColProps } from 'antd'
-import FormPro, { FormOption } from '../Form/FormPro'
+import FormPro, { FormOption } from './FormPro'
 
 interface FormModalProps {
   visible?: boolean
@@ -42,6 +42,16 @@ const FormModal: React.FC<FormModalProps> = ({
 
   const isSeeMode = mode === 'see'
 
+  function onValidate() {
+    form
+      .validateFields()
+      .then((values) => {
+        onSubmit?.(values)
+      })
+      .catch((errorInfo) => {
+        console.error('Validate Failed:', errorInfo)
+      })
+  }
   return (
     <Modal
       open={visible}
@@ -53,17 +63,7 @@ const FormModal: React.FC<FormModalProps> = ({
           取消
         </Button>,
         !isSeeMode && (
-          <Button
-            key="submit"
-            type="primary"
-            onClick={() =>
-              document
-                .querySelector('form')
-                ?.dispatchEvent(
-                  new Event('submit', { cancelable: true, bubbles: true })
-                )
-            }
-          >
+          <Button key="submit" type="primary" onClick={onValidate}>
             提交
           </Button>
         )
@@ -75,9 +75,6 @@ const FormModal: React.FC<FormModalProps> = ({
         labelCol={labelCol}
         initialValues={initialValues}
         mode={mode}
-        onFinish={(...args) => {
-          onSubmit?.(...args)
-        }}
       />
     </Modal>
   )

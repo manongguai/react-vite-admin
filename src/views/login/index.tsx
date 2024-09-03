@@ -101,7 +101,7 @@ const LoginView = () => {
                 allowClear
                 styles={{ input: { paddingLeft: '12px' } }}
                 prefix={<UserOutlined />}
-                placeholder="用户名：admin/tourist"
+                placeholder="用户名：admin/kirk"
               />
             </Form.Item>
 
@@ -113,7 +113,7 @@ const LoginView = () => {
                 allowClear
                 styles={{ input: { paddingLeft: '12px' } }}
                 prefix={<LockOutlined />}
-                placeholder="密码：123456"
+                placeholder="密码：Q123456"
               />
             </Form.Item>
             <Form.Item<FieldType> name="remember" valuePropName="checked">

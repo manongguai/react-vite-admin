@@ -29,7 +29,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { TableRecordData } from './index.type'
-import FormModal from '@/components/Modal/FormModal'
+import FormModal from '@/components/Form/FormModal'
 import { useSetState } from 'react-use'
 import type { FormOption, Mode } from '@/components/Form/FormPro'
 import { menuTypeMap } from '@/constants'
@@ -390,13 +390,14 @@ const MenuPageWrapper = styled.div`
   display: flex;
   height: 100%;
   background-color: var(--bg-color);
+  border: solid 1px var(--border-color);
 `
 
 const LeftWrapper = styled.div`
   width: 300px;
   min-width: 300px;
   height: 100%;
-  border: solid 1px var(--border-color);
+  border-right: solid 1px var(--border-color);
   display: flex;
   flex-direction: column;
   & .tree_title {
@@ -418,7 +419,7 @@ const RightWrapper = styled.div`
   flex: 1;
   margin-left: 16px;
   padding: 8px;
-  border: solid 1px var(--border-color);
+  border-left: solid 1px var(--border-color);
   display: flex;
   flex-direction: column;
 `

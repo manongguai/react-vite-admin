@@ -2,10 +2,12 @@ import { ColProps, Divider, message, Popconfirm, Table, Tooltip } from 'antd'
 import { UserData } from './type'
 import { DeleteOutlined, EyeOutlined, ToolOutlined } from '@ant-design/icons'
 import { useState } from 'react'
-import { Mode } from '@/components/Form/FormPro'
+import { FormOption, Mode } from '@/components/Form/FormPro'
 import { useSetState } from 'react-use'
 import { useQuery } from 'react-query'
 import { getUserList } from '@/api/user'
+import { PageWrapper } from '@/components/Page'
+import FormSearch from '@/components/Form/FormSearch'
 
 export default function UsersPage() {
   const { data, isLoading, refetch } = useQuery('', async () => {
@@ -178,9 +180,28 @@ export default function UsersPage() {
     message.success('菜单删除成功')
     refetch()
   }
-
+  const formOptions: FormOption[] = [
+    { type: 'input', name: 'name', label: '姓名' },
+    {
+      type: 'select',
+      name: 'gender',
+      label: '性别',
+      options: [
+        { label: '男', value: 'male' },
+        { label: '女', value: 'female' }
+      ]
+    },
+    { type: 'datePicker', name: 'birthdate', label: '出生日期' }
+  ]
   return (
-    <div>
+    <PageWrapper>
+      <FormSearch
+        formOptions={formOptions}
+        column={3}
+        onSearch={(values) => console.log('搜索值', values)}
+        onReset={() => console.log('重置表单')}
+      />
+
       <Table
         columns={tableColumns}
         rowKey="id"
@@ -191,6 +212,6 @@ export default function UsersPage() {
           showTotal: (total) => `共 ${total} 条数据`
         }}
       ></Table>
-    </div>
+    </PageWrapper>
   )
 }
