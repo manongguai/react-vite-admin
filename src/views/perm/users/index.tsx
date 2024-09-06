@@ -1,25 +1,20 @@
 import {
   ColProps,
-  Divider,
   message,
-  Popconfirm,
-  Table,
-  Tooltip,
-  Flex,
+  Switch,
   Avatar,
-  Button,
-  Switch
+  Divider,
+  Popconfirm,
+  Flex,
+  Tooltip
 } from 'antd'
-import { UserData } from './type'
 import {
-  DeleteOutlined,
   EyeOutlined,
-  PlusCircleOutlined,
-  RedoOutlined,
-  ToolOutlined
+  ToolOutlined,
+  DeleteOutlined,
+  RedoOutlined
 } from '@ant-design/icons'
-import { useMemo, useState } from 'react'
-import { FormOption, Mode } from '@/components/Form/FormPro'
+import { useState, useMemo } from 'react'
 import { useSetState } from 'react-use'
 import { useQuery } from 'react-query'
 import {
@@ -32,13 +27,13 @@ import {
   updateUser,
   UserParams
 } from '@/api/user'
-import { PageWrapper } from '@/components/Page'
-import FormSearch from '@/components/Form/FormSearch'
-import FormModal from '@/components/Form/FormModal'
 import { getAllRoles } from '@/api/role'
-import styled from 'styled-components'
+import { UserData } from './type'
+import CommonPage from '@/components/Page/CommonPage'
+import { FormOption } from '@/components/Form/FormPro'
 
 export default function UsersPage() {
+  // 搜索参数
   const [searchParams, setSearchParams] = useSetState<UserParams>({
     status: undefined,
     username: '',
@@ -46,6 +41,7 @@ export default function UsersPage() {
     size: 10
   })
 
+  // 获取用户列表
   const { data, isLoading, refetch } = useQuery(
     ['userList', searchParams],
     async () => {
@@ -53,22 +49,26 @@ export default function UsersPage() {
       return res.data
     }
   )
+
+  // 获取所有角色
   const { data: roleData } = useQuery('getAllRoles', getAllRoles)
-  const [currentData, setCurrentData] = useState<UserData | null>(null)
   const rolesOptions = useMemo(() => {
     if (roleData) {
-      return roleData.data!.map((role) => {
-        return {
-          label: role.name,
-          value: role.id
-        }
-      })
+      return roleData.data!.map((role) => ({
+        label: role.name,
+        value: role.id
+      }))
     }
     return []
   }, [roleData])
+
+  // 当前操作的数据
+  const [currentData, setCurrentData] = useState<UserData | null>(null)
+
+  // 弹窗状态
   const [modal, setModal] = useSetState<{
     visible: boolean
-    mode: Mode
+    mode: 'add' | 'edit' | 'see'
     labelCol: ColProps
     initialValues: Record<string, any>
   }>({
@@ -89,13 +89,11 @@ export default function UsersPage() {
       title: '账号',
       dataIndex: 'username',
       key: 'username',
-      render: (v: string, record: UserData) => {
-        return (
-          <Flex align="center" gap={5}>
-            <Avatar src={record.avatar}></Avatar> {v}
-          </Flex>
-        )
-      }
+      render: (v: string, record: UserData) => (
+        <Flex align="center" gap={5}>
+          <Avatar src={record.avatar}></Avatar> {v}
+        </Flex>
+      )
     },
     {
       title: '手机号',
@@ -115,10 +113,8 @@ export default function UsersPage() {
         <Switch
           checkedChildren="启用"
           unCheckedChildren="禁用"
-          onChange={(v) => {
-            onEnableChange(v, record.id)
-          }}
-          value={Boolean(v)}
+          onChange={(checked) => onEnableChange(checked, record.id)}
+          checked={Boolean(v)}
         />
       )
     },
@@ -137,33 +133,27 @@ export default function UsersPage() {
       key: 'control',
       width: 160,
       render: (v: number, record: UserData) => {
-        const controls = []
-        controls.push(
+        const controls = [
           <span
+            key="view"
             onClick={() => onModalShow(record, 'see')}
-            key="0"
             className="control-btn green"
           >
             <Tooltip placement="top" title="查看">
               <EyeOutlined />
             </Tooltip>
-          </span>
-        )
-
-        controls.push(
+          </span>,
           <span
+            key="edit"
             onClick={() => onModalShow(record, 'edit')}
-            key="1"
             className="control-btn blue"
           >
             <Tooltip placement="top" title="修改">
               <ToolOutlined />
             </Tooltip>
-          </span>
-        )
-        controls.push(
+          </span>,
           <Popconfirm
-            key="2"
+            key="delete"
             title="确定删除吗?"
             okText="确定"
             cancelText="取消"
@@ -174,11 +164,9 @@ export default function UsersPage() {
                 <DeleteOutlined />
               </Tooltip>
             </span>
-          </Popconfirm>
-        )
-        controls.push(
+          </Popconfirm>,
           <Popconfirm
-            key="3"
+            key="reset"
             title="确定重置密码吗?"
             okText="确定"
             cancelText="取消"
@@ -190,26 +178,67 @@ export default function UsersPage() {
               </Tooltip>
             </span>
           </Popconfirm>
-        )
-        const result: JSX.Element[] = []
-        controls.forEach((item, index) => {
-          if (index) {
-            result.push(<Divider key={`line${index}`} type="vertical" />)
-          }
-          result.push(item)
-        })
-        return result
+        ]
+
+        return controls.reduce((prev: JSX.Element[], curr, index) => {
+          if (index)
+            prev.push(<Divider key={`divider${index}`} type="vertical" />)
+          prev.push(curr)
+          return prev
+        }, [])
       }
     }
   ]
 
-  function onModalClose() {
-    setCurrentData(null)
-    setModal({
-      visible: false
+  // 搜索操作
+  const onSearch = (values: {
+    username: string
+    status: number | undefined
+  }) => {
+    setSearchParams({
+      ...values,
+      page: 1
     })
   }
-  async function onModalSubmit(values: any) {
+
+  // 重置搜索
+  const onResetSearch = () => {
+    onSearch({
+      username: '',
+      status: undefined
+    })
+  }
+
+  // 弹窗操作
+  const onModalShow = async (
+    record: UserData | null,
+    mode: 'add' | 'edit' | 'see'
+  ) => {
+    setCurrentData(record)
+    if (record) {
+      const { data: roleIds } = await getUserRoles(record?.id as string)
+      setModal({
+        visible: true,
+        mode,
+        initialValues: { ...record, roleIds }
+      })
+    } else {
+      setModal({
+        visible: true,
+        mode,
+        initialValues: { roleIds: [] }
+      })
+    }
+  }
+
+  // 弹窗关闭
+  const onModalClose = () => {
+    setCurrentData(null)
+    setModal({ visible: false })
+  }
+
+  // 弹窗提交
+  const onModalSubmit = async (values: any) => {
     const params = {
       ...values
     }
@@ -226,73 +255,26 @@ export default function UsersPage() {
     onModalClose()
     refetch()
   }
-  async function onModalShow(record: UserData | null, mode: Mode) {
-    setCurrentData(record)
-    let newModal = {}
-    if (record) {
-      const { data: roleIds } = await getUserRoles(record?.id as string)
-      newModal = {
-        visible: true,
-        mode,
-        initialValues: {
-          ...record,
-          roleIds
-        }
-      }
-    } else {
-      newModal = {
-        visible: true,
-        mode,
-        initialValues: { roleIds: [] }
-      }
-    }
-    setModal(newModal)
+
+  // 启用/禁用操作
+  const onEnableChange = async (checked: boolean, id: string) => {
+    await changeStatus({ id, status: Number(checked) })
+    message.success(checked ? '已启用' : '已禁用')
+    refetch()
   }
-  async function onDel(record: UserData) {
-    const res = await deleteUser(record.id)
+
+  // 删除用户操作
+  const onDel = async (record: UserData) => {
+    await deleteUser(record.id)
     message.success('删除成功')
     refetch()
   }
 
-  async function onResetPassword(record: UserData) {
+  // 重置密码
+  const onResetPassword = async (record: UserData) => {
     await resetPassword(record.id)
-    message.success('重置密码成功')
-    refetch()
+    message.success('密码已重置')
   }
-
-  async function onEnableChange(v: boolean, id: string): Promise<void> {
-    await changeStatus({
-      id,
-      status: Number(v)
-    })
-    message.success(v ? '已启用' : '已禁用')
-    refetch()
-  }
-  const searchFormOptions: FormOption[] = [
-    {
-      type: 'input',
-      name: 'username',
-      label: '用户名',
-      componentProps: {
-        placeholder: '请输入用户名',
-        allowClear: true
-      }
-    },
-    {
-      type: 'select',
-      name: 'status',
-      label: '状态',
-      componentProps: {
-        placeholder: '请选择状态',
-        allowClear: true,
-        showSearch: true
-      },
-      options: [
-        { label: '启用', value: 1 },
-        { label: '禁用', value: 0 }
-      ]
-    }
-  ]
 
   const modalFormOptions = useMemo<FormOption[]>(() => {
     return [
@@ -343,65 +325,53 @@ export default function UsersPage() {
     ]
   }, [rolesOptions, currentData, modal])
 
-  function onSearch(values: { username: string; status: number | undefined }) {
-    setSearchParams({
-      ...values,
-      page: 1
-    })
-  }
-  function onPageChange(page: number, size: number) {
-    setSearchParams({
-      page,
-      size
-    })
-  }
+  const searchFormOptions: FormOption[] = [
+    {
+      type: 'input',
+      name: 'username',
+      label: '用户名',
+      componentProps: {
+        placeholder: '请输入用户名',
+        allowClear: true
+      }
+    },
+    {
+      type: 'select',
+      name: 'status',
+      label: '状态',
+      componentProps: {
+        placeholder: '请选择状态',
+        allowClear: true,
+        showSearch: true
+      },
+      options: [
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 }
+      ]
+    }
+  ]
 
   return (
-    <PageWrapper>
-      <FormSearch
-        onReset={() =>
-          onSearch({
-            username: '',
-            status: undefined
-          })
+    <CommonPage
+      tableColumns={tableColumns}
+      dataSource={data?.list || []}
+      isLoading={isLoading}
+      pagination={{
+        current: searchParams.page,
+        pageSize: searchParams.size,
+        total: data?.total,
+        onChange: (page: number, size: number) => {
+          setSearchParams({ page, size })
         }
-        formOptions={searchFormOptions}
-        onSearch={onSearch}
-      />
-      <Flex
-        justify="end"
-        style={{
-          marginBottom: '16px'
-        }}
-      >
-        <Button
-          onClick={() => onModalShow(null, 'add')}
-          icon={<PlusCircleOutlined />}
-          type="primary"
-        >
-          新增
-        </Button>
-      </Flex>
-      <Table
-        columns={tableColumns}
-        rowKey="id"
-        loading={isLoading}
-        dataSource={data?.list || []}
-        pagination={{
-          showQuickJumper: true,
-          pageSize: 10,
-          total: data?.total || 0,
-          current: 1,
-          showTotal: () => `共 ${data?.total} 条数据`,
-          onChange: onPageChange
-        }}
-      ></Table>
-      <FormModal
-        {...modal}
-        formOptions={modalFormOptions}
-        onClose={onModalClose}
-        onSubmit={onModalSubmit}
-      ></FormModal>
-    </PageWrapper>
+      }}
+      searchFormOptions={searchFormOptions}
+      onSearch={onSearch}
+      onResetSearch={onResetSearch}
+      onAdd={() => onModalShow(null, 'add')}
+      modalProps={modal}
+      modalFormOptions={modalFormOptions}
+      onModalClose={onModalClose}
+      onModalSubmit={onModalSubmit}
+    />
   )
 }

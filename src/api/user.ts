@@ -1,3 +1,4 @@
+import { Pagination } from '@/components/Page/type'
 import http from '@/utils/http'
 import { isNullOrUnDef } from '@/utils/is'
 import { createUserDto, updateUserDto, UserData } from '@/views/perm/users/type'
@@ -49,9 +50,7 @@ export const getAuthRoutes = () => {
   )
 }
 
-export interface UserParams {
-  page: number
-  size: number
+export interface UserParams extends Pagination {
   status?: number | undefined
   username?: string
 }

@@ -11,7 +11,7 @@ export interface FormSearchProps extends Omit<FormProProps, 'onFinish'> {
 const FormSearch: React.FC<FormSearchProps> = ({
   formOptions,
   initialValues = {},
-  mode = 'add',
+  disabled,
   labelCol,
   onSearch,
   onReset,
@@ -32,7 +32,7 @@ const FormSearch: React.FC<FormSearchProps> = ({
     <FormPro
       formOptions={formOptions}
       initialValues={initialValues}
-      mode={mode}
+      disabled={disabled}
       labelCol={labelCol}
       form={formInstance}
       onFinish={onSearch}

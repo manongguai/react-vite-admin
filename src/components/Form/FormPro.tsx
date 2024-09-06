@@ -26,8 +26,6 @@ import {
 } from 'antd'
 import { FormItemProps, FormInstance } from 'antd/lib/form'
 
-export type Mode = 'add' | 'edit' | 'see'
-
 export interface FormOptionBase {
   type:
     | 'input'
@@ -125,7 +123,7 @@ export type FormOption =
 export interface FormProProps {
   formOptions: FormOption[]
   initialValues?: Record<string, any>
-  mode?: Mode
+  disabled?: boolean
   labelCol?: ColProps
   onFinish?: (values: any) => void
   form?: FormInstance
@@ -136,7 +134,7 @@ export interface FormProProps {
 const FormPro: React.FC<FormProProps> = ({
   formOptions,
   initialValues = {},
-  mode = 'add',
+  disabled = false,
   onFinish,
   labelCol,
   form,
@@ -146,7 +144,6 @@ const FormPro: React.FC<FormProProps> = ({
   const [internalForm] = Form.useForm()
   const formInstance = form || internalForm
   const [formValues, setFormValues] = useState(initialValues)
-  const isSeeMode = mode === 'see'
 
   const renderFormItem = (item: FormOption) => {
     const commonProps = {
@@ -176,14 +173,14 @@ const FormPro: React.FC<FormProProps> = ({
               case 'input':
                 return (
                   <Input
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as InputProps)}
                   />
                 )
               case 'select':
                 return (
                   <Select
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as SelectProps<any>)}
                   >
                     {(item.options || []).map((opt) => (
@@ -196,7 +193,7 @@ const FormPro: React.FC<FormProProps> = ({
               case 'radio':
                 return (
                   <Radio.Group
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as RadioGroupProps)}
                   >
                     {(item.options || []).map((opt) => (
@@ -209,7 +206,7 @@ const FormPro: React.FC<FormProProps> = ({
               case 'checkbox':
                 return (
                   <Checkbox
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as CheckboxProps)}
                   >
                     {item.label}
@@ -218,21 +215,21 @@ const FormPro: React.FC<FormProProps> = ({
               case 'datePicker':
                 return (
                   <DatePicker
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as DatePickerProps)}
                   />
                 )
               case 'switch':
                 return (
                   <Switch
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as SwitchProps)}
                   />
                 )
               case 'upload':
                 return (
                   <Upload
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as UploadProps)}
                   >
                     <Button>点击上传</Button>
@@ -241,7 +238,7 @@ const FormPro: React.FC<FormProProps> = ({
               case 'cascader':
                 return (
                   <Cascader
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as CascaderProps<any>)}
                     options={item.options}
                   />
@@ -249,13 +246,13 @@ const FormPro: React.FC<FormProProps> = ({
               case 'inputNumber':
                 return (
                   <InputNumber
-                    disabled={isSeeMode}
+                    disabled={disabled}
                     {...(item.componentProps as InputNumberProps)}
                   />
                 )
               case 'custom':
                 return React.cloneElement(item.component, {
-                  disabled: isSeeMode
+                  disabled: disabled
                 })
               default:
                 return null

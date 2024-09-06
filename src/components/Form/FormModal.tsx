@@ -2,14 +2,16 @@ import React, { useEffect } from 'react'
 import { Modal, Button, Form, ColProps } from 'antd'
 import FormPro, { FormOption } from './FormPro'
 
-interface FormModalProps {
+export type Mode = 'add' | 'edit' | 'see'
+
+export interface FormModalProps {
   visible?: boolean
   onClose?: () => void
   onSubmit?: (values: any) => void
   formOptions?: FormOption[]
   labelCol?: ColProps
   initialValues?: Record<string, any>
-  mode?: 'add' | 'edit' | 'see'
+  mode?: Mode
 }
 
 const FormModal: React.FC<FormModalProps> = ({
@@ -74,7 +76,7 @@ const FormModal: React.FC<FormModalProps> = ({
         formOptions={formOptions}
         labelCol={labelCol}
         initialValues={initialValues}
-        mode={mode}
+        disabled={mode === 'see'}
       />
     </Modal>
   )
