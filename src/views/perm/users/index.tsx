@@ -7,7 +7,8 @@ import {
   Tooltip,
   Flex,
   Avatar,
-  Button
+  Button,
+  Switch
 } from 'antd'
 import { UserData } from './type'
 import {
@@ -22,6 +23,7 @@ import { FormOption, Mode } from '@/components/Form/FormPro'
 import { useSetState } from 'react-use'
 import { useQuery } from 'react-query'
 import {
+  changeStatus,
   createUser,
   deleteUser,
   getUserList,
@@ -109,12 +111,16 @@ export default function UsersPage() {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
-      render: (v: number) =>
-        v === 1 ? (
-          <span style={{ color: 'green' }}>启用</span>
-        ) : (
-          <span style={{ color: 'red' }}>禁用</span>
-        )
+      render: (v: number, record: UserData) => (
+        <Switch
+          checkedChildren="启用"
+          unCheckedChildren="禁用"
+          onChange={(v) => {
+            onEnableChange(v, record.id)
+          }}
+          value={Boolean(v)}
+        />
+      )
     },
     {
       title: '注册时间',
@@ -251,6 +257,15 @@ export default function UsersPage() {
   async function onResetPassword(record: UserData) {
     await resetPassword(record.id)
     message.success('重置密码成功')
+    refetch()
+  }
+
+  async function onEnableChange(v: boolean, id: string): Promise<void> {
+    await changeStatus({
+      id,
+      status: Number(v)
+    })
+    message.success(v ? '已启用' : '已禁用')
     refetch()
   }
   const searchFormOptions: FormOption[] = [
