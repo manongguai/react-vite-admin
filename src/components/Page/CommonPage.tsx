@@ -1,62 +1,51 @@
-import {
-  Table,
-  Button,
-  Flex,
-  Divider,
-  Tooltip,
-  Popconfirm,
-  Avatar,
-  Switch
-} from 'antd'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { Table } from 'antd'
 import FormModal from '@/components/Form/FormModal'
 import FormSearch from '@/components/Form/FormSearch'
 import { PageWrapper } from '@/components/Page/Wrapper'
+import TableHeaderRow, { TableHeaderRowPros } from './TableHeaderRow'
 
 interface CommonPageProps {
-  tableColumns: any[]
-  dataSource: any[]
-  isLoading: boolean
-  pagination: any
-  onSearch: (values: any) => void
-  searchFormOptions: any[]
-  onResetSearch: () => void
-  onAdd: () => void
-  modalProps: any
-  modalFormOptions: any[]
-  onModalClose: () => void
-  onModalSubmit: (values: any) => void
+  tableColumns?: any[]
+  dataSource?: any[]
+  isLoading?: boolean
+  pagination?: any
+  onSearch?: (values: any) => void
+  searchFormOptions?: any[]
+  onResetSearch?: () => void
+  modalProps?: Record<string, any>
+  modalFormOptions?: any[]
+  onModalClose?: () => void
+  onModalSubmit?: (values: any) => void
+  headerProps?: TableHeaderRowPros
 }
 
 export default function CommonPage({
-  tableColumns,
-  dataSource,
-  isLoading,
-  pagination,
+  tableColumns = [],
+  dataSource = [],
+  isLoading = false,
+  pagination = false,
   onSearch,
   searchFormOptions,
   onResetSearch,
-  onAdd,
-  modalProps,
+  modalProps = {},
   modalFormOptions,
   onModalClose,
-  onModalSubmit
+  onModalSubmit,
+  headerProps
 }: CommonPageProps) {
   return (
     <PageWrapper>
       {/* 搜索框 */}
-      <FormSearch
-        onReset={onResetSearch}
-        formOptions={searchFormOptions}
-        onSearch={onSearch}
-      />
+      {searchFormOptions && (
+        <FormSearch
+          onReset={onResetSearch}
+          formOptions={searchFormOptions}
+          onSearch={onSearch}
+        />
+      )}
 
       {/* 操作按钮 */}
-      <Flex justify="end" style={{ marginBottom: '16px' }}>
-        <Button onClick={onAdd} icon={<PlusCircleOutlined />} type="primary">
-          新增
-        </Button>
-      </Flex>
+      {headerProps && <TableHeaderRow {...headerProps}></TableHeaderRow>}
 
       {/* 表格 */}
       <Table
@@ -68,12 +57,14 @@ export default function CommonPage({
       />
 
       {/* 弹窗 */}
-      <FormModal
-        {...modalProps}
-        formOptions={modalFormOptions}
-        onClose={onModalClose}
-        onSubmit={onModalSubmit}
-      />
+      {modalFormOptions && (
+        <FormModal
+          {...modalProps}
+          formOptions={modalFormOptions}
+          onClose={onModalClose}
+          onSubmit={onModalSubmit}
+        />
+      )}
     </PageWrapper>
   )
 }

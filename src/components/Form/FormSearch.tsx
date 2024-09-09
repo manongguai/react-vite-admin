@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from 'antd'
 import FormPro, { FormOption, FormProProps } from './FormPro'
 
 export interface FormSearchProps extends Omit<FormProProps, 'onFinish'> {
-  onSearch: (values: any) => void
+  onSearch?: (values: any) => void
   onReset?: () => void
   searchColSpan?: number
 }

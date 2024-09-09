@@ -6,13 +6,15 @@ import {
   Divider,
   Popconfirm,
   Flex,
-  Tooltip
+  Tooltip,
+  Button
 } from 'antd'
 import {
   EyeOutlined,
   ToolOutlined,
   DeleteOutlined,
-  RedoOutlined
+  RedoOutlined,
+  PlusCircleOutlined
 } from '@ant-design/icons'
 import { useState, useMemo } from 'react'
 import { useSetState } from 'react-use'
@@ -351,6 +353,23 @@ export default function UsersPage() {
     }
   ]
 
+  const headerProps = {
+    elements: [
+      {
+        render: () => {
+          return (
+            <Button
+              onClick={() => onModalShow(null, 'add')}
+              icon={<PlusCircleOutlined />}
+              type="primary"
+            >
+              新增
+            </Button>
+          )
+        }
+      }
+    ]
+  }
   return (
     <CommonPage
       tableColumns={tableColumns}
@@ -367,11 +386,11 @@ export default function UsersPage() {
       searchFormOptions={searchFormOptions}
       onSearch={onSearch}
       onResetSearch={onResetSearch}
-      onAdd={() => onModalShow(null, 'add')}
       modalProps={modal}
       modalFormOptions={modalFormOptions}
       onModalClose={onModalClose}
       onModalSubmit={onModalSubmit}
+      headerProps={headerProps}
     />
   )
 }
