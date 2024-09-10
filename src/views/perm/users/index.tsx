@@ -286,7 +286,7 @@ export default function UsersPage() {
         label: '用户名',
         rules: [{ required: true, message: '用户名不能为空' }],
         componentProps: {
-          disabled: modal.mode != 'add',
+          disabled: true,
           placeholder: '请输入用户名',
           allowClear: true
         }

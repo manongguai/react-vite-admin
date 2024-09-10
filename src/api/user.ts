@@ -1,4 +1,4 @@
-import { Pagination } from '@/components/Page/type'
+import { Pagination, PaginationResult } from '@/components/Page/type'
 import http from '@/utils/http'
 import { isNullOrUnDef } from '@/utils/is'
 import { createUserDto, updateUserDto, UserData } from '@/views/perm/users/type'
@@ -30,7 +30,7 @@ export const login = (userInfo: ReqLoginForm) => {
   })
 }
 
-export const getMenus = () => {
+export const getUserMenus = () => {
   return http.get<Menu.MenuOptions[]>(
     '/perm/menu',
     {},
@@ -55,10 +55,7 @@ export interface UserParams extends Pagination {
   username?: string
 }
 export const getUserList = ({ page, size, status, username }: UserParams) => {
-  return http.get<{
-    list: UserData[]
-    total: number
-  }>(
+  return http.get<PaginationResult<UserData>>(
     `/user/list?page=${page}&size=${size}&status=${
       isNullOrUnDef(status) ? '' : status
     }&username=${username || ''}`

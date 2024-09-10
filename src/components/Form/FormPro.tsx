@@ -105,7 +105,11 @@ export interface InputNumberOption extends FormOptionBase {
 
 export interface CustomOption extends FormOptionBase {
   type: 'custom'
-  component: React.ReactElement
+  componentProps?: Record<string, any>
+  render: (
+    form: FormInstance,
+    componentProps: Record<string, any>
+  ) => React.ReactElement
 }
 
 export type FormOption =
@@ -251,8 +255,9 @@ const FormPro: React.FC<FormProProps> = ({
                   />
                 )
               case 'custom':
-                return React.cloneElement(item.component, {
-                  disabled: disabled
+                return item.render(formInstance, {
+                  disabled,
+                  ...item.componentProps
                 })
               default:
                 return null

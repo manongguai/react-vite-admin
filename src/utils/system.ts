@@ -161,7 +161,10 @@ export function buildMenuTree(
   })
 }
 
-export function buildMenuTreeForPage(menuList: Menu.MenuOptions[]) {
+export function buildMenuTreeForPage(
+  menuList: Menu.MenuOptions[],
+  disableButton = true
+) {
   const menuMap: {
     [k: string]: {
       children: Menu.MenuTreeOptions[]
@@ -178,7 +181,11 @@ export function buildMenuTreeForPage(menuList: Menu.MenuOptions[]) {
   } = Object.fromEntries(
     menuList.map((menu) => [
       menu.id,
-      { ...menu, children: [], disabled: menu.type === 3 ? true : false }
+      {
+        ...menu,
+        children: [],
+        disabled: menu.type === 3 ? disableButton : false
+      }
     ])
   )
   return Object.values(menuMap).filter((menu) => {

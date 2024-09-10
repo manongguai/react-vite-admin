@@ -2,8 +2,8 @@ import {
   createMenu,
   deleteMenu,
   getAllMenus,
-  getAllPerms,
-  getMenuPerm,
+  getAllApiPerms,
+  getUserApiPerm,
   updateMenu
 } from '@/api/system'
 import IconFont from '@/components/Iconfont'
@@ -29,9 +29,9 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { TableRecordData } from './index.type'
-import FormModal from '@/components/Form/FormModal'
+import FormModal, { Mode } from '@/components/Form/FormModal'
 import { useSetState } from 'react-use'
-import type { FormOption, Mode } from '@/components/Form/FormPro'
+import type { FormOption } from '@/components/Form/FormPro'
 import { menuTypeMap } from '@/constants'
 
 const MenusPage = () => {
@@ -40,7 +40,7 @@ const MenusPage = () => {
     isLoading,
     refetch
   } = useQuery('getAllMenus', getAllMenus)
-  const { data: permsData } = useQuery('getAllPerms', getAllPerms)
+  const { data: permsData } = useQuery('getAllApiPerms', getAllApiPerms)
   const [treeSelected, setTreeSelected] = useState<Menu.MenuTreeOptions | null>(
     null
   )
@@ -311,7 +311,7 @@ const MenusPage = () => {
     setCurrentData(record)
     let newModal = {}
     if (record) {
-      const { data: menuPermList } = await getMenuPerm(record?.id as string)
+      const { data: menuPermList } = await getUserApiPerm(record?.id as string)
       newModal = {
         visible: true,
         mode,

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from './redux.hooks'
 import { setBreadcrumbs } from '@/store/modules/breadcrumb/breadcrumbSlice'
 import { findAllBreadcrumb } from '@/utils/system'
 import { setAuthMenus } from '@/store/modules/user/userSlice'
-import { getMenus } from '@/api/user'
+import { getUserMenus } from '@/api/user'
 
 const useMenu = () => {
   const { accessToken } = useAppSelector((store) => store.user)
@@ -17,7 +17,7 @@ const useMenu = () => {
   async function getMenuData() {
     let data: Menu.MenuOptions[] = []
     try {
-      const res = await getMenus()
+      const res = await getUserMenus()
       data = res.data!
     } catch (error) {
       console.log(error)

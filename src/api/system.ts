@@ -1,5 +1,6 @@
 import http from '@/utils/http'
 
+// 所有菜单权限
 export const getAllMenus = () => {
   return http.get<Menu.MenuOptions[]>('/menu/all?hasBtn=1')
 }
@@ -14,10 +15,13 @@ export const deleteMenu = (id: string) => {
   return http.delete('/menu/' + id)
 }
 
-export const getAllPerms = () => {
+// api权限
+export const getAllApiPerms = () => {
   return http.get<PermItem[]>('/perm/all')
 }
-export const getMenuPerm = (id: string) => {
+
+// 获取用户的api权限
+export const getUserApiPerm = (id: string) => {
   return http.get<MenuPermItem[]>(`menu/one/${id}/menu-perm`)
 }
 
