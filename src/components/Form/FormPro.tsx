@@ -22,7 +22,9 @@ import {
   SwitchProps,
   UploadProps,
   InputNumberProps,
-  CascaderProps
+  CascaderProps,
+  TreeSelectProps,
+  TreeSelect
 } from 'antd'
 import { FormItemProps, FormInstance } from 'antd/lib/form'
 
@@ -37,6 +39,7 @@ export interface FormOptionBase {
     | 'upload'
     | 'cascader'
     | 'inputNumber'
+    | 'treeSelect'
     | 'custom'
   name: string
   label: string
@@ -50,6 +53,7 @@ export interface FormOptionBase {
     | SwitchProps
     | UploadProps
     | CascaderProps<any>
+    | TreeSelectProps<any>
     | InputNumberProps
   hidden?: boolean | ((values: any) => boolean)
   colProps?: ColProps // 每个表单项的布局
@@ -103,6 +107,12 @@ export interface InputNumberOption extends FormOptionBase {
   componentProps?: InputNumberProps
 }
 
+export interface TreeSelectOption extends FormOptionBase {
+  type: 'treeSelect'
+  componentProps?: TreeSelectProps<any>
+  options?: { title: string; value: string | number; children?: any[] }[]
+}
+
 export interface CustomOption extends FormOptionBase {
   type: 'custom'
   componentProps?: Record<string, any>
@@ -122,6 +132,7 @@ export type FormOption =
   | UploadOption
   | CascaderOption
   | InputNumberOption
+  | TreeSelectOption
   | CustomOption
 
 export interface FormProProps {
@@ -252,6 +263,14 @@ const FormPro: React.FC<FormProProps> = ({
                   <InputNumber
                     disabled={disabled}
                     {...(item.componentProps as InputNumberProps)}
+                  />
+                )
+              case 'treeSelect':
+                return (
+                  <TreeSelect
+                    disabled={disabled}
+                    treeData={item.options || []}
+                    {...(item.componentProps as TreeSelectProps<any>)}
                   />
                 )
               case 'custom':

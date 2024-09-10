@@ -43,7 +43,7 @@ export default function UsersPage() {
 
   // 获取用户列表
   const { data, isLoading, refetch } = useQuery(
-    ['userList', searchParams],
+    ['roleList', searchParams],
     async () => {
       const res = await getRoleList(searchParams)
       return res.data

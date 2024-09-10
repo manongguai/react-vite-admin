@@ -33,6 +33,7 @@ import { getAllRoles } from '@/api/role'
 import { UserData } from './type'
 import CommonPage from '@/components/Page/CommonPage'
 import { FormOption } from '@/components/Form/FormPro'
+import { Mode } from '@/components/Form/FormModal'
 
 export default function UsersPage() {
   // 搜索参数
@@ -70,7 +71,7 @@ export default function UsersPage() {
   // 弹窗状态
   const [modal, setModal] = useSetState<{
     visible: boolean
-    mode: 'add' | 'edit' | 'see'
+    mode: Mode
     labelCol: ColProps
     initialValues: Record<string, any>
   }>({
