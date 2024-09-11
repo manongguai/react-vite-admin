@@ -106,3 +106,10 @@ export function getFileType(fileName: string): string {
   result = 'other'
   return result
 }
+
+export function createFile(url: string) {
+  return {
+    url: url,
+    name: url
+  }
+}

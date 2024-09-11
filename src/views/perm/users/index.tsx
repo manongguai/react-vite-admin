@@ -6,14 +6,16 @@ import {
   Popconfirm,
   Flex,
   Tooltip,
-  Button
+  Button,
+  UploadFile
 } from 'antd'
 import {
   EyeOutlined,
   ToolOutlined,
   DeleteOutlined,
   RedoOutlined,
-  PlusCircleOutlined
+  PlusCircleOutlined,
+  UploadOutlined
 } from '@ant-design/icons'
 import { useState, useMemo } from 'react'
 import { useSetState } from 'react-use'
@@ -33,6 +35,7 @@ import { UserData } from './type'
 import CommonPage from '@/components/Page/CommonPage'
 import { FormOption } from '@/components/Form/FormPro'
 import { Mode } from '@/components/Form/FormModal'
+import { createFile } from '@/utils/file'
 
 export default function UsersPage() {
   // 搜索参数
@@ -222,7 +225,11 @@ export default function UsersPage() {
       setModal({
         visible: true,
         mode,
-        initialValues: { ...record, roleIds }
+        initialValues: {
+          ...record,
+          roleIds,
+          avatar: [createFile(record.avatar)]
+        }
       })
     } else {
       setModal({
@@ -242,7 +249,8 @@ export default function UsersPage() {
   // 弹窗提交
   const onModalSubmit = async (values: any) => {
     const params = {
-      ...values
+      ...values,
+      avatar: values.avatar[0] && values.avatar[0].url
     }
     if (currentData && currentData.id) {
       params.id = currentData.id
@@ -289,6 +297,32 @@ export default function UsersPage() {
           disabled: true,
           placeholder: '请输入用户名',
           allowClear: true
+        }
+      },
+      {
+        type: 'upload',
+        name: 'avatar',
+        label: '头像',
+        rules: [{ required: true, message: '头像不能为空' }],
+        componentProps: {
+          showUploadList: false,
+          maxCount: 1,
+          render: (value: UploadFile[]) => {
+            return value && value.length ? (
+              <Flex gap={10} align="center">
+                {value.map((t, i) => {
+                  return <Avatar size={60} key={i} src={t.url}></Avatar>
+                })}
+                <Button size="small" icon={<UploadOutlined />}>
+                  更换
+                </Button>
+              </Flex>
+            ) : (
+              <Button size="small" icon={<UploadOutlined />}>
+                上传
+              </Button>
+            )
+          }
         }
       },
       {

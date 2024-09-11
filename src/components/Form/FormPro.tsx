@@ -21,12 +21,12 @@ import {
   CheckboxProps,
   DatePickerProps,
   SwitchProps,
-  UploadProps,
   CascaderProps,
   TreeSelectProps,
   InputNumberProps
 } from 'antd'
 import { FormItemProps, FormInstance } from 'antd/lib/form'
+import CustomUpload, { CustomUploadProps } from './CustomUpload'
 
 export interface FormOptionBase<T = { label: string; value: string | number }> {
   type:
@@ -52,7 +52,7 @@ export interface FormOptionBase<T = { label: string; value: string | number }> {
     | CheckboxProps
     | DatePickerProps
     | SwitchProps
-    | UploadProps
+    | CustomUploadProps
     | CascaderProps<any>
     | TreeSelectProps<any>
     | InputNumberProps
@@ -100,7 +100,7 @@ export interface SwitchOption extends FormOptionBase {
 
 export interface UploadOption extends FormOptionBase {
   type: 'upload'
-  componentProps?: UploadProps
+  componentProps?: CustomUploadProps
 }
 
 export interface CascaderOption<T = { label: string; value: string | number }>
@@ -260,12 +260,10 @@ const FormPro: React.FC<FormProProps> = ({
                 )
               case 'upload':
                 return (
-                  <Upload
+                  <CustomUpload
                     disabled={disabled}
-                    {...(item.componentProps as UploadProps)}
-                  >
-                    <Button>点击上传</Button>
-                  </Upload>
+                    {...(item.componentProps as CustomUploadProps)}
+                  ></CustomUpload>
                 )
               case 'cascader':
                 return (
