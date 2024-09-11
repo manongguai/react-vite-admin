@@ -132,33 +132,34 @@ export function buildMenuTree(
   menuList: Menu.MenuOptions[]
 ): Menu.MenuTreeOptions[] {
   const menuMap: {
-    [k: string]: {
-      children: Menu.MenuTreeOptions[]
-      path: string
-      name: string
-      icon?: string
-      close?: boolean
-      code: string
-      parentId: string
-      id: string
-      type: Menu.MenuType
-      disabled?: boolean
+    [k: string]: Menu.MenuTreeOptions
+  } = {}
+
+  const result: Menu.MenuTreeOptions[] = []
+
+  menuList.forEach((menu) => {
+    // 只处理 type 为 1 的菜单
+    if (menu.type === 1) {
+      // 初始化菜单项，设置 children 和 disabled
+      const menuItem = {
+        ...menu,
+        children: []
+      }
+
+      // 存储到 menuMap
+      menuMap[menu.id] = menuItem
+
+      // 检查父级菜单是否存在
+      if (menu.parentId !== '0') {
+        menuMap[menu.parentId].children!.push(menuItem)
+      } else {
+        // 否则作为顶级菜单
+        result.push(menuItem)
+      }
     }
-  } = Object.fromEntries(
-    menuList
-      .filter((menu) => menu.type === 1)
-      .map((menu) => [
-        menu.id,
-        { ...menu, children: [], disabled: menu.type === 3 ? true : false }
-      ])
-  )
-  return Object.values(menuMap).filter((menu) => {
-    if (menu.parentId !== '0') {
-      menuMap[menu.parentId]?.children.push(menu)
-      return false
-    }
-    return true
   })
+
+  return result
 }
 
 export function buildMenuTreeForPage(
@@ -166,33 +167,35 @@ export function buildMenuTreeForPage(
   disableButton = true
 ) {
   const menuMap: {
-    [k: string]: {
-      children: Menu.MenuTreeOptions[]
-      path: string
-      name: string
-      icon?: string
-      close?: boolean
-      code: string
-      parentId: string
-      id: string
-      type: Menu.MenuType
-      disabled?: boolean
+    [k: string]: Menu.MenuTreeOptions
+  } = {}
+
+  const result: Menu.MenuTreeOptions[] = []
+
+  // 第一次循环：构建 menuMap
+  menuList.forEach((menu) => {
+    const menuItem = {
+      ...menu,
+      children: [],
+      disabled: menu.type === 3 ? disableButton : false
     }
-  } = Object.fromEntries(
-    menuList.map((menu) => [
-      menu.id,
-      {
-        ...menu,
-        children: [],
-        disabled: menu.type === 3 ? disableButton : false
-      }
-    ])
-  )
-  return Object.values(menuMap).filter((menu) => {
-    if (menu.parentId !== '0') {
-      menuMap[menu.parentId]?.children.push(menu)
-      return false
-    }
-    return true
+
+    // 将每个菜单项存储到 menuMap 中
+    menuMap[menu.id] = menuItem
   })
+
+  // 第二次循环：构建菜单树结构
+  menuList.forEach((menu) => {
+    const menuItem = menuMap[menu.id]
+
+    if (menu.parentId !== '0') {
+      // 如果父级菜单存在，添加到父级菜单的 children 中
+      menuMap[menu.parentId].children!.push(menuItem)
+    } else {
+      // 如果没有父级菜单（顶级菜单），直接加入 result
+      result.push(menuItem)
+    }
+  })
+
+  return result
 }
