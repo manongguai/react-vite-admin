@@ -43,7 +43,7 @@ export default function UsersPage() {
     size: 10
   })
 
-  // 获取用户列表
+  // 获取列表
   const { data, isLoading, refetch } = useQuery(
     ['userList', searchParams],
     async () => {
@@ -121,7 +121,7 @@ export default function UsersPage() {
       )
     },
     {
-      title: '注册时间',
+      title: '创建时间',
       dataIndex: 'createDate',
       key: 'createDate'
     },

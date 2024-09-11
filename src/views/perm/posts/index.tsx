@@ -49,23 +49,14 @@ export default function PostsPage() {
     size: 10
   })
 
-  // 获取用户列表
+  // 获取列表
   const { data, isLoading, refetch } = useQuery(
-    ['roleList', searchParams],
+    ['postList', searchParams],
     async () => {
       const res = await getPostList(searchParams)
       return res.data
     }
   )
-  // 获取所有菜单权限
-  const { data: menuData } = useQuery('getUserMenus', getUserMenus)
-  const treeMenus = useMemo(() => {
-    if (menuData) {
-      return buildMenuTreeForPage(menuData.data!, false)
-    }
-    return []
-  }, [menuData])
-
   // 当前操作的数据
   const [currentData, setCurrentData] = useState<RoleApiResult | null>(null)
 
@@ -110,7 +101,7 @@ export default function PostsPage() {
       }
     },
     {
-      title: '注册时间',
+      title: '创建时间',
       dataIndex: 'createDate',
       key: 'createDate'
     },
@@ -283,7 +274,7 @@ export default function PostsPage() {
         }
       }
     ]
-  }, [treeMenus, currentData, modal])
+  }, [currentData, modal])
 
   const searchFormOptions: FormOption[] = [
     {

@@ -21,7 +21,7 @@ import { useMemo, useState } from 'react'
 import { FormOption } from '@/components/Form/FormPro'
 
 export default function DeptsPage() {
-  // 获取用户列表
+  // 获取列表
   const { data, isLoading, refetch } = useQuery(['deptList'], async () => {
     const res = await getDeptList()
     return listToTree(res.data!, { root: '0', pidKey: 'parentId' })
@@ -133,7 +133,7 @@ export default function DeptsPage() {
       key: 'orderNum'
     },
     {
-      title: '注册时间',
+      title: '创建时间',
       dataIndex: 'createDate',
       key: 'createDate'
     },
