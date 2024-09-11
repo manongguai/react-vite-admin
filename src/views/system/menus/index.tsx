@@ -21,8 +21,7 @@ import {
   Tree,
   Divider,
   Button,
-  ColProps,
-  message
+  ColProps
 } from 'antd'
 import { DataNode, EventDataNode } from 'antd/es/tree'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -298,10 +297,10 @@ const MenusPage = () => {
     }
     if (modal.mode == 'add') {
       const res = await createMenu(params)
-      message.success('菜单创建成功')
+      window.$message.success('菜单创建成功')
     } else if (modal.mode == 'edit') {
       const res = await updateMenu(params)
-      message.success('菜单更新成功')
+      window.$message.success('菜单更新成功')
     }
     onModalClose()
     refetch()
@@ -333,7 +332,7 @@ const MenusPage = () => {
   }
   async function onDel(record: TableRecordData) {
     const res = await deleteMenu(record.id)
-    message.success('菜单删除成功')
+    window.$message.success('菜单删除成功')
     refetch()
   }
   return (

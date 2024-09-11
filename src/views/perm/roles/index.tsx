@@ -1,13 +1,4 @@
-import {
-  ColProps,
-  message,
-  Divider,
-  Popconfirm,
-  Tooltip,
-  Button,
-  Tree,
-  TreeProps
-} from 'antd'
+import { ColProps, Divider, Popconfirm, Tooltip, Button, Tree } from 'antd'
 import {
   EyeOutlined,
   ToolOutlined,
@@ -206,10 +197,10 @@ export default function UsersPage() {
     }
     if (modal.mode == 'add') {
       const res = await createRole(params)
-      message.success('创建成功')
+      window.$message.success('创建成功')
     } else if (modal.mode == 'edit') {
       const res = await updateRole(params)
-      message.success('更新成功')
+      window.$message.success('更新成功')
     }
     onModalClose()
     refetch()
@@ -218,7 +209,7 @@ export default function UsersPage() {
   // 删除用户操作
   const onDel = async (record: RoleApiResult) => {
     await delRole(record.id)
-    message.success('删除成功')
+    window.$message.success('删除成功')
     refetch()
   }
 

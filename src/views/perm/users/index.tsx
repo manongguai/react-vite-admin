@@ -1,6 +1,5 @@
 import {
   ColProps,
-  message,
   Switch,
   Avatar,
   Divider,
@@ -250,10 +249,10 @@ export default function UsersPage() {
     }
     if (modal.mode == 'add') {
       const res = await createUser(params)
-      message.success('创建成功')
+      window.$message.success('创建成功')
     } else if (modal.mode == 'edit') {
       const res = await updateUser(params)
-      message.success('更新成功')
+      window.$message.success('更新成功')
     }
     onModalClose()
     refetch()
@@ -262,21 +261,21 @@ export default function UsersPage() {
   // 启用/禁用操作
   const onEnableChange = async (checked: boolean, id: string) => {
     await changeStatus({ id, status: Number(checked) })
-    message.success(checked ? '已启用' : '已禁用')
+    window.$message.success(checked ? '已启用' : '已禁用')
     refetch()
   }
 
   // 删除用户操作
   const onDel = async (record: UserData) => {
     await deleteUser(record.id)
-    message.success('删除成功')
+    window.$message.success('删除成功')
     refetch()
   }
 
   // 重置密码
   const onResetPassword = async (record: UserData) => {
     await resetPassword(record.id)
-    message.success('密码已重置')
+    window.$message.success('密码已重置')
   }
 
   const modalFormOptions = useMemo<FormOption[]>(() => {

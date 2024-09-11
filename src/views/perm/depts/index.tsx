@@ -8,8 +8,7 @@ import {
 import CommonPage from '@/components/Page/CommonPage'
 import { useQuery } from 'react-query'
 import { useSetState } from 'react-use'
-import { UserData } from '../users/type'
-import { Button, ColProps, Divider, message, Popconfirm, Tooltip } from 'antd'
+import { Button, ColProps, Divider, Popconfirm, Tooltip } from 'antd'
 import {
   DeleteOutlined,
   EyeOutlined,
@@ -223,10 +222,10 @@ export default function DeptsPage() {
     }
     if (modal.mode == 'add') {
       const res = await createDept(params)
-      message.success('创建成功')
+      window.$message.success('创建成功')
     } else if (modal.mode == 'edit') {
       const res = await updateDept(params)
-      message.success('更新成功')
+      window.$message.success('更新成功')
     }
     onModalClose()
     refetch()
@@ -235,7 +234,7 @@ export default function DeptsPage() {
   // 删除用户操作
   const onDel = async (record: DeptApiResult) => {
     await deleteDept(record.id)
-    message.success('删除成功')
+    window.$message.success('删除成功')
     refetch()
   }
 

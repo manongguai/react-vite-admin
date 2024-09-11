@@ -12,7 +12,6 @@ import {
   tryHideFullScreenLoading
 } from '@/config/serviceLoading'
 import { ResultEnum } from '@/enums/httpEnum'
-import { message } from 'antd'
 import { ResultData } from './interface'
 import Refresher from './refresher'
 import store from '@/store'
@@ -88,7 +87,7 @@ export class CommonService extends HttpService {
           const token: string = store.getState().user.accessToken
           if (!token) {
             logout()
-            message.error(i18n.t('notification.pleaseLogin'))
+            window.$message.error(i18n.t('notification.pleaseLogin'))
             return Promise.resolve()
           }
           const refresher = Refresher.getInstance()
@@ -96,7 +95,7 @@ export class CommonService extends HttpService {
         }
         // * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
         if (data.code && data.code !== ResultEnum.SUCCESS) {
-          message.error(data.msg)
+          window.$message.error(data.msg)
           return Promise.reject(data)
         }
         return Promise.resolve(data)
@@ -112,7 +111,7 @@ export class CommonService extends HttpService {
           const token: string = store.getState().user.accessToken
           if (!token) {
             logout()
-            message.error(i18n.t('notification.pleaseLogin'))
+            window.$message.error(i18n.t('notification.pleaseLogin'))
             return Promise.resolve()
           }
           const refresher = Refresher.getInstance()
@@ -129,7 +128,7 @@ export class CommonService extends HttpService {
           if (Array.isArray(serverErr)) {
             errTxt += serverErr.join('\n')
           }
-          message.error(errTxt || error.message)
+          window.$message.error(errTxt || error.message)
         }
         return Promise.reject(error)
       }
@@ -155,14 +154,14 @@ export class RefresherService extends HttpService {
         const { data } = response
         if (data.code && data.code !== ResultEnum.SUCCESS) {
           logout()
-          message.error(i18n.t('notification.loginFailed'))
+          window.$message.error(i18n.t('notification.loginFailed'))
           return Promise.resolve()
         }
         return Promise.resolve(data)
       },
       (error: AxiosError) => {
         logout()
-        message.error(error.message)
+        window.$message.error(error.message)
         return Promise.reject(error)
       }
     )
