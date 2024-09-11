@@ -20,7 +20,6 @@ import {
 } from '@/api/role'
 import CommonPage from '@/components/Page/CommonPage'
 import { FormOption } from '@/components/Form/FormPro'
-import { getAllMenus, getAllApiPerms } from '@/api/system'
 import { buildMenuTreeForPage } from '@/utils/system'
 import { FormInstance } from 'antd/lib'
 
