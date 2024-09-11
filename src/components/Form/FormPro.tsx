@@ -1,4 +1,4 @@
-import React, { ComponentType, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Form,
   Input,
@@ -10,6 +10,7 @@ import {
   Upload,
   Cascader,
   InputNumber,
+  TreeSelect,
   Button,
   Row,
   Col,
@@ -21,14 +22,13 @@ import {
   DatePickerProps,
   SwitchProps,
   UploadProps,
-  InputNumberProps,
   CascaderProps,
   TreeSelectProps,
-  TreeSelect
+  InputNumberProps
 } from 'antd'
 import { FormItemProps, FormInstance } from 'antd/lib/form'
 
-export interface FormOptionBase {
+export interface FormOptionBase<T = { label: string; value: string | number }> {
   type:
     | 'input'
     | 'select'
@@ -56,7 +56,8 @@ export interface FormOptionBase {
     | TreeSelectProps<any>
     | InputNumberProps
   hidden?: boolean | ((values: any) => boolean)
-  colProps?: ColProps // 每个表单项的布局
+  colProps?: ColProps
+  options?: T[]
 }
 
 export interface InputOption extends FormOptionBase {
@@ -64,15 +65,15 @@ export interface InputOption extends FormOptionBase {
   componentProps?: InputProps
 }
 
-export interface SelectOption extends FormOptionBase {
+export interface SelectOption<T = { label: string; value: string | number }>
+  extends FormOptionBase<T> {
   type: 'select'
-  options?: { label: string; value: string | number }[]
   componentProps?: SelectProps<any>
 }
 
-export interface RadioOption extends FormOptionBase {
+export interface RadioOption<T = { label: string; value: string | number }>
+  extends FormOptionBase<T> {
   type: 'radio'
-  options?: { label: string; value: string | number }[]
   componentProps?: RadioGroupProps
 }
 
@@ -96,9 +97,9 @@ export interface UploadOption extends FormOptionBase {
   componentProps?: UploadProps
 }
 
-export interface CascaderOption extends FormOptionBase {
+export interface CascaderOption<T = { label: string; value: string | number }>
+  extends FormOptionBase<T> {
   type: 'cascader'
-  options?: { label: string; value: string | number }[]
   componentProps?: CascaderProps<any>
 }
 
@@ -107,10 +108,11 @@ export interface InputNumberOption extends FormOptionBase {
   componentProps?: InputNumberProps
 }
 
-export interface TreeSelectOption extends FormOptionBase {
+export interface TreeSelectOption<
+  T = { title: string; value: string | number; children?: any[] }
+> extends FormOptionBase<T> {
   type: 'treeSelect'
   componentProps?: TreeSelectProps<any>
-  options?: { title: string; value: string | number; children?: any[] }[]
 }
 
 export interface CustomOption extends FormOptionBase {
@@ -122,17 +124,17 @@ export interface CustomOption extends FormOptionBase {
   ) => React.ReactElement
 }
 
-export type FormOption =
+export type FormOption<T = any> =
   | InputOption
-  | SelectOption
-  | RadioOption
+  | SelectOption<T>
+  | RadioOption<T>
   | CheckboxOption
   | DatePickerOption
   | SwitchOption
   | UploadOption
-  | CascaderOption
+  | CascaderOption<T>
   | InputNumberOption
-  | TreeSelectOption
+  | TreeSelectOption<T>
   | CustomOption
 
 export interface FormProProps {
