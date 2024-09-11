@@ -24,6 +24,7 @@
     "antd": "^5.20.4",
     "axios": "^1.4.0",
     "copy-to-clipboard": "^3.3.3",
+    "dayjs": "^1.11.13",
     "drauu": "^0.3.5",
     "driver.js": "^1.2.1",
     "gasp": "^0.0.2",

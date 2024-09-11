@@ -35,6 +35,7 @@ export interface FormOptionBase<T = { label: string; value: string | number }> {
     | 'radio'
     | 'checkbox'
     | 'datePicker'
+    | 'rangePicker'
     | 'switch'
     | 'upload'
     | 'cascader'
@@ -87,6 +88,11 @@ export interface DatePickerOption extends FormOptionBase {
   componentProps?: DatePickerProps
 }
 
+export interface RangePickerOption extends FormOptionBase {
+  type: 'rangePicker'
+  componentProps?: DatePickerProps
+}
+
 export interface SwitchOption extends FormOptionBase {
   type: 'switch'
   componentProps?: SwitchProps
@@ -130,6 +136,7 @@ export type FormOption<T = any> =
   | RadioOption<T>
   | CheckboxOption
   | DatePickerOption
+  | RangePickerOption
   | SwitchOption
   | UploadOption
   | CascaderOption<T>
@@ -232,6 +239,14 @@ const FormPro: React.FC<FormProProps> = ({
               case 'datePicker':
                 return (
                   <DatePicker
+                    disabled={disabled}
+                    {...(item.componentProps as DatePickerProps)}
+                  />
+                )
+              case 'rangePicker':
+                return (
+                  // @ts-ignore
+                  <DatePicker.RangePicker
                     disabled={disabled}
                     {...(item.componentProps as DatePickerProps)}
                   />

@@ -2,8 +2,11 @@ import { findOssList, getFileList, OssApiResult } from '@/api/oss'
 import FilePreviewHolder from '@/components/ConfigurationBtn/FilePreviewHolder'
 import { FormOption } from '@/components/Form/FormPro'
 import CommonPage from '@/components/Page/CommonPage'
+import clipboard from '@/utils/clipboard'
+import { Button } from 'antd'
 import { useQuery } from 'react-query'
 import { useSetState } from 'react-use'
+import { Dayjs } from 'dayjs'
 
 export default function OssPage() {
   // 搜索参数
@@ -43,7 +46,14 @@ export default function OssPage() {
     {
       title: '链接',
       dataIndex: 'url',
-      key: 'url'
+      key: 'url',
+      render: (v: string, record: OssApiResult) => {
+        return (
+          <Button onClick={() => clipboard(v)} type="text">
+            {v}
+          </Button>
+        )
+      }
     },
     {
       title: '大小',
@@ -68,27 +78,31 @@ export default function OssPage() {
   ]
   const searchFormOptions: FormOption[] = [
     {
-      type: 'input',
-      name: '查询日期',
-      label: '岗位名称',
+      type: 'rangePicker',
+      name: 'date',
+      label: '查询日期',
       componentProps: {
-        placeholder: '请输入岗位名称',
+        placeholder: '查询日期',
         allowClear: true
       }
     }
   ]
 
   // 搜索操作
-  const onSearch = (values: { name: string }) => {
+  const onSearch = (values: { date: [Dayjs, Dayjs] | undefined }) => {
+    console.log(values)
+
     setSearchParams({
       ...values,
+      startDay: values.date ? values.date[0].format('YYYY-MM-DD') : undefined,
+      endDay: values.date ? values.date[1].format('YYYY-MM-DD') : undefined,
       page: 1
     })
   }
   // 重置搜索
   const onResetSearch = () => {
     onSearch({
-      name: ''
+      date: undefined
     })
   }
 

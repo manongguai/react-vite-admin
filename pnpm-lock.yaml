@@ -35,6 +35,9 @@ importers:
       copy-to-clipboard:
         specifier: ^3.3.3
         version: 3.3.3
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       drauu:
         specifier: ^0.3.5
         version: 0.3.5
