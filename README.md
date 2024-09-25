@@ -14,6 +14,11 @@ React-vite-admin，基于 React18、React-Router v6、React-Hooks、Redux && Red
 
 - GitHub：https://github.com/manongguai/react-vite-admin
 
+
+* 后端项目地址
+- GitHub：https://github.com/manongguai/nestJs-backend
+
+
 ### 三、🔨🔨🔨 项目功能
 
 - 🚀 采用最新技术找开发：React18、React-Router v6、React-Hooks、TypeScript、Vite4.4
@@ -149,9 +154,16 @@ React-vite-admin
 - 本地开发推荐使用 Chrome 最新版浏览器 [Download](https://www.google.com/intl/zh-CN/chrome/)。
 - 生产环境支持现代浏览器，不在支持 IE 浏览器，更多浏览器可以查看 [Can I Use Es Module](https://caniuse.com/?search=ESModule)。
 
-### 八、项目后台接口 🧩
+### 八、功能实现 🧩
 
-项目后台接口采用本地 Mock 数据
+- 用户登录
+- 用户管理
+- 角色管理
+- 菜单管理
+- 文件上传
+- 部门管理
+- 岗位管理
+
 
 ### 九、捐赠 🍵
 
